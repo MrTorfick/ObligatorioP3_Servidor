@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EcosistemasMarinos.AccesoDatos\_EcosistemasMarinos.AccesoDatos.csproj" />
+    <ProjectReference Include="..\EcosistemasMarinos\EcosistemasMarinos.csproj" />
+  </ItemGroup>
+
+</Project>
