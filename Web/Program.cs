@@ -1,3 +1,8 @@
+using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using EcosistemasMarinos.Interfaces_Repositorios;
+
 namespace Web
 {
     public class Program
@@ -9,6 +14,13 @@ namespace Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //inicializacion de repositorios
+            builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+
+            //inicializacion de casos de uso
+            builder.Services.AddScoped<IAddUsuario, AddUsuarioCU>();
+
+            builder.Services.AddSession();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,6 +37,7 @@ namespace Web
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

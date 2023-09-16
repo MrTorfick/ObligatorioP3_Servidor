@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EcosistemasMarinos.Entidades
 {
+
+    [Index(nameof(nombre), IsUnique = true)]
+    [Index(nameof(codigoISO), IsUnique = true)]
     public class Pais
     {
         public string nombre { get; set; }

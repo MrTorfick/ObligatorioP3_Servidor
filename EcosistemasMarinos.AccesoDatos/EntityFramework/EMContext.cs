@@ -11,7 +11,6 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
     public class EMContext : DbContext
     {
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<UsuarioAdmin> UsuariosAdmin { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

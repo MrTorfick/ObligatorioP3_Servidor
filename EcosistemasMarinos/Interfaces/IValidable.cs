@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EcosistemasMarinos.Entidades
+namespace EcosistemasMarinos.Interfaces
 {
-    public class UsuarioAdmin : Usuario
+    public interface IValidable
     {
 
+        public void Validar();
     }
 }
