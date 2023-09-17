@@ -1,4 +1,5 @@
-﻿using EcosistemasMarinos.Excepciones;
+﻿using EcosistemasMarinos.Enums;
+using EcosistemasMarinos.Excepciones;
 using EcosistemasMarinos.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,10 +16,12 @@ namespace EcosistemasMarinos.Entidades
     {
         [Key]
         public int Id { get; set; }
-        [Required, StringLength(30, MinimumLength =6, ErrorMessage ="El nombre debe tener al menos 6 caracteres")]
+        [Required, StringLength(30, MinimumLength = 6, ErrorMessage = "El nombre debe tener al menos 6 caracteres")]
         public string Nombre { get; set; }
         [Required]
         public string Contrasenia { get; set; }
+        [Required]
+        public string TipoUsuario { get; set; }
 
         public Usuario(){}
 

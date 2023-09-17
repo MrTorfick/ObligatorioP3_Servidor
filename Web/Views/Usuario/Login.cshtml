@@ -1,5 +1,13 @@
 ﻿<h1>Login</h1>
 
+
+@if (!String.IsNullOrEmpty(ViewBag.Mensaje))
+{
+    <div class="alert alert-danger">
+        @ViewBag.Mensaje
+    </div>
+}
+
 <form method="post">
 
 
@@ -14,4 +22,3 @@
     <input type="submit" value="Aceptar" />
 
 </form>
-@ViewBag.msg

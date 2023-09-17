@@ -28,10 +28,15 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         {
             return _context.Usuarios.OrderByDescending(Usuario => Usuario.Id);
         }
+        public Usuario FindUserByCredentials(string name, string password)
+        {
+            return _context.Usuarios.Where(usuario => usuario.Nombre == name && usuario.Contrasenia == password).FirstOrDefault();
+        }
 
         public Usuario FindByID(int id)
         {
             throw new NotImplementedException();
+            
         }
 
         public void Remove(int id)
@@ -43,5 +48,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

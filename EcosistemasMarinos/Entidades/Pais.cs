@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace EcosistemasMarinos.Entidades
     [Index(nameof(codigoISO), IsUnique = true)]
     public class Pais
     {
+        [Key]
         public string nombre { get; set; }
+        [Key]
         public string codigoISO { get; set; }
     }
 }

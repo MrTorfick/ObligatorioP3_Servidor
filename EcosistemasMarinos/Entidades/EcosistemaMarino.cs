@@ -12,17 +12,23 @@ namespace EcosistemasMarinos.Entidades
     {
         [Key]
         public int Id { get; set; }
+        [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }
+        [Required]
         public string DetallesGeo { get; set; }
+        [Required]
         public double Area { get; set; }
+        [Required]
         public string DescripcionCaracteristicas { get; set; }
+        [Required]
         public string RutaImagen { get; set; }
+        [Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
-        [ForeignKey(nameof(Amenaza))]
+        [Required, ForeignKey(nameof(Amenaza))]
         public Amenaza Amenaza { get; set; }
-        [ForeignKey(nameof(Pais))]
+        [Required, ForeignKey(nameof(Pais))]
         public Pais Pais { get; set; }
-        [ForeignKey(nameof(EstadoConservacion))]
+        [Required, ForeignKey(nameof(EstadoConservacion))]
         public EstadoConservacion EstadoConservacion { get; set; }
 
     }

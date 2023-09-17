@@ -1,7 +1,9 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
+using EcosistemasMarinos.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace Web.Controllers
 {
@@ -9,17 +11,19 @@ namespace Web.Controllers
     {
 
         private IAddUsuario ucAddUsuario;
+        private IObtenerUsuarioPorCredenciales ObtenerUsuario;
 
-        public UsuarioController(IAddUsuario ucAddUsuario)
+        public UsuarioController(IAddUsuario ucAddUsuario, IObtenerUsuarioPorCredenciales obtenerUsuario)
         {
             this.ucAddUsuario = ucAddUsuario;
+            ObtenerUsuario = obtenerUsuario;
         }
 
 
         // GET: UsuarioController/Create
         public ActionResult Create(string mensaje)
         {
-            ViewBag.UsuarioLogueado= HttpContext.Session.GetInt32("LogueadoNombre");
+            ViewBag.UsuarioLogueado = HttpContext.Session.GetInt32("LogueadoNombre");
             ViewBag.Mensaje = mensaje;
             return View();
 
@@ -32,24 +36,68 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             */
-            
+
         }
 
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public ActionResult Create(Usuario usuario, int slcTipoUsuario)
         {
             try
             {
+                TipoUsuario tipoUsuario = (TipoUsuario)slcTipoUsuario;
+                usuario.TipoUsuario = tipoUsuario.ToString();
+
                 this.ucAddUsuario.AddUsuario(usuario);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Home", "Index");
             }
             catch (Exception e)
             {
                 return RedirectToAction(nameof(Create), new { mensaje = e.Message });
             }
         }
+
+
+
+        public IActionResult Login(string mensaje)
+        {
+
+            ViewBag.Mensaje = mensaje;
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Login(string Nombre, string Contrasenia)
+        {
+
+            try
+            {
+                Usuario user = ObtenerUsuario.ObtenerUsuarioPorCredenciales(Nombre, Contrasenia);
+                if (user != null)
+                {
+                    HttpContext.Session.SetString("LogueadoNombre", Nombre);
+                    HttpContext.Session.SetString("LogueadoRol", user.TipoUsuario);
+                    return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Login), new { mensaje = "Usuario no encontrado" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Ha ocurrido un error inesperado. Intentelo nuevamente");
+            }
+
+        }
+
+
+
 
         // GET: UsuarioController/Edit/5
         public ActionResult Edit(int id)

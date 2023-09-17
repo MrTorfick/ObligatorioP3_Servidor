@@ -10,5 +10,7 @@ namespace EcosistemasMarinos.Interfaces_Repositorios
     public interface IRepositorioUsuario:IRepositorio<Usuario>
     {
 
+        Usuario FindUserByCredentials(string name, string password);
+
     }
 }

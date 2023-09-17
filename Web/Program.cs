@@ -19,6 +19,7 @@ namespace Web
 
             //inicializacion de casos de uso
             builder.Services.AddScoped<IAddUsuario, AddUsuarioCU>();
+            builder.Services.AddScoped<IObtenerUsuarioPorCredenciales, ObtenerUsuarioPorCredencialesCU>();
 
             builder.Services.AddSession();
             var app = builder.Build();
