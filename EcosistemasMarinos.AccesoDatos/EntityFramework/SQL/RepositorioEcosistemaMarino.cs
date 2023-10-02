@@ -8,36 +8,31 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 {
-    public class RepositorioUsuario : IRepositorioUsuario
+    public class RepositorioEcosistemaMarino : IRepositorioEcosistemaMarino
+
     {
         private EMContext _context;
 
-        public RepositorioUsuario()
+        public RepositorioEcosistemaMarino()
         {
-
             _context = new EMContext();
         }
 
-        public void Add(Usuario usuario)
+        public void Add(EcosistemaMarino unDato)
         {
-            usuario.Validar();
-            _context.Usuarios.Add(usuario);
+            unDato.Validar();
+            _context.EcosistemaMarinos.Add(unDato);
             _context.SaveChanges();
         }
 
-        public IEnumerable<Usuario> FindAll()
-        {
-            return _context.Usuarios.OrderByDescending(Usuario => Usuario.Id);
-        }
-        public Usuario FindUserByCredentials(string name, string password)
-        {
-            return _context.Usuarios.Where(usuario => usuario.Nombre == name && usuario.Contrasenia == password).FirstOrDefault();
-        }
-
-        public Usuario FindByID(int id)
+        public IEnumerable<EcosistemaMarino> FindAll()
         {
             throw new NotImplementedException();
+        }
 
+        public EcosistemaMarino FindByID(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public void Remove(int id)
@@ -45,11 +40,9 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             throw new NotImplementedException();
         }
 
-        public void Update(Usuario dato)
+        public void Update(EcosistemaMarino dato)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

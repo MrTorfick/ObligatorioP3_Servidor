@@ -16,10 +16,12 @@ namespace Web
 
             //inicializacion de repositorios
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            builder.Services.AddScoped<IRepositorioEcosistemaMarino, RepositorioEcosistemaMarino>();
 
             //inicializacion de casos de uso
             builder.Services.AddScoped<IAddUsuario, AddUsuarioCU>();
             builder.Services.AddScoped<IObtenerUsuarioPorCredenciales, ObtenerUsuarioPorCredencialesCU>();
+            builder.Services.AddScoped<IAddEcosistemaMarino, AddEcosistemaMarinoCU>();
 
             builder.Services.AddSession();
             var app = builder.Build();

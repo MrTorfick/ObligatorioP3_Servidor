@@ -24,7 +24,7 @@ namespace EcosistemasMarinos.Entidades
         public double Peso { get; set; }
         [Required]
         public double Longitud { get; set; }
-        [Required, ForeignKey(nameof(EstadoConservacion))]
-        public EstadoConservacion EstadoConservacion { get; set; }
+        [ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
+        //public EstadoConservacion EstadoConservacion { get; set; }
     }
 }

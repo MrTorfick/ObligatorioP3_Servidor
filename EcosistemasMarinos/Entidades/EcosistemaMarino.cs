@@ -20,16 +20,29 @@ namespace EcosistemasMarinos.Entidades
         public double Area { get; set; }
         [Required]
         public string DescripcionCaracteristicas { get; set; }
-        [Required]
-        public string RutaImagen { get; set; }
-        [Required]
-        public List<EspecieMarina> EspeciesHabitan { get; set; }
-        [Required, ForeignKey(nameof(Amenaza))]
-        public Amenaza Amenaza { get; set; }
-        [Required, ForeignKey(nameof(Pais))]
-        public Pais Pais { get; set; }
-        [Required, ForeignKey(nameof(EstadoConservacion))]
-        public EstadoConservacion EstadoConservacion { get; set; }
 
+        public string RutaImagen { get; set; }
+        //[Required]
+        public List<EspecieMarina> EspeciesHabitan { get; set; }
+        [ForeignKey(nameof(Amenaza))] public int AmenazaId { get; set; }
+        
+        //public Amenaza Amenaza { get; set; }
+        [ForeignKey(nameof(Pais))] public int PaisId { get; set; }
+        //public Pais Pais { get; set; }
+        [ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
+        //public EstadoConservacion EstadoConservacion { get; set; }
+
+        public void Validar()
+        {
+            if(string.IsNullOrEmpty(Nombre))
+                throw new Exception("El nombre no puede ser nulo ni vacío");
+
+            if (string.IsNullOrEmpty(DetallesGeo))
+                throw new Exception("Los detalles geográficos no pueden ser nulos ni vacíos");
+
+            if (Area <= 0)
+                throw new Exception("El área debe ser mayor a 0");
+
+        }
     }
 }
