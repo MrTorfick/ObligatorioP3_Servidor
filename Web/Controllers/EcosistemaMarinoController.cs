@@ -37,12 +37,18 @@ namespace Web.Controllers
         // POST: EcosistemaMarinoController1/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos)
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud)
         {
             try
             {
                 //ecosistemasMarinos.EspeciesHabitan = new List<Especie>();
                 //ecosistemasMarinos.EspeciesHabitan.Add(new Especie() { Nombre = "Tiburón" });
+
+              
+                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud);
+                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud);
+
+                ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
                 this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                 return RedirectToAction(nameof(Index));
             }
