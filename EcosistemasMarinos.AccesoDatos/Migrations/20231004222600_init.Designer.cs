@@ -12,8 +12,8 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     [DbContext(typeof(EMContext))]
-    [Migration("20231002125457_addEcosistemaMarino")]
-    partial class addEcosistemaMarino
+    [Migration("20231004222600_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,10 +37,15 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("int");
 
+                    b.Property<int?>("EcosistemaMarinoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Peligrosidad")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EcosistemaMarinoId");
 
                     b.ToTable("Amenaza");
                 });
@@ -52,9 +57,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AmenazaId")
-                        .HasColumnType("int");
 
                     b.Property<double>("Area")
                         .HasColumnType("float");
@@ -75,14 +77,21 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PaisId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaiscodigoISO")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Paisnombre")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RutaImagen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EstadoConservacionId");
+
+                    b.HasIndex("Paisnombre", "PaiscodigoISO");
 
                     b.ToTable("EcosistemaMarinos");
                 });
@@ -153,6 +162,25 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.ToTable("estadoConservacions");
                 });
 
+            modelBuilder.Entity("EcosistemasMarinos.Entidades.Pais", b =>
+                {
+                    b.Property<string>("nombre")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("codigoISO")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("nombre", "codigoISO");
+
+                    b.HasIndex("codigoISO")
+                        .IsUnique();
+
+                    b.HasIndex("nombre")
+                        .IsUnique();
+
+                    b.ToTable("Pais");
+                });
+
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -182,6 +210,30 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("EcosistemasMarinos.Entidades.Amenaza", b =>
+                {
+                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", null)
+                        .WithMany("Amenazas")
+                        .HasForeignKey("EcosistemaMarinoId");
+                });
+
+            modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>
+                {
+                    b.HasOne("EcosistemasMarinos.Entidades.EstadoConservacion", "EstadoConservacion")
+                        .WithMany()
+                        .HasForeignKey("EstadoConservacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcosistemasMarinos.Entidades.Pais", "Pais")
+                        .WithMany()
+                        .HasForeignKey("Paisnombre", "PaiscodigoISO");
+
+                    b.Navigation("EstadoConservacion");
+
+                    b.Navigation("Pais");
+                });
+
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EspecieMarina", b =>
                 {
                     b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", null)
@@ -191,6 +243,8 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>
                 {
+                    b.Navigation("Amenazas");
+
                     b.Navigation("EspeciesHabitan");
                 });
 #pragma warning restore 612, 618

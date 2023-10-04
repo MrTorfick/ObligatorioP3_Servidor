@@ -44,11 +44,15 @@ namespace Web.Controllers
                 //ecosistemasMarinos.EspeciesHabitan = new List<Especie>();
                 //ecosistemasMarinos.EspeciesHabitan.Add(new Especie() { Nombre = "Tiburón" });
 
-              
-                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud);
-                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud);
+                string LongitudTipo = "Longitud";
+                string LatitudTipo = "Latitud";
 
-                ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
+                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud, LatitudTipo);
+                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
+
+                // ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
+                ecosistemasMarinos.coordenadas.Longitud = grados_Longitud;
+                ecosistemasMarinos.coordenadas.Latitud = grados_Latitud;
                 this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                 return RedirectToAction(nameof(Index));
             }
