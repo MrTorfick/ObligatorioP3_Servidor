@@ -58,8 +58,7 @@ namespace Web.Controllers
                 string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
 
                 // ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
-                Coordenadas coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
-                ecosistemasMarinos.Coordenadas = coordenadas;
+                ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);

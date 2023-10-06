@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Excepciones;
 using EcosistemasMarinos.Interfaces;
+using EcosistemasMarinos.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,14 +18,19 @@ namespace EcosistemasMarinos.Entidades
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; }
-        [Required, Range(0, 100, ErrorMessage = "Debe ingresar un valor entre 0 y 100")]
-        public int Seguro { get; set; }
+        //[Required, Range(0, 100, ErrorMessage = "Debe ingresar un valor entre 0 y 100")]
+        [Required]
+        public Rangos Rangos { get; set; }
 
         public void Validar()
         {
-            if (Seguro < 0 || Seguro > 100)
+            if (string.IsNullOrEmpty(Nombre))
             {
-                throw new RangoValoresException("Debe ingresar un valor entre 0 y 100");
+                throw new Exception("Debe ingresar un nombre valido");
+            }
+            if (Rangos == null)
+            {
+                throw new Exception("Debe ingresar rangos validos");
             }
         }
     }
