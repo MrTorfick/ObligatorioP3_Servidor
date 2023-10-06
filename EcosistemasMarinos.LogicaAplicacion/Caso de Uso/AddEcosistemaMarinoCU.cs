@@ -20,7 +20,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
 
         public void AddEcosistemaMarino(EcosistemaMarino ecosistemaMarino)
         {
-
+            repositorioEcosistemaMarino.Add(ecosistemaMarino);
         }
     }
 }

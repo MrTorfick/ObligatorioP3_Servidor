@@ -16,23 +16,23 @@ namespace EcosistemasMarinos.Entidades
         public int Id { get; set; }
         [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }
-        public Coordenadas coordenadas { get; set; }
+        public Coordenadas Coordenadas { get; set; }
         [Required]
         public double Area { get; set; }
         [Required]
         public string DescripcionCaracteristicas { get; set; }
 
-        public string RutaImagen { get; set; }
+        public string? Imagen { get; set; }
         //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
-       // [ForeignKey(nameof(Amenaza))] public int AmenazaId { get; set; }
+        // [ForeignKey(nameof(Amenaza))] public int AmenazaId { get; set; }
 
-        //public Amenaza Amenaza { get; set; }
+        //public Amenaza Amenaza { get; set; } 
         //[ForeignKey(nameof(Pais))] public int PaisId { get; set; }
         public List<Amenaza> Amenazas { get; set; }
         public Pais Pais { get; set; }
-        //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
-        public EstadoConservacion EstadoConservacion { get; set; }
+        [ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
+        //public EstadoConservacion EstadoConservacion { get; set; }
 
         public void Validar()
         {
@@ -47,8 +47,8 @@ namespace EcosistemasMarinos.Entidades
         public string GradosMinutosSegundos(string valor, string tipo)
         {
 
-            if (string.IsNullOrEmpty(valor))
-                throw new Exception($"Debe ingresar un dato valido");
+            if (string.IsNullOrEmpty(valor) && !valor.Contains('.'))
+                throw new Exception("Debe ingresar un dato valido");
 
             string[] grados = valor.Split('.');
 

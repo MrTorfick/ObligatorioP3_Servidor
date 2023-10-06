@@ -2,6 +2,9 @@
 using EcosistemasMarinos.Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using EcosistemasMarinos.ValueObjects;
 
 namespace Web.Controllers
 {
@@ -9,16 +12,20 @@ namespace Web.Controllers
     {
 
         private IAddEcosistemaMarino addEcosistemaMarinoUC;
+        private IObtenerEcosistemasMarinos GetEcosistemasMarinosUC;
+        private IWebHostEnvironment _environment;
 
-        public EcosistemaMarinoController(IAddEcosistemaMarino addEcosistemaMarinoUC)
+        public EcosistemaMarinoController(IAddEcosistemaMarino addEcosistemaMarinoUC, IWebHostEnvironment environment, IObtenerEcosistemasMarinos getEcosistemasMarinosUC)
         {
             this.addEcosistemaMarinoUC = addEcosistemaMarinoUC;
+            _environment = environment;
+            this.GetEcosistemasMarinosUC = getEcosistemasMarinosUC;
         }
 
         // GET: EcosistemaMarinoController1
         public ActionResult Index()
         {
-            return View();
+            return View(this.GetEcosistemasMarinosUC.ObtenerEcosistemasMarinos());
         }
 
         // GET: EcosistemaMarinoController1/Details/5
@@ -34,13 +41,13 @@ namespace Web.Controllers
             return View();
         }
 
-        // POST: EcosistemaMarinoController1/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud)
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen)
         {
             try
             {
+                if (ecosistemasMarinos == null || imagen == null)
+                    return View();
                 //ecosistemasMarinos.EspeciesHabitan = new List<Especie>();
                 //ecosistemasMarinos.EspeciesHabitan.Add(new Especie() { Nombre = "Tiburón" });
 
@@ -51,16 +58,58 @@ namespace Web.Controllers
                 string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
 
                 // ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
-                ecosistemasMarinos.coordenadas.Longitud = grados_Longitud;
-                ecosistemasMarinos.coordenadas.Latitud = grados_Latitud;
-                this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
-                return RedirectToAction(nameof(Index));
+                Coordenadas coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
+                ecosistemasMarinos.Coordenadas = coordenadas;
+                if (GuardarImagen(imagen, ecosistemasMarinos))
+                {
+                    addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View();
+                }
+
+
             }
             catch (Exception ex)
             {
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
             }
         }
+
+        private bool GuardarImagen(IFormFile imagen, EcosistemaMarino em)
+        {
+            if (imagen == null || em == null) return false;
+            // SUBIR LA IMAGEN
+            //ruta física de wwwroot
+            string rutaFisicaWwwRoot = _environment.WebRootPath;
+
+            string nombreImagen = imagen.FileName;
+            //ruta donde se guardan las fotos de las personas
+            string rutaFisicaFoto = Path.Combine
+            (rutaFisicaWwwRoot, "images", "ecosistema_marino", nombreImagen);
+            //FileStream permite manejar archivos
+            try
+            {
+                //el método using libera los recursos del objeto FileStream al finalizar
+                using (FileStream f = new FileStream(rutaFisicaFoto, FileMode.Create))
+                {
+                    //Para archivos grandes o varios archivos usar la versión
+                    //asincrónica de CopyTo. Sería: await imagen.CopyToAsync (f);
+                    imagen.CopyTo(f);
+                }
+                //GUARDAR EL NOMBRE DE LA IMAGEN SUBIDA EN EL OBJETO
+                em.Imagen = nombreImagen;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
 
         // GET: EcosistemaMarinoController1/Edit/5
         public ActionResult Edit(int id)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 
@@ -11,9 +12,11 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     [DbContext(typeof(EMContext))]
-    partial class EMContextModelSnapshot : ModelSnapshot
+    [Migration("20231006205557_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,6 +83,8 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EstadoConservacionId");
 
                     b.HasIndex("Paisnombre", "PaiscodigoISO");
 
@@ -149,7 +154,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
-                    b.ToTable("EstadoConservacion");
+                    b.ToTable("estadoConservacions");
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Pais", b =>
@@ -209,6 +214,12 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>
                 {
+                    b.HasOne("EcosistemasMarinos.Entidades.EstadoConservacion", "EstadoConservacion")
+                        .WithMany()
+                        .HasForeignKey("EstadoConservacionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EcosistemasMarinos.Entidades.Pais", "Pais")
                         .WithMany()
                         .HasForeignKey("Paisnombre", "PaiscodigoISO");
@@ -236,6 +247,8 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.Navigation("Coordenadas")
                         .IsRequired();
+
+                    b.Navigation("EstadoConservacion");
 
                     b.Navigation("Pais");
                 });

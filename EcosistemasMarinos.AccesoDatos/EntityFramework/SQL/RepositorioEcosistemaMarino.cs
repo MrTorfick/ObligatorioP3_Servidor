@@ -27,7 +27,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<EcosistemaMarino> FindAll()
         {
-            throw new NotImplementedException();
+            return _context.EcosistemaMarinos;
         }
 
         public EcosistemaMarino FindByID(int id)

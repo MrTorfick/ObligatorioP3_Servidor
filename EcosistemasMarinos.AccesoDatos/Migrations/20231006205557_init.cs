@@ -58,10 +58,11 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DetallesGeo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coordenadas_Longitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coordenadas_Latitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Area = table.Column<double>(type: "float", nullable: false),
                     DescripcionCaracteristicas = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RutaImagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Paisnombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PaiscodigoISO = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EstadoConservacionId = table.Column<int>(type: "int", nullable: false)
@@ -111,7 +112,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     NombreCientifico = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NombreVulgar = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RutaImagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Peso = table.Column<double>(type: "float", nullable: false),
                     Longitud = table.Column<double>(type: "float", nullable: false),
                     EstadoConservacionId = table.Column<int>(type: "int", nullable: false),

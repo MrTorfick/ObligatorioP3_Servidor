@@ -19,7 +19,7 @@ namespace EcosistemasMarinos.Entidades
         [Required]
         public string Descripcion { get; set; }
         [Required]
-        public string RutaImagen { get; set; }
+        public string Imagen { get; set; }
         [Required]
         public double Peso { get; set; }
         [Required]

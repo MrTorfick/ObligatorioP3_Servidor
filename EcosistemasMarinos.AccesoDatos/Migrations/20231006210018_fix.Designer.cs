@@ -12,8 +12,8 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     [DbContext(typeof(EMContext))]
-    [Migration("20231004222600_init")]
-    partial class init
+    [Migration("20231006210018_fix")]
+    partial class fix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,12 +65,11 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DetallesGeo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("EstadoConservacionId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Imagen")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -82,10 +81,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.Property<string>("Paisnombre")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RutaImagen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -114,6 +109,10 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.Property<int>("EstadoConservacionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Imagen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Longitud")
                         .HasColumnType("float");
 
@@ -127,10 +126,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.Property<double>("Peso")
                         .HasColumnType("float");
-
-                    b.Property<string>("RutaImagen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -159,7 +154,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
-                    b.ToTable("estadoConservacions");
+                    b.ToTable("EstadoConservacion");
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Pais", b =>
@@ -228,6 +223,30 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasOne("EcosistemasMarinos.Entidades.Pais", "Pais")
                         .WithMany()
                         .HasForeignKey("Paisnombre", "PaiscodigoISO");
+
+                    b.OwnsOne("EcosistemasMarinos.ValueObjects.Coordenadas", "Coordenadas", b1 =>
+                        {
+                            b1.Property<int>("EcosistemaMarinoId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Latitud")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Longitud")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("EcosistemaMarinoId");
+
+                            b1.ToTable("EcosistemaMarinos");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EcosistemaMarinoId");
+                        });
+
+                    b.Navigation("Coordenadas")
+                        .IsRequired();
 
                     b.Navigation("EstadoConservacion");
 

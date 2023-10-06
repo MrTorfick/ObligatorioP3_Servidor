@@ -21,4 +21,8 @@
     <ProjectReference Include="..\EcosistemasMarinos\EcosistemasMarinos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\ecosistema_marino\" />
+  </ItemGroup>
+
 </Project>
