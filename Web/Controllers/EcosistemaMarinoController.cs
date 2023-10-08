@@ -61,6 +61,7 @@ namespace Web.Controllers
                 ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
+
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                     return RedirectToAction(nameof(Index));
                 }

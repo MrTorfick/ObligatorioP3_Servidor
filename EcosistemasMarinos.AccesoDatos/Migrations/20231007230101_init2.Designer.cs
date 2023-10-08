@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 
@@ -10,9 +11,11 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     [DbContext(typeof(EMContext))]
-    partial class EMContextModelSnapshot : ModelSnapshot
+    [Migration("20231007230101_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AmenazaId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
@@ -77,6 +77,9 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.Property<int>("EstadoConservacionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdAmenaza")
+                        .HasColumnType("int");
+
                     b.Property<string>("Imagen")
                         .HasColumnType("nvarchar(max)");
 
@@ -85,23 +88,19 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("paisCodigoISO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(1);
+                    b.Property<string>("PaiscodigoISO")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("paisNombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(0);
+                    b.Property<string>("Paisnombre")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AmenazaId");
-
                     b.HasIndex("EstadoConservacionId");
 
-                    b.HasIndex("paisNombre", "paisCodigoISO");
+                    b.HasIndex("IdAmenaza");
+
+                    b.HasIndex("Paisnombre", "PaiscodigoISO");
 
                     b.ToTable("EcosistemaMarinos");
                 });
@@ -226,23 +225,21 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>
                 {
-                    b.HasOne("EcosistemasMarinos.Entidades.Amenaza", "Amenaza")
-                        .WithMany()
-                        .HasForeignKey("AmenazaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("EcosistemasMarinos.Entidades.EstadoConservacion", "EstadoConservacion")
                         .WithMany()
                         .HasForeignKey("EstadoConservacionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EcosistemasMarinos.Entidades.Pais", "pais")
+                    b.HasOne("EcosistemasMarinos.Entidades.Amenaza", "Amenaza")
                         .WithMany()
-                        .HasForeignKey("paisNombre", "paisCodigoISO")
+                        .HasForeignKey("IdAmenaza")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("EcosistemasMarinos.Entidades.Pais", "Pais")
+                        .WithMany()
+                        .HasForeignKey("Paisnombre", "PaiscodigoISO");
 
                     b.OwnsOne("EcosistemasMarinos.ValueObjects.Coordenadas", "Coordenadas", b1 =>
                         {
@@ -272,7 +269,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.Navigation("EstadoConservacion");
 
-                    b.Navigation("pais");
+                    b.Navigation("Pais");
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EstadoConservacion", b =>
