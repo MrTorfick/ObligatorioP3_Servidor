@@ -21,7 +21,6 @@ namespace EcosistemasMarinos.Entidades
         public int Peligrosidad { get; set; }
         //Necesito que permita null, en la base de datos
 
-         //Esto hace que se permita nulls? Respuesta: 
         public int? EcosistemaMarinoId { get; set; }
         public EcosistemaMarino? ecosistemaMarino { get; set; }
 

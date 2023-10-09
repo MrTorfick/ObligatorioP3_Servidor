@@ -19,6 +19,7 @@ namespace Web.Controllers
         private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
         private IObtenerAmenazas getAmenazasUC;
         private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
+        private IUpdateAmenaza updateAmenazaUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
@@ -28,7 +29,8 @@ namespace Web.Controllers
             IObtenerEstadosConservacion getEstadosConservacionUC,
             IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC,
             IObtenerAmenazas getAmenazasUC,
-            IObtenerAmenazaPorId obtenerAmenazasPorIdUC
+            IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
+            IUpdateAmenaza updateAmenazaUC
 
             )
         {
@@ -40,6 +42,7 @@ namespace Web.Controllers
             this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
             this.getAmenazasUC = getAmenazasUC;
             this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
+            this.updateAmenazaUC = updateAmenazaUC;
 
         }
 
@@ -89,13 +92,18 @@ namespace Web.Controllers
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
                     ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
+                    //addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                     ecosistemasMarinos.Amenazas = new List<Amenaza>();
                     foreach (var item in SelectedOptionsAmenazas)
                     {
-
                         Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
-                        amenaza.Id = 0;
+                        amenaza.Id = 0;//De esta forma, sql no lanza una excepcion por intentar insertar una amenaza que ya contiene un id.
+                                       //Cuando lo inicializo en 0, EF lo toma como que es una nueva amenaza y le asigna un id nuevo.
+
                         ecosistemasMarinos.Amenazas.Add(amenaza);
+                        //amenaza.EcosistemaMarinoId= ecosistemasMarinos.Id;
+                        //updateAmenazaUC.UpdateAmenaza(amenaza);
+                        //ecosistemasMarinos.Amenazas.Add(amenaza);
 
                     }
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);

@@ -21,9 +21,18 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public void Add(EcosistemaMarino unDato)
         {
-            unDato.Validar();
-            _context.EcosistemaMarinos.Add(unDato);
-            _context.SaveChanges();
+            try
+            {
+                unDato.Validar();
+                _context.EcosistemaMarinos.Add(unDato);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al agregar el Ecosistema Marino" + unDato.Nombre);
+            }
+
         }
 
         public IEnumerable<EcosistemaMarino> FindAll()

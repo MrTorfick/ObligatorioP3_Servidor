@@ -32,6 +32,7 @@ namespace Web
             builder.Services.AddScoped<IObtenerEstadoConservacionPorId, ObtenerEstadoConservacionIdUC>();
             builder.Services.AddScoped<IObtenerAmenazas, ObtenerAmenazasUC>();
             builder.Services.AddScoped<IObtenerAmenazaPorId, ObtenerAmenazaPorIdUC>();
+            builder.Services.AddScoped<IUpdateAmenaza, UpdateAmenazaCU>();
 
             builder.Services.AddSession();
             var app = builder.Build();
