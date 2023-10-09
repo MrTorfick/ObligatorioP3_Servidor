@@ -5,7 +5,7 @@
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class init4 : Migration
+    public partial class init3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

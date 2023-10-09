@@ -11,20 +11,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Amenaza",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<int>(type: "int", maxLength: 500, nullable: false),
-                    Peligrosidad = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Amenaza", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EspecieMarina",
                 columns: table => new
                 {
@@ -96,25 +82,45 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     Area = table.Column<double>(type: "float", nullable: false),
                     DescripcionCaracteristicas = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdAmenaza = table.Column<int>(type: "int", nullable: false),
-                    Paisnombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PaiscodigoISO = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    paisnombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    paiscodigoISO = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EstadoConservacionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EcosistemaMarinos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EcosistemaMarinos_Amenaza_IdAmenaza",
-                        column: x => x.IdAmenaza,
-                        principalTable: "Amenaza",
+                        name: "FK_EcosistemaMarinos_EstadoConservacion_EstadoConservacionId",
+                        column: x => x.EstadoConservacionId,
+                        principalTable: "EstadoConservacion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EcosistemaMarinos_Pais_Paisnombre_PaiscodigoISO",
-                        columns: x => new { x.Paisnombre, x.PaiscodigoISO },
+                        name: "FK_EcosistemaMarinos_Pais_paisnombre_paiscodigoISO",
+                        columns: x => new { x.paisnombre, x.paiscodigoISO },
                         principalTable: "Pais",
                         principalColumns: new[] { "nombre", "codigoISO" });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Amenaza",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Peligrosidad = table.Column<int>(type: "int", nullable: false),
+                    EcosistemaMarinoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Amenaza", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Amenaza_EcosistemaMarinos_EcosistemaMarinoId",
+                        column: x => x.EcosistemaMarinoId,
+                        principalTable: "EcosistemaMarinos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,19 +148,24 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Amenaza_EcosistemaMarinoId",
+                table: "Amenaza",
+                column: "EcosistemaMarinoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EcosistemaMarinoEspecieMarina_EspeciesHabitanId",
                 table: "EcosistemaMarinoEspecieMarina",
                 column: "EspeciesHabitanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcosistemaMarinos_IdAmenaza",
+                name: "IX_EcosistemaMarinos_EstadoConservacionId",
                 table: "EcosistemaMarinos",
-                column: "IdAmenaza");
+                column: "EstadoConservacionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EcosistemaMarinos_Paisnombre_PaiscodigoISO",
+                name: "IX_EcosistemaMarinos_paisnombre_paiscodigoISO",
                 table: "EcosistemaMarinos",
-                columns: new[] { "Paisnombre", "PaiscodigoISO" });
+                columns: new[] { "paisnombre", "paiscodigoISO" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EstadoConservacion_Nombre",
@@ -185,10 +196,10 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EcosistemaMarinoEspecieMarina");
+                name: "Amenaza");
 
             migrationBuilder.DropTable(
-                name: "EstadoConservacion");
+                name: "EcosistemaMarinoEspecieMarina");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
@@ -200,7 +211,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 name: "EspecieMarina");
 
             migrationBuilder.DropTable(
-                name: "Amenaza");
+                name: "EstadoConservacion");
 
             migrationBuilder.DropTable(
                 name: "Pais");

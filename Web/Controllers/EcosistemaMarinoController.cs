@@ -17,6 +17,8 @@ namespace Web.Controllers
         private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IWebHostEnvironment _environment;
         private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
+        private IObtenerAmenazas getAmenazasUC;
+        private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
@@ -24,7 +26,9 @@ namespace Web.Controllers
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
             IObtenerEspeciesMarinas getEspeciesMarinasUC,
             IObtenerEstadosConservacion getEstadosConservacionUC,
-            IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC
+            IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC,
+            IObtenerAmenazas getAmenazasUC,
+            IObtenerAmenazaPorId obtenerAmenazasPorIdUC
 
             )
         {
@@ -34,6 +38,8 @@ namespace Web.Controllers
             this.getEspeciesMarinasUC = getEspeciesMarinasUC;
             this.getEstadosConservacionUC = getEstadosConservacionUC;
             this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
+            this.getAmenazasUC = getAmenazasUC;
+            this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
 
         }
 
@@ -53,16 +59,18 @@ namespace Web.Controllers
         public ActionResult Create(string mensaje)
         {
             ViewBag.EstadosConservacion = this.getEstadosConservacionUC.ObtenerEstadosConservacion();
+            ViewBag.Amenazas = this.getAmenazasUC.GetAmenazas();
             ViewBag.Mensaje = mensaje;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOption)
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
         {
             try
             {
-                if (ecosistemasMarinos == null || imagen == null || SelectedOption == 0)
+
+                if (ecosistemasMarinos == null || imagen == null || SelectedOptionEstado == 0)
 
                     return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
 
@@ -80,8 +88,16 @@ namespace Web.Controllers
                 ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
+                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
+                    ecosistemasMarinos.Amenazas = new List<Amenaza>();
+                    foreach (var item in SelectedOptionsAmenazas)
+                    {
 
-                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOption).Id;
+                        Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+                        amenaza.Id = 0;
+                        ecosistemasMarinos.Amenazas.Add(amenaza);
+
+                    }
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                     return RedirectToAction(nameof(Index));
                 }

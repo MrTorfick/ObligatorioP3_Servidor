@@ -47,8 +47,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("EcosistemaMarinoId")
                         .HasColumnType("int");
@@ -224,9 +223,11 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Amenaza", b =>
                 {
-                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", null)
+                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", "ecosistemaMarino")
                         .WithMany("Amenazas")
                         .HasForeignKey("EcosistemaMarinoId");
+
+                    b.Navigation("ecosistemaMarino");
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>

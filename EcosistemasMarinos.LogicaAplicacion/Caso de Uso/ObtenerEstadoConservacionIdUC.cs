@@ -11,14 +11,14 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
 {
     public class ObtenerEstadoConservacionIdUC : IObtenerEstadoConservacionPorId
     {
-        private IRepositorioEstadoConservacion repositorioEstadoConservacion;
+        private IRepositorioEstadoConservacion _repositorioEstadoConservacion;
         public ObtenerEstadoConservacionIdUC(IRepositorioEstadoConservacion repositorioEstadoConservacion)
         {
-            this.repositorioEstadoConservacion = repositorioEstadoConservacion;
+            this._repositorioEstadoConservacion = repositorioEstadoConservacion;
         }
         public EstadoConservacion ObtenerEstadoConservacionPorId(int id)
         {
-            return repositorioEstadoConservacion.FindByID(id);
+            return _repositorioEstadoConservacion.FindByID(id);
         }
     }
 }

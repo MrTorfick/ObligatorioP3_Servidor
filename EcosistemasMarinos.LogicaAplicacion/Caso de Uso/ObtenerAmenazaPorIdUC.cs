@@ -9,19 +9,18 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
 {
-    public class ObtenerAmenazasUC : IObtenerAmenazas
+    public class ObtenerAmenazaPorIdUC : IObtenerAmenazaPorId
     {
-
         private IRepositorioAmenaza _repositorioAmenaza;
 
-
-        public ObtenerAmenazasUC(IRepositorioAmenaza repositorioAmenaza)
+        public ObtenerAmenazaPorIdUC(IRepositorioAmenaza repositorioAmenaza)
         {
             this._repositorioAmenaza = repositorioAmenaza;
         }
-        public IEnumerable<Amenaza> GetAmenazas()
+
+        public Amenaza ObtenerAmenazaPorId(int id)
         {
-            return _repositorioAmenaza.FindAll();
+            return _repositorioAmenaza.FindByID(id);
         }
     }
 }

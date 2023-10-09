@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public Amenaza FindByID(int id)
         {
-            throw new NotImplementedException();
+            return _context.Amenaza.Where(Amenaza => Amenaza.Id == id).FirstOrDefault();
         }
 
         public void Remove(int id)

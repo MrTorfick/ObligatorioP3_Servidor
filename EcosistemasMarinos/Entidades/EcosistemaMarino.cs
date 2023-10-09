@@ -12,7 +12,7 @@ namespace EcosistemasMarinos.Entidades
 {
     public class EcosistemaMarino
     {
-        [Key]
+        
         public int Id { get; set; }
         [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }

@@ -19,6 +19,7 @@ namespace Web
             builder.Services.AddScoped<IRepositorioEcosistemaMarino, RepositorioEcosistemaMarino>();
             builder.Services.AddScoped<IRepositorioEstadoConservacion, RepositorioEstadoConservacion>();
             builder.Services.AddScoped<IRepositorioEspecieMarina, RepositorioEspecieMarina>();
+            builder.Services.AddScoped<IRepositorioAmenaza, RepositorioAmenaza>();
 
             //inicializacion de casos de uso
             builder.Services.AddScoped<IAddUsuario, AddUsuarioCU>();
@@ -29,6 +30,8 @@ namespace Web
             builder.Services.AddScoped<IObtenerEspeciesMarinas, ObtenerEspeciesMarinasUC>();
             builder.Services.AddScoped<IObtenerEstadosConservacion, ObtenerEstadosConservacionCU>();
             builder.Services.AddScoped<IObtenerEstadoConservacionPorId, ObtenerEstadoConservacionIdUC>();
+            builder.Services.AddScoped<IObtenerAmenazas, ObtenerAmenazasUC>();
+            builder.Services.AddScoped<IObtenerAmenazaPorId, ObtenerAmenazaPorIdUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();
