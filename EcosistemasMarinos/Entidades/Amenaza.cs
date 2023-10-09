@@ -15,7 +15,7 @@ namespace EcosistemasMarinos.Entidades
         [Key]
         public int Id { get; set; }
         [Required, StringLength(500, MinimumLength = 50, ErrorMessage = "La descripcion debe tener entre 50 y 500 caracteres")]
-        public int Descripcion { get; set; }
+        public string Descripcion { get; set; }
         [Required, Range(1, 10, ErrorMessage = "Debe ingresar un valor entre 1 y 10")]
         public int Peligrosidad { get; set; }
 

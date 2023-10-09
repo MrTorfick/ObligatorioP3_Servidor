@@ -8,27 +8,26 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 {
-    public class RepositorioEspecieMarina : IRepositorioEspecieMarina
+    public class RepositorioAmenaza : IRepositorioAmenaza
     {
+
         private EMContext _context;
 
-        public RepositorioEspecieMarina()
+        public RepositorioAmenaza()
         {
             _context = new EMContext();
         }
-        public void Add(EspecieMarina unDato)
+        public void Add(Amenaza unDato)
         {
-            unDato.Validar();
-            _context.EspecieMarina.Add(unDato);
-            _context.SaveChanges();
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<EspecieMarina> FindAll()
+        public IEnumerable<Amenaza> FindAll()
         {
-            return _context.EspecieMarina;
+            return _context.Amenaza;
         }
 
-        public EspecieMarina FindByID(int id)
+        public Amenaza FindByID(int id)
         {
             throw new NotImplementedException();
         }
@@ -38,7 +37,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             throw new NotImplementedException();
         }
 
-        public void Update(EspecieMarina dato)
+        public void Update(Amenaza dato)
         {
             throw new NotImplementedException();
         }

@@ -12,20 +12,35 @@ namespace Web.Controllers
     {
 
         private IAddEcosistemaMarino addEcosistemaMarinoUC;
-        private IObtenerEcosistemasMarinos GetEcosistemasMarinosUC;
+        private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
+        private IObtenerEspeciesMarinas getEspeciesMarinasUC;
+        private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IWebHostEnvironment _environment;
+        private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
 
-        public EcosistemaMarinoController(IAddEcosistemaMarino addEcosistemaMarinoUC, IWebHostEnvironment environment, IObtenerEcosistemasMarinos getEcosistemasMarinosUC)
+        public EcosistemaMarinoController(
+            IAddEcosistemaMarino addEcosistemaMarinoUC,
+            IWebHostEnvironment environment,
+            IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
+            IObtenerEspeciesMarinas getEspeciesMarinasUC,
+            IObtenerEstadosConservacion getEstadosConservacionUC,
+            IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC
+
+            )
         {
             this.addEcosistemaMarinoUC = addEcosistemaMarinoUC;
             _environment = environment;
-            this.GetEcosistemasMarinosUC = getEcosistemasMarinosUC;
+            this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
+            this.getEspeciesMarinasUC = getEspeciesMarinasUC;
+            this.getEstadosConservacionUC = getEstadosConservacionUC;
+            this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
+
         }
 
         // GET: EcosistemaMarinoController1
         public ActionResult Index()
         {
-            return View(this.GetEcosistemasMarinosUC.ObtenerEcosistemasMarinos());
+            return View(this.getEcosistemasMarinosUC.ObtenerEcosistemasMarinos());
         }
 
         // GET: EcosistemaMarinoController1/Details/5
@@ -37,17 +52,21 @@ namespace Web.Controllers
         // GET: EcosistemaMarinoController1/Create
         public ActionResult Create(string mensaje)
         {
+            ViewBag.EstadosConservacion = this.getEstadosConservacionUC.ObtenerEstadosConservacion();
             ViewBag.Mensaje = mensaje;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen)
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOption)
         {
             try
             {
-                if (ecosistemasMarinos == null || imagen == null)
-                    return View();
+                if (ecosistemasMarinos == null || imagen == null || SelectedOption == 0)
+
+                    return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
+
+
                 //ecosistemasMarinos.EspeciesHabitan = new List<Especie>();
                 //ecosistemasMarinos.EspeciesHabitan.Add(new Especie() { Nombre = "Tiburón" });
 
@@ -62,6 +81,7 @@ namespace Web.Controllers
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
 
+                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOption).Id;
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
                     return RedirectToAction(nameof(Index));
                 }

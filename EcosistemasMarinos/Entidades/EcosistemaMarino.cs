@@ -25,9 +25,9 @@ namespace EcosistemasMarinos.Entidades
         public string? Imagen { get; set; }
         //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
-        [ForeignKey(nameof(Amenaza))] public int AmenazaId { get; set; }
 
-        public Amenaza Amenaza { get; set; }
+        public List<Amenaza> Amenazas { get; set; }//Esto crea una propiedad en la tabla Amenazas, llamada EcosistemaMarinoID
+        /*
         [ForeignKey(nameof(Pais))]
         [Column(Order = 0)]
         public string paisNombre { get; set; }
@@ -35,6 +35,7 @@ namespace EcosistemasMarinos.Entidades
         [ForeignKey(nameof(Pais))]
         [Column(Order = 1)]
         public string paisCodigoISO { get; set; }
+        */
 
         public Pais pais { get; set; }
 

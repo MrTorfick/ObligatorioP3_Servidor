@@ -26,12 +26,20 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<EstadoConservacion> FindAll()
         {
-            throw new NotImplementedException();
+            if (_context.EstadoConservacion.Count() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return _context.EstadoConservacion;
+            }
+
         }
 
         public EstadoConservacion FindByID(int id)
         {
-            throw new NotImplementedException();
+            return _context.EstadoConservacion.Where(EstadoConservacion => EstadoConservacion.Id == id).FirstOrDefault();
         }
 
         public void Remove(int id)
