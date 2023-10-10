@@ -13,7 +13,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<EcosistemaMarino> EcosistemaMarinos { get; set; }
         public DbSet<EspecieMarina> EspecieMarina { get; set; }
-        public DbSet<Amenaza> Amenaza { get; set; } 
+        public DbSet<Amenaza> Amenaza { get; set; }
         public DbSet<EstadoConservacion> EstadoConservacion { get; set; }
 
 
@@ -28,6 +28,30 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
             .EnableDetailedErrors();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EspecieMarina>()
+                .HasMany(e => e.EcosistemaMarinosViven)
+                .WithMany(e => e.EspeciesHabitan)
+                .UsingEntity<Dictionary<string, string>>(
+                    "Especies_Habitan",
+                    EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
+                    EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
+
+                );
+
+            modelBuilder.Entity<EspecieMarina>()
+                .HasMany(e => e.EcosistemasMarinosVidaPosible)
+                .WithMany(e => e.EspeciesPodrianHabitar)
+                .UsingEntity<Dictionary<string, string>>(
+                    "Especies_PodrianHabitar",
+                    EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
+                    EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
+
+                );
+
+
+        }
 
     }
 }

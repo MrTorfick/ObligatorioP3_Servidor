@@ -24,6 +24,9 @@ namespace EcosistemasMarinos.Entidades
         public int? EcosistemaMarinoId { get; set; }
         public EcosistemaMarino? ecosistemaMarino { get; set; }
 
+        public int? EspecieMarinaId { get; set; }
+        public EspecieMarina especieMarina { get; set; }
+
         public void Validar()
         {
             if (Peligrosidad < 1 || Peligrosidad > 10)

@@ -42,7 +42,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public EcosistemaMarino FindByID(int id)
         {
-            throw new NotImplementedException();
+            return _context.EcosistemaMarinos.Where(EcosistemaMarino => EcosistemaMarino.Id == id).FirstOrDefault();
         }
 
         public void Remove(int id)

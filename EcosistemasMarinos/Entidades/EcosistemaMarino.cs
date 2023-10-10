@@ -12,7 +12,7 @@ namespace EcosistemasMarinos.Entidades
 {
     public class EcosistemaMarino
     {
-        
+
         public int Id { get; set; }
         [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }
@@ -25,6 +25,7 @@ namespace EcosistemasMarinos.Entidades
         public string? Imagen { get; set; }
         //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
+        public List<EspecieMarina> EspeciesPodrianHabitar { get; set; }
 
         public List<Amenaza> Amenazas { get; set; }//Esto crea una propiedad en la tabla Amenazas, llamada EcosistemaMarinoID
         /*
@@ -41,7 +42,7 @@ namespace EcosistemasMarinos.Entidades
 
         [ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
         public EstadoConservacion EstadoConservacion { get; set; }
-
+        public EcosistemaMarino() { }
         public void Validar()
         {
             if (string.IsNullOrEmpty(Nombre))

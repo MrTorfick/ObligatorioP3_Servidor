@@ -116,45 +116,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var selectedOptions = [];
-
-            $('#SelectedOptions').select2({
-                tags: true,
-                createTag: function (params) {
-                    var term = $.trim(params.term);
-                    if (term === '') {
-                        return null;
-                    }
-
-                    if (selectedOptions.indexOf(term) !== -1) {
-                        return null;
-                    }
-
-                    return {
-                        id: term,
-                        text: term,
-                        newTag: true
-                    };
-                }
-            });
-
-            $('#SelectedOptions').on('select2:select', function (e) {
-                var data = e.params.data;
-                selectedOptions.push(data.id);
-            });
-
-            $('#SelectedOptions').on('select2:unselect', function (e) {
-                var data = e.params.data;
-                var index = selectedOptions.indexOf(data.id);
-                if (index !== -1) {
-                    selectedOptions.splice(index, 1);
-                }
-            });
-        });
-    </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.0/js/select2.min.js"></script>
 }

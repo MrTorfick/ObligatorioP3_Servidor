@@ -33,6 +33,8 @@ namespace Web
             builder.Services.AddScoped<IObtenerAmenazas, ObtenerAmenazasUC>();
             builder.Services.AddScoped<IObtenerAmenazaPorId, ObtenerAmenazaPorIdUC>();
             builder.Services.AddScoped<IUpdateAmenaza, UpdateAmenazaCU>();
+            builder.Services.AddScoped<IObtenerEcosistemaMarinoPorId, ObtenerEcosistemaMarinoPorIdUC>();
+            builder.Services.AddScoped<IAddEspecieMarina, AddEspecieMarinaCU>();
 
             builder.Services.AddSession();
             var app = builder.Build();

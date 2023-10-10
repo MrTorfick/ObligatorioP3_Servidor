@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         public void Add(EspecieMarina unDato)
         {
             unDato.Validar();
+            foreach (EcosistemaMarino ecosistemaMarino in unDato.EcosistemasMarinosVidaPosible)
+            {
+                _context.Entry(ecosistemaMarino).State = EntityState.Unchanged;//Marca la entidad como Unchanged. No se modifica ni se inserta en la base de datos
+            }
+
             _context.EspecieMarina.Add(unDato);
             _context.SaveChanges();
         }

@@ -9,10 +9,18 @@ namespace Web.Controllers
     {
 
         private IObtenerEcosistemasMarinos GetEcosistemasMarinosUC;
+        private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
+        private IAddEspecieMarina addEspecieMarinaUC;
 
-        public EspecieMarinaController(IObtenerEcosistemasMarinos getEcosistemasMarinosUC)
+        public EspecieMarinaController(
+            IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
+            IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
+            IAddEspecieMarina addEspecieMarinaUC
+            )
         {
             this.GetEcosistemasMarinosUC = getEcosistemasMarinosUC;
+            this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
+            this.addEspecieMarinaUC = addEspecieMarinaUC;
         }
 
 
@@ -39,15 +47,21 @@ namespace Web.Controllers
         // POST: EspecieMarinaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EspecieMarina especieMarina, IFormFile imagen)
+        public ActionResult Create(EspecieMarina especieMarina, IFormFile imagen, List<int> SelectedOptions)
         {
             try
             {
-                List<string> selectedOptions = new List<string>(Request.Form["SelectedOptions"].ToString().Split(","));
+                especieMarina.EcosistemasMarinosVidaPosible = new List<EcosistemaMarino>();
+                foreach (var id in SelectedOptions)
+                {
+                    EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
+                    if (ecosistemaMarino != null)
+                    {
+                        especieMarina.EcosistemasMarinosVidaPosible.Add(ecosistemaMarino);
+                    }
 
-                //List<string>selectedOptions = Request.Form["SelectedOptions"];
-             //   especieMarina.EcosistemasMarinosVidaPosible.AddRange(selectedOptions);              
-
+                }
+                addEspecieMarinaUC.AddEspecieMarina(especieMarina);
                 return RedirectToAction(nameof(Index));
             }
             catch
