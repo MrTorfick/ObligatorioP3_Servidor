@@ -11,5 +11,7 @@ namespace EcosistemasMarinos.Interfaces_Repositorios
     {
         public int GetTopeSuperior(string nombreAtributo);
         public int GetTopeInferior(string nombreAtributo);
+
+        public Configuracion FindByName(string nombreAtributo);
     }
 }

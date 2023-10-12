@@ -13,36 +13,36 @@ namespace Web.Controllers
 
         private IAddEcosistemaMarino addEcosistemaMarinoUC;
         private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
-        private IObtenerEspeciesMarinas getEspeciesMarinasUC;
+        // private IObtenerEspeciesMarinas getEspeciesMarinasUC;
         private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IWebHostEnvironment _environment;
         private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
         private IObtenerAmenazas getAmenazasUC;
         private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
-        private IUpdateAmenaza updateAmenazaUC;
+        //private IUpdateAmenaza updateAmenazaUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
             IWebHostEnvironment environment,
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
-            IObtenerEspeciesMarinas getEspeciesMarinasUC,
+            //IObtenerEspeciesMarinas getEspeciesMarinasUC,
             IObtenerEstadosConservacion getEstadosConservacionUC,
             IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC,
             IObtenerAmenazas getAmenazasUC,
-            IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
-            IUpdateAmenaza updateAmenazaUC
+            IObtenerAmenazaPorId obtenerAmenazasPorIdUC
+            //IUpdateAmenaza updateAmenazaUC
 
             )
         {
             this.addEcosistemaMarinoUC = addEcosistemaMarinoUC;
             _environment = environment;
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
-            this.getEspeciesMarinasUC = getEspeciesMarinasUC;
+            //this.getEspeciesMarinasUC = getEspeciesMarinasUC;
             this.getEstadosConservacionUC = getEstadosConservacionUC;
             this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
             this.getAmenazasUC = getAmenazasUC;
             this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
-            this.updateAmenazaUC = updateAmenazaUC;
+            //this.updateAmenazaUC = updateAmenazaUC;
 
         }
 

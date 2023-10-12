@@ -25,23 +25,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreAtributo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.topeSuperior)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.topeInferior)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreAtributo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.topeSuperior)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.topeInferior)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {  NombreAtributo=item.NombreAtributo }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

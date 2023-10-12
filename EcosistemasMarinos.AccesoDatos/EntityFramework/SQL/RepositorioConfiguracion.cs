@@ -24,12 +24,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<Configuracion> FindAll()
         {
-            throw new NotImplementedException();
+            return _context.Configuracion;
         }
 
         public Configuracion FindByID(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Configuracion FindByName(string nombreAtributo)
+        {
+            return _context.Configuracion.Where(config => config.NombreAtributo == nombreAtributo).FirstOrDefault();
         }
 
         public int GetTopeInferior(string nombreAtributo)
@@ -53,7 +58,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public void Update(Configuracion dato)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dato.Validar();
+                this._context.Configuracion.Update(dato);
+                this._context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al actualizar la configuracion: " + ex.Message);
+            }
         }
     }
 }
