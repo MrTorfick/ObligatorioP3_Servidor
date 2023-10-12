@@ -1,4 +1,6 @@
-﻿using EcosistemasMarinos.ValueObjects;
+﻿using EcosistemasMarinos.Excepciones;
+using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,7 +16,7 @@ namespace EcosistemasMarinos.Entidades
     {
 
         public int Id { get; set; }
-        [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
+        // [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }
         public Coordenadas Coordenadas { get; set; }
         [Required]
@@ -43,13 +45,35 @@ namespace EcosistemasMarinos.Entidades
         [ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
         public EstadoConservacion EstadoConservacion { get; set; }
         public EcosistemaMarino() { }
-        public void Validar()
+
+        public void Validar(IRepositorioConfiguracion configuracion)
         {
+
             if (string.IsNullOrEmpty(Nombre))
                 throw new Exception("El nombre no puede ser nulo ni vacío");
 
             if (Area <= 0)
                 throw new Exception("El área debe ser mayor a 0");
+
+            if (Nombre.Length < configuracion.GetTopeInferior("EcosistemaNombre"))
+            {
+                throw new RangoValoresException("Nombre demasiado corto");
+            }
+
+            if (Nombre.Length > configuracion.GetTopeSuperior("EcosistemaNombre"))
+            {
+                throw new RangoValoresException("Nombre demasiado largo");
+            }
+
+            if (DescripcionCaracteristicas.Length < configuracion.GetTopeInferior("EcosistemaDescripcion"))
+            {
+                throw new RangoValoresException("Descripcion demasiado corta");
+            }
+
+            if (DescripcionCaracteristicas.Length > configuracion.GetTopeSuperior("EcosistemaDescripcion"))
+            {
+                throw new RangoValoresException("Descripcion demasiado larga");
+            }
 
         }
 

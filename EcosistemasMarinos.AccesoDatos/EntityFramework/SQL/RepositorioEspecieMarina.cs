@@ -12,21 +12,32 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
     public class RepositorioEspecieMarina : IRepositorioEspecieMarina
     {
         private EMContext _context;
+        private IRepositorioConfiguracion config;
 
-        public RepositorioEspecieMarina()
+        public RepositorioEspecieMarina(IRepositorioConfiguracion config)
         {
             _context = new EMContext();
+            this.config = config;
         }
         public void Add(EspecieMarina unDato)
         {
-            unDato.Validar();
-            foreach (EcosistemaMarino ecosistemaMarino in unDato.EcosistemasMarinosVidaPosible)
+            try
             {
-                _context.Entry(ecosistemaMarino).State = EntityState.Unchanged;//Marca la entidad como Unchanged. No se modifica ni se inserta en la base de datos
+                unDato.Validar(config);
+                foreach (EcosistemaMarino ecosistemaMarino in unDato.EcosistemasMarinosVidaPosible)
+                {
+                    _context.Entry(ecosistemaMarino).State = EntityState.Unchanged;//Marca la entidad como Unchanged. No se modifica ni se inserta en la base de datos
+                }
+
+                _context.EspecieMarina.Add(unDato);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al agregar la Especie Marina" + unDato.NombreVulgar);
             }
 
-            _context.EspecieMarina.Add(unDato);
-            _context.SaveChanges();
         }
 
         public IEnumerable<EspecieMarina> FindAll()

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EcosistemasMarinos.Interfaces_Repositorios
 {
-    public interface IRepositorioAmenaza : IRepositorio<Amenaza>
+    public interface IRepositorioConfiguracion : IRepositorio<Configuracion>
     {
-
-        IEnumerable<Amenaza> FindNulls();
+        public int GetTopeSuperior(string nombreAtributo);
+        public int GetTopeInferior(string nombreAtributo);
     }
 }

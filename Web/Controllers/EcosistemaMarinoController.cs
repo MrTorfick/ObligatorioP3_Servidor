@@ -67,7 +67,8 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpPost]
+
+
         public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
         {
             try
@@ -119,6 +120,67 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
             }
         }
+
+
+
+
+
+
+
+
+
+        //Futura version
+        /*
+
+        [HttpPost]
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
+        {
+            try
+            {
+
+                if (ecosistemasMarinos == null || imagen == null || SelectedOptionEstado == 0)
+
+                    return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
+
+                string LongitudTipo = "Longitud";
+                string LatitudTipo = "Latitud";
+
+                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud, LatitudTipo);
+                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
+
+                ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
+                if (GuardarImagen(imagen, ecosistemasMarinos))
+                {
+                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
+                    ecosistemasMarinos.Amenazas = new List<Amenaza>();
+                    foreach (var item in SelectedOptionsAmenazas)
+                    {
+                        Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+                        if (amenaza != null)
+                        {
+                            ecosistemasMarinos.Amenazas.Add(amenaza);
+                        }
+                    }
+                    addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
+            }
+        }
+
+        */
+
+
+
+
+
 
         private bool GuardarImagen(IFormFile imagen, EcosistemaMarino em)
         {

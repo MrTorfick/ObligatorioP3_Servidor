@@ -11,16 +11,19 @@ namespace Web.Controllers
         private IObtenerEcosistemasMarinos GetEcosistemasMarinosUC;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
         private IAddEspecieMarina addEspecieMarinaUC;
+        private IObtenerAmenazas obtenerAmenazasUC;
 
         public EspecieMarinaController(
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
             IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
-            IAddEspecieMarina addEspecieMarinaUC
+            IAddEspecieMarina addEspecieMarinaUC,
+            IObtenerAmenazas obtenerAmenazasUC
             )
         {
             this.GetEcosistemasMarinosUC = getEcosistemasMarinosUC;
             this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
             this.addEspecieMarinaUC = addEspecieMarinaUC;
+            this.obtenerAmenazasUC = obtenerAmenazasUC;
         }
 
 
@@ -41,6 +44,7 @@ namespace Web.Controllers
         {
             ViewBag.Mensaje = mensaje;
             ViewBag.EcosistemasMarinos = GetEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+            ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
             return View();
         }
 

@@ -13,17 +13,23 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
     {
         private EMContext _context;
+        private IRepositorioConfiguracion config;
 
-        public RepositorioEcosistemaMarino()
+        public RepositorioEcosistemaMarino(IRepositorioConfiguracion config)
         {
             _context = new EMContext();
+            this.config = config;
         }
 
         public void Add(EcosistemaMarino unDato)
         {
             try
             {
-                unDato.Validar();
+                unDato.Validar(config);
+                foreach (Amenaza amenaza in unDato.Amenazas)
+                {
+                    _context.Entry(amenaza).State = EntityState.Unchanged;
+                }
                 _context.EcosistemaMarinos.Add(unDato);
                 _context.SaveChanges();
             }

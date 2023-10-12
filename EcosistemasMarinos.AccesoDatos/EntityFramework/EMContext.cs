@@ -15,7 +15,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
         public DbSet<EspecieMarina> EspecieMarina { get; set; }
         public DbSet<Amenaza> Amenaza { get; set; }
         public DbSet<EstadoConservacion> EstadoConservacion { get; set; }
-
+        public DbSet<Configuracion> Configuracion { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
