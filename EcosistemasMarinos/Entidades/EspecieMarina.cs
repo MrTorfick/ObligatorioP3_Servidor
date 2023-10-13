@@ -28,10 +28,10 @@ namespace EcosistemasMarinos.Entidades
         [Required]
         public double Longitud { get; set; }
         //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
-        public List<EcosistemaMarino> EcosistemaMarinosViven { get; set; }
-        public List<EcosistemaMarino> EcosistemasMarinosVidaPosible { get; set; }
+        public List<EcosistemaMarino> EcosistemaMarinos { get; set; }
+        //public List<EcosistemaMarino> EcosistemasMarinosVidaPosible { get; set; }
 
-        public List<Amenaza> Amenazas { get; set; }
+        public List<AmenazasAsociadas> Amenazas { get; set; }
         // [Column("Ecosistemas_Habita")]
         // public List<EcosistemaMarino> EcosistemaMarinos { get; set; }
         //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }

@@ -26,17 +26,19 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             try
             {
                 unDato.Validar(config);
-                foreach (Amenaza amenaza in unDato.Amenazas)
+                /*
+                foreach (AmenazasAsociadas amenaza in unDato.Amenazas)
                 {
                     _context.Entry(amenaza).State = EntityState.Unchanged;
                 }
+                */
                 _context.EcosistemaMarinos.Add(unDato);
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Error al agregar el Ecosistema Marino" + unDato.Nombre);
+                throw new Exception("Error al agregar el Ecosistema Marino" + ex.Message);
             }
 
         }
@@ -53,7 +55,37 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Creo que cuando las trae, les esta asignado false. Hay que verificar eso
+                //TODO
+                var especiesNoHabitan = _context.EspeciesHabitab.Where(especie => especie.EcosistemaMarinoId == id && especie.Habita == false).ToList();
+                var amenazasAsignadas = _context.AmenazasAsociadas.Where(amenaza => amenaza.EcosistemaMarinoId == id).ToList();
+                foreach (EspeciesHabitab especie in especiesNoHabitan)
+                {
+                    _context.EspeciesHabitab.Remove(especie);//Se eliminan de la tabla de EspeciesHabitad, las foreign key de las especies(que no habitan) que
+                                                             //hacen referencia al habitad que se va a borrar
+
+                }
+
+                foreach (AmenazasAsociadas amenaza in amenazasAsignadas)
+                {
+                    _context.AmenazasAsociadas.Remove(amenaza);
+                }
+
+
+                EcosistemaMarino ecosistemaMarino = new EcosistemaMarino();
+                ecosistemaMarino.Id = id;
+                this._context.EcosistemaMarinos.Remove(ecosistemaMarino);
+                this._context.SaveChanges();
+
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al borrar el Ecosistema Marino");
+            }
         }
 
         public void Update(EcosistemaMarino dato)

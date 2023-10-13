@@ -55,23 +55,27 @@ namespace Web.Controllers
         {
             try
             {
-                especieMarina.EcosistemasMarinosVidaPosible = new List<EcosistemaMarino>();
+
+                especieMarina.EcosistemaMarinos = new List<EcosistemaMarino>();
                 foreach (var id in SelectedOptions)
                 {
                     EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
                     if (ecosistemaMarino != null)
                     {
-                        especieMarina.EcosistemasMarinosVidaPosible.Add(ecosistemaMarino);
+                        especieMarina.EcosistemaMarinos.Add(ecosistemaMarino);
                     }
 
                 }
                 addEspecieMarinaUC.AddEspecieMarina(especieMarina);
                 return RedirectToAction(nameof(Index));
+
             }
             catch
             {
                 return View();
             }
+            return View();
+
         }
 
         // GET: EspecieMarinaController/Edit/5

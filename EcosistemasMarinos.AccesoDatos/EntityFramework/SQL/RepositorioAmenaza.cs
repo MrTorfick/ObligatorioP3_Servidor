@@ -28,11 +28,6 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             return _context.Amenaza;
         }
 
-        //Este metodo es para buscar las amenazas que no tienen ecosistema marino.
-        public IEnumerable<Amenaza> FindNulls()
-        {
-            return _context.Amenaza.Where(Amenaza => Amenaza.EcosistemaMarinoId == null);
-        }
 
         public Amenaza FindByID(int id)
         {

@@ -39,6 +39,7 @@ namespace Web
             builder.Services.AddScoped<IObtenerConfiguraciones, ObtenerConfiguracionesUC>();
             builder.Services.AddScoped<IUpdateConfiguracion, UpdateConfiguracionUC>();
             builder.Services.AddScoped<IObtenerConfiguracionPorNombre, ObtenerConfiguracionPorNombreUC>();
+            builder.Services.AddScoped<IBorrarEcosistemaMarino, BorrarEcosistemaMarinoUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();

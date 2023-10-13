@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 
@@ -11,9 +12,11 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework;
 namespace _EcosistemasMarinos.AccesoDatos.Migrations
 {
     [DbContext(typeof(EMContext))]
-    partial class EMContextModelSnapshot : ModelSnapshot
+    [Migration("20231013183822_amenazas-asociadas")]
+    partial class amenazasasociadas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +37,20 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EcosistemaMarinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EspecieMarinaId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Peligrosidad")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EcosistemaMarinoId");
+
+                    b.HasIndex("EspecieMarinaId");
 
                     b.ToTable("Amenaza");
                 });
@@ -50,20 +63,22 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AmenazaId")
+                    b.Property<int>("amenazaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EcosistemaMarinoId")
+                    b.Property<int?>("ecosistemaMarinoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EspecieMarinaId")
+                    b.Property<int?>("especieMarinaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EcosistemaMarinoId");
+                    b.HasIndex("amenazaId");
 
-                    b.HasIndex("EspecieMarinaId");
+                    b.HasIndex("ecosistemaMarinoId");
+
+                    b.HasIndex("especieMarinaId");
 
                     b.ToTable("AmenazasAsociadas");
                 });
@@ -245,15 +260,42 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("EcosistemasMarinos.Entidades.AmenazasAsociadas", b =>
+            modelBuilder.Entity("EcosistemasMarinos.Entidades.Amenaza", b =>
                 {
-                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", null)
+                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", "ecosistemaMarino")
                         .WithMany("Amenazas")
                         .HasForeignKey("EcosistemaMarinoId");
 
-                    b.HasOne("EcosistemasMarinos.Entidades.EspecieMarina", null)
+                    b.HasOne("EcosistemasMarinos.Entidades.EspecieMarina", "especieMarina")
                         .WithMany("Amenazas")
                         .HasForeignKey("EspecieMarinaId");
+
+                    b.Navigation("ecosistemaMarino");
+
+                    b.Navigation("especieMarina");
+                });
+
+            modelBuilder.Entity("EcosistemasMarinos.Entidades.AmenazasAsociadas", b =>
+                {
+                    b.HasOne("EcosistemasMarinos.Entidades.Amenaza", "amenaza")
+                        .WithMany()
+                        .HasForeignKey("amenazaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcosistemasMarinos.Entidades.EcosistemaMarino", "ecosistemaMarino")
+                        .WithMany()
+                        .HasForeignKey("ecosistemaMarinoId");
+
+                    b.HasOne("EcosistemasMarinos.Entidades.EspecieMarina", "especieMarina")
+                        .WithMany()
+                        .HasForeignKey("especieMarinaId");
+
+                    b.Navigation("amenaza");
+
+                    b.Navigation("ecosistemaMarino");
+
+                    b.Navigation("especieMarina");
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>

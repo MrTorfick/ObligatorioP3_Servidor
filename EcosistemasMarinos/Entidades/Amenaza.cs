@@ -17,15 +17,17 @@ namespace EcosistemasMarinos.Entidades
         public int Id { get; set; }
         // [Required, StringLength(500, MinimumLength = 50, ErrorMessage = "La descripcion debe tener entre 50 y 500 caracteres")]
         public string Descripcion { get; set; }
+
         [Required, Range(1, 10, ErrorMessage = "Debe ingresar un valor entre 1 y 10")]
         public int Peligrosidad { get; set; }
-        //Necesito que permita null, en la base de datos
 
+        /*
         public int? EcosistemaMarinoId { get; set; }
         public EcosistemaMarino? ecosistemaMarino { get; set; }
 
         public int? EspecieMarinaId { get; set; }
         public EspecieMarina especieMarina { get; set; }
+        */
 
         public void Validar()
         {
@@ -34,18 +36,6 @@ namespace EcosistemasMarinos.Entidades
                 throw new RangoValoresException("Debe ingresar un valor entre 1 y 10");
 
             }
-
         }
-
-        public void CambiarTopesDescripcion(int min, int max)
-        {
-
-
-        }
-
-
     }
-
-
-
 }

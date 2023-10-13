@@ -13,12 +13,14 @@ namespace Web.Controllers
 
         private IAddEcosistemaMarino addEcosistemaMarinoUC;
         private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
-        // private IObtenerEspeciesMarinas getEspeciesMarinasUC;
+        //private IObtenerEspeciesMarinas getEspeciesMarinasUC;
         private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IWebHostEnvironment _environment;
         private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
         private IObtenerAmenazas getAmenazasUC;
         private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
+        private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
+        private IBorrarEcosistemaMarino borrarEcosistemaMarinoUC;
         //private IUpdateAmenaza updateAmenazaUC;
 
         public EcosistemaMarinoController(
@@ -29,7 +31,9 @@ namespace Web.Controllers
             IObtenerEstadosConservacion getEstadosConservacionUC,
             IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC,
             IObtenerAmenazas getAmenazasUC,
-            IObtenerAmenazaPorId obtenerAmenazasPorIdUC
+            IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
+            IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
+            IBorrarEcosistemaMarino borrarEcosistemaMarinoUC
             //IUpdateAmenaza updateAmenazaUC
 
             )
@@ -42,13 +46,16 @@ namespace Web.Controllers
             this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
             this.getAmenazasUC = getAmenazasUC;
             this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
+            this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
+            this.borrarEcosistemaMarinoUC = borrarEcosistemaMarinoUC;
             //this.updateAmenazaUC = updateAmenazaUC;
 
         }
 
         // GET: EcosistemaMarinoController1
-        public ActionResult Index()
+        public ActionResult Index(string mensaje)
         {
+            ViewBag.mensaje = mensaje;
             return View(this.getEcosistemasMarinosUC.ObtenerEcosistemasMarinos());
         }
 
@@ -66,9 +73,9 @@ namespace Web.Controllers
             ViewBag.Mensaje = mensaje;
             return View();
         }
+        /*
 
-
-
+        [HttpPost]
         public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
         {
             try
@@ -120,17 +127,9 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
             }
         }
+        */
 
 
-
-
-
-
-
-
-
-        //Futura version
-        /*
 
         [HttpPost]
         public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
@@ -152,13 +151,16 @@ namespace Web.Controllers
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
                     ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
-                    ecosistemasMarinos.Amenazas = new List<Amenaza>();
+                    ecosistemasMarinos.Amenazas = new List<AmenazasAsociadas>();
                     foreach (var item in SelectedOptionsAmenazas)
                     {
                         Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+
                         if (amenaza != null)
                         {
-                            ecosistemasMarinos.Amenazas.Add(amenaza);
+                            AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
+                            amenazasAsociadas.AmenazaId = amenaza.Id;
+                            ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
                         }
                     }
                     addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
@@ -175,7 +177,7 @@ namespace Web.Controllers
             }
         }
 
-        */
+
 
 
 
@@ -239,7 +241,19 @@ namespace Web.Controllers
         // GET: EcosistemaMarinoController1/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
+            //Hay que validar que ecosistemaMarino no sea null. 
+            //TODO
+            if (ecosistemaMarino.EspeciesHabitan != null)
+            {
+                if (ecosistemaMarino.EspeciesHabitan.Count > 0)
+                {
+                    return RedirectToAction(nameof(Index), new { mensaje = "No se puede eliminar el ecosistema marino porque tiene especies que lo habitan" });
+                }
+            }
+            return View(ecosistemaMarino);
+
+
         }
 
         // POST: EcosistemaMarinoController1/Delete/5
@@ -249,11 +263,12 @@ namespace Web.Controllers
         {
             try
             {
+                this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction(nameof(Index), new { mensaje = ex.Message });
             }
         }
     }

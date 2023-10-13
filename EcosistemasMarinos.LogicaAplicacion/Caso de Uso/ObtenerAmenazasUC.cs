@@ -21,7 +21,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         }
         public IEnumerable<Amenaza> GetAmenazas()
         {
-            return _repositorioAmenaza.FindNulls();
+            return _repositorioAmenaza.FindAll();
         }
     }
 }

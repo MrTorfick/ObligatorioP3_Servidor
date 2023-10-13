@@ -16,6 +16,8 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
         public DbSet<Amenaza> Amenaza { get; set; }
         public DbSet<EstadoConservacion> EstadoConservacion { get; set; }
         public DbSet<Configuracion> Configuracion { get; set; }
+        public DbSet<EspeciesHabitab> EspeciesHabitab { get; set; }
+        public DbSet<AmenazasAsociadas> AmenazasAsociadas { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,26 +33,19 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EspecieMarina>()
-                .HasMany(e => e.EcosistemaMarinosViven)
+                .HasMany(e => e.EcosistemaMarinos)
                 .WithMany(e => e.EspeciesHabitan)
-                .UsingEntity<Dictionary<string, string>>(
-                    "Especies_Habitan",
-                    EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
-                    EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
+                .UsingEntity<EspeciesHabitab>();
 
-                );
-
+            /*
             modelBuilder.Entity<EspecieMarina>()
-                .HasMany(e => e.EcosistemasMarinosVidaPosible)
-                .WithMany(e => e.EspeciesPodrianHabitar)
-                .UsingEntity<Dictionary<string, string>>(
-                    "Especies_PodrianHabitar",
-                    EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
-                    EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
-
-                );
-
-
+              .HasMany(e => e.EcosistemaMarinosViven)
+              .WithMany(e => e.EspeciesHabitan)
+              .UsingEntity<Dictionary<string, string>>(
+                  "Especies_Habitan",
+                  EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
+                  EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
+            */
         }
 
     }

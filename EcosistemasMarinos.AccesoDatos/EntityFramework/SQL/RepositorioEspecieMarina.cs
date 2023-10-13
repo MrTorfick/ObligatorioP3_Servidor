@@ -21,14 +21,14 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         }
         public void Add(EspecieMarina unDato)
         {
+
             try
             {
                 unDato.Validar(config);
-                foreach (EcosistemaMarino ecosistemaMarino in unDato.EcosistemasMarinosVidaPosible)
+                foreach (EcosistemaMarino ecosistemaMarino in unDato.EcosistemaMarinos)
                 {
                     _context.Entry(ecosistemaMarino).State = EntityState.Unchanged;//Marca la entidad como Unchanged. No se modifica ni se inserta en la base de datos
                 }
-
                 _context.EspecieMarina.Add(unDato);
                 _context.SaveChanges();
             }

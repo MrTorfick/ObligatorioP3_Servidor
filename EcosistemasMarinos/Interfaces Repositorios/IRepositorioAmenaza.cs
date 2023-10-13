@@ -10,6 +10,6 @@ namespace EcosistemasMarinos.Interfaces_Repositorios
     public interface IRepositorioAmenaza : IRepositorio<Amenaza>
     {
 
-        IEnumerable<Amenaza> FindNulls();
+        
     }
 }

@@ -63,18 +63,6 @@
                     }
                 </select>
 
-
-                <div class="form-group">
-
-                    <label>Seleccione los ecosistemas marinos donde su vida es posible: </label> <br />
-                    <select multiple="multiple" id="SelectedOptions" name="SelectedOptions">
-                        @foreach (var option in ViewBag.EcosistemasMarinos)
-                        {
-                            <option value="@option.Id">@option.Nombre</option>
-                        }
-                    </select>
-                </div>
-
                 @*
 
                 @foreach (var option in ViewBag.EcosistemasMarinos)
