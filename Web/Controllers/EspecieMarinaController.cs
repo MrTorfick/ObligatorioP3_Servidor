@@ -8,22 +8,25 @@ namespace Web.Controllers
     public class EspecieMarinaController : Controller
     {
 
-        private IObtenerEcosistemasMarinos GetEcosistemasMarinosUC;
+        private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
         private IAddEspecieMarina addEspecieMarinaUC;
         private IObtenerAmenazas obtenerAmenazasUC;
+        private IObtenerEspeciesMarinas obtenerEspeciesMarinasUC;
 
         public EspecieMarinaController(
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
             IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
             IAddEspecieMarina addEspecieMarinaUC,
-            IObtenerAmenazas obtenerAmenazasUC
+            IObtenerAmenazas obtenerAmenazasUC,
+            IObtenerEspeciesMarinas obtenerEspeciesMarinasUC
             )
         {
-            this.GetEcosistemasMarinosUC = getEcosistemasMarinosUC;
+            this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
             this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
             this.addEspecieMarinaUC = addEspecieMarinaUC;
             this.obtenerAmenazasUC = obtenerAmenazasUC;
+            this.obtenerEspeciesMarinasUC = obtenerEspeciesMarinasUC;
         }
 
 
@@ -43,7 +46,7 @@ namespace Web.Controllers
         public ActionResult Create(string mensaje)
         {
             ViewBag.Mensaje = mensaje;
-            ViewBag.EcosistemasMarinos = GetEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+            ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
             ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
             return View();
         }
@@ -74,9 +77,17 @@ namespace Web.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult AsociarEspecieAEcosistema(string mensaje)
+        {
+            ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+            ViewBag.EspeciesMarinas = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
+            ViewBag.Mensaje = mensaje;
             return View();
 
         }
+
 
         // GET: EspecieMarinaController/Edit/5
         public ActionResult Edit(int id)
