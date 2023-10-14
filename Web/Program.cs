@@ -40,6 +40,8 @@ namespace Web
             builder.Services.AddScoped<IUpdateConfiguracion, UpdateConfiguracionUC>();
             builder.Services.AddScoped<IObtenerConfiguracionPorNombre, ObtenerConfiguracionPorNombreUC>();
             builder.Services.AddScoped<IBorrarEcosistemaMarino, BorrarEcosistemaMarinoUC>();
+            builder.Services.AddScoped<IObtenerEspecieMarinaPorId, ObtenerEspecieMarinaPorIdUC>();
+            builder.Services.AddScoped<IAsociarEspecieEcosistema, AsociarEspecieAEcosistemaUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();
@@ -54,7 +56,7 @@ namespace Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

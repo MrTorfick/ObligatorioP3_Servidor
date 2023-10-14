@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<EcosistemasMarinos.ViewModel.EspecieAsociarEcosistemaVM>
+@{
     ViewData["Title"] = "AsociarEspecieAEcosistema";
 }
 
@@ -22,29 +23,18 @@
 
                 <label>Seleccione un Ecosistema Marino </label> <br />
                 <select id="EcosistemaSeleccionado" name="EcosistemaSeleccionado">
-                    @foreach (var option in ViewBag.EcosistemasMarinos)
+                    @foreach (var option in Model)
                     {
-                        <option value="@option.Id">@option.Nombre</option>
+                        <option value="@option.ecosistemasMarinos.Id">@option.ecosistemasMarinos.Nombre</option>
                     }
                 </select>
 
             </div>
 
 
-            <div class="form-group">
-                <label>Seleccione una Especie Marina </label> <br />
-                <select id="EspecieSeleccionada" name="EspecieSeleccionada">
-                    @foreach (var option in ViewBag.EspeciesMarinas)
-                    {
-                        <option value="@option.Id">@option.NombreVulgar</option>
-                    }
-                </select>
-            </div>
-
-
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Asignar" class="btn btn-primary" onclick="return confirm('¿Está seguro de que desea realizar esta asignación? Se asignara a @ViewBag.NombreEspecie al ecosistema seleccionado')" />
             </div>
         </form>
     </div>

@@ -40,14 +40,14 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         public int GetTopeInferior(string nombreAtributo)
         {
             Configuracion configuracion = _context.Configuracion.Where(config => config.NombreAtributo == nombreAtributo).FirstOrDefault();
-            if (configuracion == null) throw new Exception("Nombre atributo incorrecto");
+            if (configuracion == null) throw new Exception("El Nombre del atributo configuracion es incorrecto");
             return configuracion.topeInferior;
         }
 
         public int GetTopeSuperior(string nombreAtributo)
         {
             Configuracion configuracion = _context.Configuracion.Where(config => config.NombreAtributo == nombreAtributo).FirstOrDefault();
-            if (configuracion == null) throw new Exception("Nombre atributo incorrecto");
+            if (configuracion == null) throw new Exception("El Nombre del atributo configuracion es incorrecto");
             return configuracion.topeSuperior;
         }
 

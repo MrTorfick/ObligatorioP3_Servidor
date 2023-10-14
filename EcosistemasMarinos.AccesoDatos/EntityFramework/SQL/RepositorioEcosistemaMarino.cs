@@ -38,7 +38,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             catch (Exception ex)
             {
 
-                throw new Exception("Error al agregar el Ecosistema Marino" + ex.Message);
+                throw new Exception("Error al agregar el Ecosistema Marino: " + ex.Message);
             }
 
         }

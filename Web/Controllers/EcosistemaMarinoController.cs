@@ -179,11 +179,6 @@ namespace Web.Controllers
 
 
 
-
-
-
-
-
         private bool GuardarImagen(IFormFile imagen, EcosistemaMarino em)
         {
             if (imagen == null || em == null) return false;

@@ -19,6 +19,12 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             _context = new EMContext();
             this.config = config;
         }
+
+        /*
+         
+         var ecosistemas = db.EspeciesMarinas.Find(id).EspeciesHabitab.Select(eh => eh.EcosistemaMarino);
+
+         */
         public void Add(EspecieMarina unDato)
         {
 
@@ -35,9 +41,29 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             catch (Exception ex)
             {
 
-                throw new Exception("Error al agregar la Especie Marina" + unDato.NombreVulgar);
+                throw new Exception("Error al agregar la Especie Marina" + ex);
             }
 
+        }
+
+        public void AsociarEspecieAEcosistema(int idEspecie, int idEcosistema)
+        {
+            try
+            {
+                EspeciesHabitab especiesHabitab = new EspeciesHabitab();
+                especiesHabitab = _context.EspeciesHabitab.Where(eh => eh.EcosistemaMarinoId == idEcosistema && eh.EspecieMarinaId == idEspecie).FirstOrDefault();
+
+                if (especiesHabitab != null)
+                {
+                    especiesHabitab.Habita = true;
+                    _context.EspeciesHabitab.Update(especiesHabitab);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error al asociar la especie al ecosistema" + ex);
+            }
         }
 
         public IEnumerable<EspecieMarina> FindAll()
@@ -47,7 +73,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public EspecieMarina FindByID(int id)
         {
-            throw new NotImplementedException();
+            return _context.EspecieMarina.Where(em => em.Id == id).Include(em => em.EcosistemaMarinos).FirstOrDefault();
         }
 
         public void Remove(int id)
