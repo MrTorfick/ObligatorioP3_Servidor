@@ -42,6 +42,7 @@ namespace Web
             builder.Services.AddScoped<IBorrarEcosistemaMarino, BorrarEcosistemaMarinoUC>();
             builder.Services.AddScoped<IObtenerEspecieMarinaPorId, ObtenerEspecieMarinaPorIdUC>();
             builder.Services.AddScoped<IAsociarEspecieEcosistema, AsociarEspecieAEcosistemaUC>();
+            builder.Services.AddScoped<IObtenerEspecieMarinaPorNombreCientifico, ObtenerEspecieMarinaPorNombreCientificoUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();

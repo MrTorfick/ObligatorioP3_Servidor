@@ -7,10 +7,19 @@ using System.Threading.Tasks;
 
 namespace EcosistemasMarinos.Interfaces_Repositorios
 {
-    public interface IRepositorioEspecieMarina:IRepositorio<EspecieMarina>
+    public interface IRepositorioEspecieMarina : IRepositorio<EspecieMarina>
     {
 
         public void AsociarEspecieAEcosistema(int idEspecie, int idEcosistema);
+        public EspecieMarina GetEspecieMarinaPorNombreCientifico(string nombre);
+
+        public IEnumerable<EspecieMarina> GetEspecieMarinaEnPeligroDeExtincion();
+
+        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double peso);
+
+        public IEnumerable<EspecieMarina> GetEspecieHabitanEcosistema(int idEcosistema);
+
+        public IEnumerable<EcosistemaMarino> GetEcosistemaMarinosNoPuedenHabitarEspecies(int idEspecie);
 
     }
 }

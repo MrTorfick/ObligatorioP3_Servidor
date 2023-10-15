@@ -33,7 +33,10 @@ namespace EcosistemasMarinos.Entidades
 
         public List<AmenazasAsociadas> Amenazas { get; set; }
 
-       // public EstadoConservacion EstadoConservacion { get; set; }
+        [ForeignKey(nameof(EstadoConservacion))]
+        public int? EstadoConservacionId { get; set; }
+        public EstadoConservacion? EstadoConservacion { get; set; }
+
         // [Column("Ecosistemas_Habita")]
         // public List<EcosistemaMarino> EcosistemaMarinos { get; set; }
         //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }

@@ -38,24 +38,6 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EspecieMarina",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreCientifico = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NombreVulgar = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Peso = table.Column<double>(type: "float", nullable: false),
-                    Longitud = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EspecieMarina", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EstadoConservacion",
                 columns: table => new
                 {
@@ -98,6 +80,30 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EspecieMarina",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreCientifico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NombreVulgar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Peso = table.Column<double>(type: "float", nullable: false),
+                    Longitud = table.Column<double>(type: "float", nullable: false),
+                    EstadoConservacionId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EspecieMarina", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EspecieMarina_EstadoConservacion_EstadoConservacionId",
+                        column: x => x.EstadoConservacionId,
+                        principalTable: "EstadoConservacion",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EcosistemaMarinos",
                 columns: table => new
                 {
@@ -111,7 +117,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     paisnombre = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     paiscodigoISO = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    EstadoConservacionId = table.Column<int>(type: "int", nullable: false)
+                    EstadoConservacionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,8 +126,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         name: "FK_EcosistemaMarinos_EstadoConservacion_EstadoConservacionId",
                         column: x => x.EstadoConservacionId,
                         principalTable: "EstadoConservacion",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_EcosistemaMarinos_Pais_paisnombre_paiscodigoISO",
                         columns: x => new { x.paisnombre, x.paiscodigoISO },
@@ -200,6 +205,11 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 columns: new[] { "paisnombre", "paiscodigoISO" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_EspecieMarina_EstadoConservacionId",
+                table: "EspecieMarina",
+                column: "EstadoConservacionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EspeciesHabitab_EspecieMarinaId",
                 table: "EspeciesHabitab",
                 column: "EspecieMarinaId");
@@ -254,10 +264,10 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                 name: "EspecieMarina");
 
             migrationBuilder.DropTable(
-                name: "EstadoConservacion");
+                name: "Pais");
 
             migrationBuilder.DropTable(
-                name: "Pais");
+                name: "EstadoConservacion");
         }
     }
 }

@@ -3,6 +3,7 @@ using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Web.Controllers
 {
@@ -16,6 +17,9 @@ namespace Web.Controllers
         private IObtenerEspeciesMarinas obtenerEspeciesMarinasUC;
         private IObtenerEspecieMarinaPorId obtenerEspecieMarinaPorIdUC;
         private IAsociarEspecieEcosistema asociarEspecieEcosistemaUC;
+        private IObtenerEstadosConservacion getEstadosConservacionUC;
+        private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
+        private IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC;
 
         public EspecieMarinaController(
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
@@ -24,7 +28,10 @@ namespace Web.Controllers
             IObtenerAmenazas obtenerAmenazasUC,
             IObtenerEspeciesMarinas obtenerEspeciesMarinasUC,
             IObtenerEspecieMarinaPorId obtenerEspecieMarinaPorIdUC,
-            IAsociarEspecieEcosistema asociarEspecieEcosistemaUC
+            IAsociarEspecieEcosistema asociarEspecieEcosistemaUC,
+            IObtenerEstadosConservacion getEstadosConservacionUC,
+            IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
+            IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC
             )
         {
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
@@ -34,7 +41,33 @@ namespace Web.Controllers
             this.obtenerEspeciesMarinasUC = obtenerEspeciesMarinasUC;
             this.obtenerEspecieMarinaPorIdUC = obtenerEspecieMarinaPorIdUC;
             this.asociarEspecieEcosistemaUC = asociarEspecieEcosistemaUC;
+            this.getEstadosConservacionUC = getEstadosConservacionUC;
+            this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
+            this.obtenerEspecieMarinaPorNombreCientificoUC = obtenerEspecieMarinaPorNombreCientificoUC;
         }
+
+        public ActionResult BuscarPorNombreCientifico(string mensaje)
+        {
+
+            ViewBag.Mensaje = mensaje;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult BuscarPorNombreCientifico(string nombreCientifico, IFormCollection collection)
+        {
+            EspecieMarina especieMarina = obtenerEspecieMarinaPorNombreCientificoUC.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
+            if (especieMarina != null)
+            {
+                return View(especieMarina);
+            }
+            else
+            {
+                return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
+            }
+        }
+
+
 
 
         // GET: EspecieMarinaController
@@ -55,13 +88,14 @@ namespace Web.Controllers
             ViewBag.Mensaje = mensaje;
             ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
             ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
+            ViewBag.EstadosConservacion = getEstadosConservacionUC.ObtenerEstadosConservacion();
             return View();
         }
 
         // POST: EspecieMarinaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EspecieMarina especieMarina, IFormFile imagen, List<int> SelectedOptions)
+        public ActionResult Create(EspecieMarina especieMarina, IFormFile imagen, List<int> SelectedOptions, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
         {
             try
             {
@@ -76,13 +110,30 @@ namespace Web.Controllers
                     }
 
                 }
+                especieMarina.Amenazas = new List<AmenazasAsociadas>();
+                foreach (var item in SelectedOptionsAmenazas)
+                {
+                    Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+
+                    if (amenaza != null)
+                    {
+                        AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
+                        amenazasAsociadas.AmenazaId = amenaza.Id;
+                        especieMarina.Amenazas.Add(amenazasAsociadas);
+                    }
+                }
+
+                especieMarina.EstadoConservacionId = SelectedOptionEstado;
                 addEspecieMarinaUC.AddEspecieMarina(especieMarina);
                 return RedirectToAction(nameof(Index));
 
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
+            }
+            {
+
             }
         }
 
@@ -126,54 +177,28 @@ namespace Web.Controllers
 
                 return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = ex.Message });
             }
-
-
-
-
-
         }
 
-
-        // GET: EspecieMarinaController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: EspecieMarinaController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+        /*
+        try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                EspecieMarina especieMarina = obtenerEspecieMarinaPorNombreCientificoUC.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
 
-        // GET: EspecieMarinaController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                if (especieMarina != null)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
+                }
+            }
+            catch (Exception ex)
+            {
+                RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = ex.Message });
+            }
+         
 
-        // POST: EspecieMarinaController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+         */
     }
 }
