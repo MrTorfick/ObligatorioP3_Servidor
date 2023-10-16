@@ -1,5 +1,6 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.ViewModel;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,8 @@ namespace Web.Controllers
         private IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC;
         private IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPesoUC;
         private IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
+        private IBuscarEspeciesQueHabitanUnEcosistema buscarEspeciesQueHabitanUnEcosistemaUC;
+        private IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincionUC;
 
         public EspecieMarinaController(
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
@@ -37,7 +40,9 @@ namespace Web.Controllers
             IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
             IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC,
             IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPesoUC,
-            IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC
+            IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC,
+            IBuscarEspeciesQueHabitanUnEcosistema buscarEspeciesQueHabitanUnEcosistemaUC,
+            IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincionUC
             )
         {
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
@@ -52,8 +57,70 @@ namespace Web.Controllers
             this.obtenerEspecieMarinaPorNombreCientificoUC = obtenerEspecieMarinaPorNombreCientificoUC;
             this.obtenerEspecieMarinaPorRangoPesoUC = obtenerEspecieMarinaPorRangoPesoUC;
             this.obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
+            this.buscarEspeciesQueHabitanUnEcosistemaUC = buscarEspeciesQueHabitanUnEcosistemaUC;
+            this.buscarEspeciesEnPeligroDeExtincionUC = buscarEspeciesEnPeligroDeExtincionUC;
         }
         #endregion
+
+
+        public ActionResult BuscarEspeciesEnPeligroDeExtincion()
+        {
+            try
+            {
+                IEnumerable<EspecieMarina> especieMarinas = buscarEspeciesEnPeligroDeExtincionUC.GetEspecieMarinaEnPeligroDeExtincion();
+                if (especieMarinas.Count() > 0)
+                {
+                    return View(especieMarinas);
+                }
+                else
+                {
+                    ViewBag.Mensaje = "No se encontraron especies en peligro de extincion";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.Mensaje = ex.Message;
+                return View();
+            }
+
+        }
+
+
+
+        public ActionResult BuscarEspeciesQueHabitanEcosistema(string mensaje)
+        {
+            ViewBag.Mensaje = mensaje;
+            ViewBag.listaEcosistemas = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult BuscarEspeciesQueHabitanEcosistema(int EcosistemaSeleccionado)
+        {
+            try
+            {
+                IEnumerable<EspecieMarina> especiesMarinas = buscarEspeciesQueHabitanUnEcosistemaUC.BuscarEspeciesQueHabitanUnEcosistema(EcosistemaSeleccionado);
+                if (especiesMarinas.Count() > 0)
+                {
+                    return View(especiesMarinas);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BuscarEspeciesQueHabitanEcosistema), new { mensaje = "No se encontro una especie que habite el ecosistema" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(BuscarEspeciesQueHabitanEcosistema), new { mensaje = ex.Message });
+            }
+
+        }
+
+
 
         public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(string mensaje, IEnumerable<EspecieMarina> listaEspecies)
         {
@@ -67,17 +134,27 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(int EspecieSeleccionada)
         {
-            IEnumerable<EcosistemaMarino> ecosistemaMarinos = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC.ObtenerEcosistemasMarinosNoPuedenHabitarEspecies(EspecieSeleccionada);
+            try
+            {
+                IEnumerable<EcosistemaMarino> ecosistemaMarinos = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC.ObtenerEcosistemasMarinosNoPuedenHabitarEspecies(EspecieSeleccionada);
 
-            if (ecosistemaMarinos.Count() > 0)
-            {
-                ViewBag.listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
-                return View(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), ecosistemaMarinos);
+                if (ecosistemaMarinos.Count() > 0)
+                {
+                    ViewBag.listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
+                    return View(ecosistemaMarinos);
+                    //return View(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), ecosistemaMarinos);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), new { mensaje = "No se encontro un ecosistema que no pueda habitar la especie", listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas() });
+                }
             }
-            else
+            catch (Exception)
             {
-                return RedirectToAction(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), new { mensaje = "No se encontro un ecosistema que no pueda habitar la especie", listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas() });
+
+                throw;
             }
+
         }
 
         public ActionResult BuscarPorNombreCientifico(string mensaje)
@@ -89,15 +166,24 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult BuscarPorNombreCientifico(string nombreCientifico, IFormCollection collection)
         {
-            EspecieMarina especieMarina = obtenerEspecieMarinaPorNombreCientificoUC.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
-            if (especieMarina != null)
+            try
             {
-                return View(especieMarina);
+                EspecieMarina especieMarina = obtenerEspecieMarinaPorNombreCientificoUC.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
+                if (especieMarina != null)
+                {
+                    return View(especieMarina);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
+                }
             }
-            else
+            catch (Exception)
             {
-                return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
+
+                throw;
             }
+
         }
 
         public ActionResult BuscarPorRangoDePeso(string mensaje)
@@ -109,25 +195,32 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult BuscarPorRangoDePeso(double pesoMinimo, double pesoMaximo)
         {
-            if (pesoMinimo > pesoMaximo)
+            try
             {
-                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo no puede ser mayor al peso maximo" });
-            }
-            else if (pesoMinimo < 0 || pesoMaximo < 0)
-            {
-                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser negativos" });
-            }
+                if (pesoMinimo > pesoMaximo)
+                {
+                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo no puede ser mayor al peso maximo" });
+                }
+                else if (pesoMinimo < 0 || pesoMaximo < 0)
+                {
+                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser negativos" });
+                }
 
-            IEnumerable<EspecieMarina> especieMarinas = obtenerEspecieMarinaPorRangoPesoUC.GetEspecieMarinasPeso(pesoMinimo, pesoMaximo);
-            if (especieMarinas != null)
-            {
-                return View(especieMarinas);
+                IEnumerable<EspecieMarina> especieMarinas = obtenerEspecieMarinaPorRangoPesoUC.GetEspecieMarinasPeso(pesoMinimo, pesoMaximo);
+                if (especieMarinas != null)
+                {
+                    return View(especieMarinas);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie" });
+                }
             }
-            else
+            catch (Exception)
             {
-                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie" });
-            }
 
+                throw;
+            }
         }
 
 

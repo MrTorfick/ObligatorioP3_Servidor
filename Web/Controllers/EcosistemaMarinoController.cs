@@ -201,7 +201,7 @@ namespace Web.Controllers
                     imagen.CopyTo(f);
                 }
                 //GUARDAR EL NOMBRE DE LA IMAGEN SUBIDA EN EL OBJETO
-                em.Imagen = nombreImagen;
+                em.Imagen.Valor = nombreImagen;
                 return true;
             }
             catch (Exception ex)

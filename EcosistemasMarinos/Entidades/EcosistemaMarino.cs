@@ -24,7 +24,7 @@ namespace EcosistemasMarinos.Entidades
         [Required]
         public string DescripcionCaracteristicas { get; set; }
 
-        public string? Imagen { get; set; }
+        public Imagen Imagen { get; set; }
         //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
         //public List<EspecieMarina> EspeciesPodrianHabitar { get; set; }

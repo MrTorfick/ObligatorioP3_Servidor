@@ -11,13 +11,4 @@
     <ProjectReference Include="..\EcosistemasMarinos\EcosistemasMarinos.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces Caso de Uso\Ecosistema Marino\" />
-    <Folder Include="Interfaces Caso de Uso\Especie Marina\" />
-    <Folder Include="Interfaces Caso de Uso\Amenaza\" />
-    <Folder Include="Interfaces Caso de Uso\Estado Conservacion\" />
-    <Folder Include="Interfaces Caso de Uso\Configuracion\" />
-    <Folder Include="Interfaces Caso de Uso\Usuario\" />
-  </ItemGroup>
-
 </Project>

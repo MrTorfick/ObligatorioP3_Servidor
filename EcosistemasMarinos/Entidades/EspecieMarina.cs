@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Excepciones;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ namespace EcosistemasMarinos.Entidades
         [Required]
         public string Descripcion { get; set; }
         [Required]
-        public string Imagen { get; set; }
+        public Imagen Imagen { get; set; }
         [Required]
         public double Peso { get; set; }
         [Required]
@@ -52,7 +53,7 @@ namespace EcosistemasMarinos.Entidades
 
             if (string.IsNullOrEmpty(Descripcion))
                 throw new Exception("La descripcion no puede ser nula ni vacía");
-            if (string.IsNullOrEmpty(Imagen))
+            if (string.IsNullOrEmpty(Imagen.Valor))
                 throw new Exception("La imagen no puede ser nula ni vacía");
             if (Peso <= 0)
                 throw new Exception("El peso debe ser mayor a 0");

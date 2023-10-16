@@ -112,8 +112,9 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
 
             return _context.EspecieMarina.
-                 Where(em => em.EstadoConservacion.Rangos.Minimo < 60 || em.Amenazas.Count > 3)
-                 .ToList();
+                 Where(em => em.EstadoConservacion.Rangos.Minimo < 60 
+                 || em.Amenazas.Count > 3 || em.EcosistemaMarinos
+                 .Any(ecosistema => ecosistema.Amenazas.Count() > 3 && ecosistema.EstadoConservacion.Rangos.Maximo < 60)).ToList();
         }
 
         public EspecieMarina GetEspecieMarinaPorNombreCientifico(string nombre)

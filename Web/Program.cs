@@ -1,6 +1,8 @@
 using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Interfaces_Repositorios;
 
 namespace Web
@@ -45,6 +47,8 @@ namespace Web
             builder.Services.AddScoped<IObtenerEspecieMarinaPorNombreCientifico, ObtenerEspecieMarinaPorNombreCientificoUC>();
             builder.Services.AddScoped<IObtenerEspecieMarinaPorRangoPeso, ObtenerEspecieMarinaPorRangoDePesoUC>();
             builder.Services.AddScoped<IObtenerEcosistemasMarinosNoPuedenHabitarEspecies, ObtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC>();
+            builder.Services.AddScoped<IBuscarEspeciesQueHabitanUnEcosistema, BuscarEspeciesQueHabitanUnEcosistema>();
+            builder.Services.AddScoped<IBuscarEspeciesEnPeligroDeExtincion, BuscarEspeciesEnPeligroDeExtincion>();
 
             builder.Services.AddSession();
             var app = builder.Build();
