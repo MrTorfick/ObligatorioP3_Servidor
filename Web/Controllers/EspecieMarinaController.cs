@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Web.Controllers
 {
+
     public class EspecieMarinaController : Controller
     {
-
+        #region
         private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
         private IAddEspecieMarina addEspecieMarinaUC;
@@ -52,7 +53,7 @@ namespace Web.Controllers
             this.obtenerEspecieMarinaPorRangoPesoUC = obtenerEspecieMarinaPorRangoPesoUC;
             this.obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
         }
-
+        #endregion
 
         public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(string mensaje, IEnumerable<EspecieMarina> listaEspecies)
         {
@@ -60,7 +61,6 @@ namespace Web.Controllers
             ViewBag.listaEspecies = listaEspecies;
             ViewBag.Mensaje = mensaje;
             return View();
-
         }
 
 
@@ -71,7 +71,8 @@ namespace Web.Controllers
 
             if (ecosistemaMarinos.Count() > 0)
             {
-                return View(ecosistemaMarinos);
+                ViewBag.listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
+                return View(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), ecosistemaMarinos);
             }
             else
             {
@@ -200,7 +201,7 @@ namespace Web.Controllers
 
         public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
         {
-            List<EspecieAsociarEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieAsociarEcosistemaVM>();
+            List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
             EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
             TempData["idEspecie"] = especieMarina.Id;
 
@@ -209,7 +210,7 @@ namespace Web.Controllers
             {
                 if (item != null)
                 {
-                    EspecieAsociarEcosistemaVM especieAsociarEcosistemaVM = new EspecieAsociarEcosistemaVM();
+                    EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
                     especieAsociarEcosistemaVM.ecosistemasMarinos = item;
                     especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
                     //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);

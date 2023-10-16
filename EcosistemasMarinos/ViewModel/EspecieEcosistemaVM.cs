@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace EcosistemasMarinos.ViewModel
 {
-    public class EspeciesEcosistemasVM
+    public class EspecieEcosistemaVM
     {
+        public EspecieMarina especieMarina { get; set; }
+        public EcosistemaMarino ecosistemasMarinos { get; set; }
 
-        public List<EspecieMarina> especiesMarinas { get; set; }
-        public List<EcosistemaMarino> ecosistemaMarinos { get; set; }
     }
 }
