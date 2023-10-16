@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.ViewModel;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,8 @@ namespace Web.Controllers
         private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
         private IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC;
+        private IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPesoUC;
+        private IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
 
         public EspecieMarinaController(
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
@@ -31,7 +34,9 @@ namespace Web.Controllers
             IAsociarEspecieEcosistema asociarEspecieEcosistemaUC,
             IObtenerEstadosConservacion getEstadosConservacionUC,
             IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
-            IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC
+            IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientificoUC,
+            IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPesoUC,
+            IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC
             )
         {
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
@@ -44,11 +49,38 @@ namespace Web.Controllers
             this.getEstadosConservacionUC = getEstadosConservacionUC;
             this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
             this.obtenerEspecieMarinaPorNombreCientificoUC = obtenerEspecieMarinaPorNombreCientificoUC;
+            this.obtenerEspecieMarinaPorRangoPesoUC = obtenerEspecieMarinaPorRangoPesoUC;
+            this.obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
+        }
+
+
+        public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(string mensaje, IEnumerable<EspecieMarina> listaEspecies)
+        {
+            listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
+            ViewBag.listaEspecies = listaEspecies;
+            ViewBag.Mensaje = mensaje;
+            return View();
+
+        }
+
+
+        [HttpPost]
+        public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(int EspecieSeleccionada)
+        {
+            IEnumerable<EcosistemaMarino> ecosistemaMarinos = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC.ObtenerEcosistemasMarinosNoPuedenHabitarEspecies(EspecieSeleccionada);
+
+            if (ecosistemaMarinos.Count() > 0)
+            {
+                return View(ecosistemaMarinos);
+            }
+            else
+            {
+                return RedirectToAction(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), new { mensaje = "No se encontro un ecosistema que no pueda habitar la especie", listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas() });
+            }
         }
 
         public ActionResult BuscarPorNombreCientifico(string mensaje)
         {
-
             ViewBag.Mensaje = mensaje;
             return View();
         }
@@ -67,6 +99,35 @@ namespace Web.Controllers
             }
         }
 
+        public ActionResult BuscarPorRangoDePeso(string mensaje)
+        {
+            ViewBag.Mensaje = mensaje;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult BuscarPorRangoDePeso(double pesoMinimo, double pesoMaximo)
+        {
+            if (pesoMinimo > pesoMaximo)
+            {
+                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo no puede ser mayor al peso maximo" });
+            }
+            else if (pesoMinimo < 0 || pesoMaximo < 0)
+            {
+                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser negativos" });
+            }
+
+            IEnumerable<EspecieMarina> especieMarinas = obtenerEspecieMarinaPorRangoPesoUC.GetEspecieMarinasPeso(pesoMinimo, pesoMaximo);
+            if (especieMarinas != null)
+            {
+                return View(especieMarinas);
+            }
+            else
+            {
+                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie" });
+            }
+
+        }
 
 
 

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<EcosistemasMarinos.Entidades.EspecieMarina>
+
+@{
+    ViewData["Title"] = "BuscarPorRangoDePeso";
+}
+
+
+@if (!String.IsNullOrEmpty(ViewBag.Mensaje))
+{
+    <div class="alert alert-danger">
+        @ViewBag.Mensaje
+    </div>
+}
+
+<h1>Buscar Por Rango De Peso</h1>
+
+
+
+<form method="post">
+    <label>Peso Minimo</label><br />
+    <input type="number" name="pesoMinimo" />
+    <br />
+    <label>Peso Maximo</label><br />
+    <input type="number" name="pesoMaximo" />
+    <br />
+    <input type="submit" value="Buscar" />
+</form>
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombreCientifico)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombreVulgar)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Imagen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Peso)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Longitud)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EstadoConservacionId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreCientifico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreVulgar)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Imagen)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Peso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Longitud)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadoConservacionId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

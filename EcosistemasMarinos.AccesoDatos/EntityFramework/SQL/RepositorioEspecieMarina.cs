@@ -81,8 +81,12 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
             foreach (AmenazasAsociadas item in amenazasEspecie)
             {
-                var amenazasEcosistema = _context.AmenazasAsociadas.Where(aa => aa.EcosistemaMarinoId == item.EcosistemaMarinoId && aa.EspecieMarinaId == null).FirstOrDefault();
-                ecosistemaMarinos.Add(repositorioEcosistemaMarino.FindByID((int)amenazasEcosistema.EcosistemaMarinoId));
+                var amenazasEcosistema = _context.AmenazasAsociadas.Where(aa => aa.AmenazaId == item.AmenazaId && aa.EspecieMarinaId == null).FirstOrDefault();
+                EcosistemaMarino ecosistemaMarino = repositorioEcosistemaMarino.FindByID((int)amenazasEcosistema.EcosistemaMarinoId);
+                if (!ecosistemaMarinos.Contains(ecosistemaMarino))
+                {
+                    ecosistemaMarinos.Add(ecosistemaMarino);
+                }
             }
             return ecosistemaMarinos;
 
@@ -117,9 +121,9 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             return _context.EspecieMarina.Where(em => em.NombreCientifico == nombre).FirstOrDefault();
         }
 
-        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double peso)
+        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double desde, double hasta)
         {
-            return _context.EspecieMarina.Where(em => em.Peso == peso);
+            return _context.EspecieMarina.Where(em => em.Peso >= desde && em.Peso <= hasta).ToList();
         }
 
         public void Remove(int id)

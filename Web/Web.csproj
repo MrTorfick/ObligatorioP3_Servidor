@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EcosistemasMarinos.AccesoDatos\_EcosistemasMarinos.AccesoDatos.csproj" />
     <ProjectReference Include="..\EcosistemasMarinos.LogicaAplicacion\_EcosistemasMarinos.LogicaAplicacion.csproj" />
     <ProjectReference Include="..\EcosistemasMarinos\EcosistemasMarinos.csproj" />
   </ItemGroup>

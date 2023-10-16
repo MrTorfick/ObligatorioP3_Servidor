@@ -7,7 +7,7 @@ using EcosistemasMarinos.Entidades;
 
 namespace EcosistemasMarinos.Interfaces_Repositorios
 {
-    public interface IRepositorioEcosistemaMarino:IRepositorio<EcosistemaMarino>
+    public interface IRepositorioEcosistemaMarino : IRepositorio<EcosistemaMarino>
     {
 
     }

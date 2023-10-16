@@ -43,6 +43,8 @@ namespace Web
             builder.Services.AddScoped<IObtenerEspecieMarinaPorId, ObtenerEspecieMarinaPorIdUC>();
             builder.Services.AddScoped<IAsociarEspecieEcosistema, AsociarEspecieAEcosistemaUC>();
             builder.Services.AddScoped<IObtenerEspecieMarinaPorNombreCientifico, ObtenerEspecieMarinaPorNombreCientificoUC>();
+            builder.Services.AddScoped<IObtenerEspecieMarinaPorRangoPeso, ObtenerEspecieMarinaPorRangoDePesoUC>();
+            builder.Services.AddScoped<IObtenerEcosistemasMarinosNoPuedenHabitarEspecies, ObtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();

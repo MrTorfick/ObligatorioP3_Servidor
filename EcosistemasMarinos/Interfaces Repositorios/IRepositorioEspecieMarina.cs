@@ -15,7 +15,7 @@ namespace EcosistemasMarinos.Interfaces_Repositorios
 
         public IEnumerable<EspecieMarina> GetEspecieMarinaEnPeligroDeExtincion();
 
-        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double peso);
+        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double desde, double hasta);
 
         public IEnumerable<EspecieMarina> GetEspecieHabitanEcosistema(int idEcosistema);
 
