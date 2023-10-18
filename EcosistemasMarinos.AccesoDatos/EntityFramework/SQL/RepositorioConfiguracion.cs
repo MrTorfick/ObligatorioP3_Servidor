@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,8 +62,14 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             try
             {
                 dato.Validar();
-                this._context.Configuracion.Update(dato);
-                this._context.SaveChanges();
+                Configuracion configuracion = _context.Configuracion.Where(config => config.NombreAtributo == dato.NombreAtributo).FirstOrDefault();
+                configuracion.topeInferior = dato.topeInferior;
+                configuracion.topeSuperior = dato.topeSuperior;
+                _context.Configuracion.Update(configuracion);
+                _context.SaveChanges();
+
+
+
             }
             catch (Exception ex)
             {

@@ -380,23 +380,32 @@ namespace Web.Controllers
             {
                 List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
                 EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
-                TempData["idEspecie"] = especieMarina.Id;
-
-                //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
-                foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
+                if (especieMarina != null)
                 {
-                    if (item != null)
+
+                    TempData["idEspecie"] = especieMarina.Id;
+
+                    //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
+                    foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
                     {
-                        EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
-                        especieAsociarEcosistemaVM.ecosistemasMarinos = item;
-                        especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
-                        //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
-                        //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                        if (item != null)
+                        {
+                            EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
+                            especieAsociarEcosistemaVM.ecosistemasMarinos = item;
+                            especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
+                            //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
+                            //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                        }
+
                     }
+                    ViewBag.Mensaje = mensaje;
+                    return View(especieAsociarEcosistemaVMs);
 
                 }
-                ViewBag.Mensaje = mensaje;
-                return View(especieAsociarEcosistemaVMs);
+                else
+                {
+                    return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "No se encontro la especie" });
+                }
             }
             else
             {

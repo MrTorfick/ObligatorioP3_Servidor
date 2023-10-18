@@ -236,7 +236,7 @@ namespace Web.Controllers
                 EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
                 //Hay que validar que ecosistemaMarino no sea null. 
                 //TODO
-                if (ecosistemaMarino.EspeciesHabitan != null)
+                if (ecosistemaMarino != null && ecosistemaMarino.EspeciesHabitan != null)
                 {
                     if (ecosistemaMarino.EspeciesHabitan.Count > 0)
                     {

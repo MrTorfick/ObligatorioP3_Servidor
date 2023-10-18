@@ -42,10 +42,7 @@ namespace Web.Controllers
         {
             try
             {
-                /*
-                TipoUsuario tipoUsuario = (TipoUsuario)slcTipoUsuario;
-                usuario.TipoUsuario = tipoUsuario.ToString();
-                */
+
                 if (Administrador != null)
                 {
                     usuario.EsAdmin = true;
@@ -124,7 +121,7 @@ namespace Web.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Usuario", "Login");
         }
 
 

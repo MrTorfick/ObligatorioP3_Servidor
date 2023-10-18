@@ -29,7 +29,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             catch (Exception ex)
             {
 
-                throw new Exception("Ocurrio un error en la Auditoria" + ex.Message);
+                throw new Exception("Ocurrio un error en la Auditoria: " + ex.Message);
             }
 
 

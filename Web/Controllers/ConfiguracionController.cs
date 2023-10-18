@@ -72,7 +72,7 @@ namespace Web.Controllers
         // GET: ConfiguracionController/Edit/5
         public ActionResult Edit(string NombreAtributo, string mensaje)
         {
-            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            if (HttpContext.Session.GetString("LogueadoNombre") != null && NombreAtributo != null)
             {
                 ViewBag.mensaje = mensaje;
                 return View(_obtenerConfiguracionPorNombreUC.ObtenerConfiguracionPorNombre(NombreAtributo));

@@ -20,13 +20,13 @@ namespace EcosistemasMarinos.Entidades
         public void Validar()
         {
             if (NombreUsuario == null)
-                throw new Exception("Auditoria: El nombre de usuario no puede ser nulo");
-            if (Fecha == null)
-                throw new Exception("Auditoria: La fecha no puede ser nula");
+                throw new Exception("Ocurrio un error al ingresar el nombre de usuario");
+            if (Fecha == DateTime.MinValue)
+                throw new Exception("Ocurrio un error al ingresar la fecha");
             if (IdEntidad == null)
-                throw new Exception("Auditoria: El id de la entidad no puede ser nulo");
+                throw new Exception("Ocurrio un error en el id de la entidad");
             if (TipoEntidad == null)
-                throw new Exception("Auditoria: El tipo de entidad no puede ser nulo");
+                throw new Exception("Ocurrio un error en el tipo de entidad");
 
 
         }
