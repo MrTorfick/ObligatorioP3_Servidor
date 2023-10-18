@@ -9,6 +9,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
     public interface IUpdateConfiguracion
     {
-        public void UpdateConfiguracion(Configuracion configuracion);
+        public void UpdateConfiguracion(Configuracion configuracion, string UsuarioLogueado);
     }
 }

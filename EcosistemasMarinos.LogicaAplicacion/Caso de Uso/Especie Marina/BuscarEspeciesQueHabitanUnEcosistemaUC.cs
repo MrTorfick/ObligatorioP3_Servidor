@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina
 {
-    public class BuscarEspeciesQueHabitanUnEcosistema : IBuscarEspeciesQueHabitanUnEcosistema
+    public class BuscarEspeciesQueHabitanUnEcosistemaUC : IBuscarEspeciesQueHabitanUnEcosistema
     {
 
         private IRepositorioEspecieMarina _repositorioEspecieMarina;
 
-        public BuscarEspeciesQueHabitanUnEcosistema(IRepositorioEspecieMarina repositorioEspecieMarina)
+        public BuscarEspeciesQueHabitanUnEcosistemaUC(IRepositorioEspecieMarina repositorioEspecieMarina)
         {
             _repositorioEspecieMarina = repositorioEspecieMarina;
         }

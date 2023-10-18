@@ -1,4 +1,5 @@
 ﻿using EcosistemasMarinos.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,10 +9,12 @@ using System.Threading.Tasks;
 
 namespace EcosistemasMarinos.Entidades
 {
+    [Index(nameof(NombreAtributo), IsUnique = true)]
     public class Configuracion : IValidable
     {
-
         [Key]
+        public int Id { get; set; }
+
         public string NombreAtributo { get; set; }
         public int topeSuperior { get; set; }
         public int topeInferior { get; set; }

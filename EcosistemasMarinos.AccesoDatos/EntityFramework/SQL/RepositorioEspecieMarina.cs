@@ -71,37 +71,64 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public EspecieMarina FindByID(int id)
         {
-            return _context.EspecieMarina.Where(em => em.Id == id).Include(em => em.EcosistemaMarinos).FirstOrDefault();
+            try
+            {
+                return _context.EspecieMarina.Where(em => em.Id == id).Include(em => em.EcosistemaMarinos).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar la Especie Marina: " + ex);
+            }
+
         }
 
         public IEnumerable<EcosistemaMarino> GetEcosistemaMarinosNoPuedenHabitarEspecies(int idEspecie)
         {
-            var especie = FindByID(idEspecie);
-            var amenazasEspecie = _context.AmenazasAsociadas.Where(aa => aa.EspecieMarinaId == idEspecie).ToList();
-            List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
-            foreach (AmenazasAsociadas item in amenazasEspecie)
+            try
             {
-                var amenazasEcosistema = _context.AmenazasAsociadas.Where(aa => aa.AmenazaId == item.AmenazaId && aa.EspecieMarinaId == null).FirstOrDefault();
-                EcosistemaMarino ecosistemaMarino = repositorioEcosistemaMarino.FindByID((int)amenazasEcosistema.EcosistemaMarinoId);
-                if (!ecosistemaMarinos.Contains(ecosistemaMarino))
+                var especie = FindByID(idEspecie);
+                var amenazasEspecie = _context.AmenazasAsociadas.Where(aa => aa.EspecieMarinaId == idEspecie).ToList();
+                List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
+                foreach (AmenazasAsociadas item in amenazasEspecie)
                 {
-                    ecosistemaMarinos.Add(ecosistemaMarino);
+                    var amenazasEcosistema = _context.AmenazasAsociadas.Where(aa => aa.AmenazaId == item.AmenazaId && aa.EspecieMarinaId == null).FirstOrDefault();
+                    EcosistemaMarino ecosistemaMarino = repositorioEcosistemaMarino.FindByID((int)amenazasEcosistema.EcosistemaMarinoId);
+                    if (!ecosistemaMarinos.Contains(ecosistemaMarino))
+                    {
+                        ecosistemaMarinos.Add(ecosistemaMarino);
+                    }
                 }
+                return ecosistemaMarinos;
             }
-            return ecosistemaMarinos;
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar los ecosistemas marinos que no puede habitar esa especie: " + ex);
+            }
+
 
         }
 
         public IEnumerable<EspecieMarina> GetEspecieHabitanEcosistema(int idEcosistema)
         {
-            List<EspecieMarina> especieMarinas = new List<EspecieMarina>();
-            var especiesHabitab = _context.EspeciesHabitab.Where(eh => eh.EcosistemaMarinoId == idEcosistema && eh.Habita == true).ToList();
-            foreach (EspeciesHabitab item in especiesHabitab)
+            try
             {
-                especieMarinas.Add(_context.EspecieMarina.Where(em => em.Id == item.EspecieMarinaId).FirstOrDefault());
+                List<EspecieMarina> especieMarinas = new List<EspecieMarina>();
+                var especiesHabitab = _context.EspeciesHabitab.Where(eh => eh.EcosistemaMarinoId == idEcosistema && eh.Habita == true).ToList();
+                foreach (EspeciesHabitab item in especiesHabitab)
+                {
+                    especieMarinas.Add(_context.EspecieMarina.Where(em => em.Id == item.EspecieMarinaId).FirstOrDefault());
+                }
+
+                return especieMarinas;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar las especies que habitan el ecosistema: " + ex);
             }
 
-            return especieMarinas;
         }
 
 
@@ -112,19 +139,38 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
 
             return _context.EspecieMarina.
-                 Where(em => em.EstadoConservacion.Rangos.Minimo < 60 
+                 Where(em => em.EstadoConservacion.Rangos.Minimo < 60
                  || em.Amenazas.Count > 3 || em.EcosistemaMarinos
                  .Any(ecosistema => ecosistema.Amenazas.Count() > 3 && ecosistema.EstadoConservacion.Rangos.Maximo < 60)).ToList();
         }
 
         public EspecieMarina GetEspecieMarinaPorNombreCientifico(string nombre)
         {
-            return _context.EspecieMarina.Where(em => em.NombreCientifico == nombre).FirstOrDefault();
+            try
+            {
+                return _context.EspecieMarina.Where(em => em.NombreCientifico == nombre).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar la Especie Marina: " + ex);
+            }
+
         }
 
         public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double desde, double hasta)
         {
-            return _context.EspecieMarina.Where(em => em.Peso >= desde && em.Peso <= hasta).ToList();
+            try
+            {
+                return _context.EspecieMarina.Where(em => em.Peso >= desde && em.Peso <= hasta).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar la Especie Marina: " + ex);
+            }
+
+
         }
 
         public void Remove(int id)

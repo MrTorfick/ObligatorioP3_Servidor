@@ -1,9 +1,9 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
-using EcosistemasMarinos.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Web.Controllers
 {
@@ -23,34 +23,48 @@ namespace Web.Controllers
         // GET: UsuarioController/Create
         public ActionResult Create(string mensaje)
         {
-            ViewBag.UsuarioLogueado = HttpContext.Session.GetInt32("LogueadoNombre");
+            bool esAdmin = false;
+            byte[] esAdminBytes;
             ViewBag.Mensaje = mensaje;
-            return View();
 
-            /*
-            if (ViewBag.UsuarioLogueado == "admin1")
+            if (HttpContext.Session.TryGetValue("LogueadoRol", out esAdminBytes))
+            {
+                esAdmin = BitConverter.ToBoolean(esAdminBytes);
+            }
+
+            if (esAdmin)
             {
                 return View();
             }
-            else { 
+            else
+            {
                 return RedirectToAction("Index", "Home");
             }
-            */
 
         }
 
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario, int slcTipoUsuario)
+        public ActionResult Create(Usuario usuario, string Administrador)
         {
             try
             {
+                /*
                 TipoUsuario tipoUsuario = (TipoUsuario)slcTipoUsuario;
                 usuario.TipoUsuario = tipoUsuario.ToString();
+                */
+                if (Administrador != null)
+                {
+                    usuario.EsAdmin = true;
+                }
+                else
+                {
+                    usuario.EsAdmin = false;
+                }
 
-                this.ucAddUsuario.AddUsuario(usuario);
-                return RedirectToAction("Home", "Index");
+                this.ucAddUsuario.AddUsuario(usuario, HttpContext.Session.GetString("LogueadoNombre"));
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception e)
             {
@@ -79,7 +93,7 @@ namespace Web.Controllers
                 if (user != null)
                 {
                     HttpContext.Session.SetString("LogueadoNombre", Nombre);
-                    HttpContext.Session.SetString("LogueadoRol", user.TipoUsuario);
+                    HttpContext.Session.Set("LogueadoRol", BitConverter.GetBytes(user.EsAdmin));
                     return RedirectToAction("Index", "Home");
 
                 }

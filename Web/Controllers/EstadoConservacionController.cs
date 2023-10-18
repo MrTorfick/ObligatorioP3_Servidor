@@ -45,7 +45,7 @@ namespace Web.Controllers
             try
             {
                 estadoConservacion.Rangos = new Rangos(minimo, maximo);
-                addEstadoConservacionUC.AddEstadoConservacion(estadoConservacion);
+                addEstadoConservacionUC.AddEstadoConservacion(estadoConservacion, HttpContext.Session.GetString("LogueadoNombre"));
                 return View();
             }
             catch (Exception ex)

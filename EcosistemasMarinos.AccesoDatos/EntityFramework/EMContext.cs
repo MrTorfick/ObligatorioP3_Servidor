@@ -10,14 +10,16 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
 {
     public class EMContext : DbContext
     {
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<EcosistemaMarino> EcosistemaMarinos { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<EcosistemaMarino> EcosistemaMarino { get; set; }
         public DbSet<EspecieMarina> EspecieMarina { get; set; }
         public DbSet<Amenaza> Amenaza { get; set; }
         public DbSet<EstadoConservacion> EstadoConservacion { get; set; }
         public DbSet<Configuracion> Configuracion { get; set; }
         public DbSet<EspeciesHabitab> EspeciesHabitab { get; set; }
         public DbSet<AmenazasAsociadas> AmenazasAsociadas { get; set; }
+        public DbSet<Pais> Pais { get; set; }
+        public DbSet<Auditoria> Auditoria { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -9,6 +9,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
     public interface IAddEspecieMarina
     {
-        public void AddEspecieMarina(EspecieMarina especieMarina);
+        public void AddEspecieMarina(EspecieMarina especieMarina, string UsuarioLogueado);
     }
 }

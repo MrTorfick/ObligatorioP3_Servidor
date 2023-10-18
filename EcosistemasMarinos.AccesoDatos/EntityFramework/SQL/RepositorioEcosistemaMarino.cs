@@ -32,7 +32,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
                     _context.Entry(amenaza).State = EntityState.Unchanged;
                 }
                 */
-                _context.EcosistemaMarinos.Add(unDato);
+                _context.EcosistemaMarino.Add(unDato);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -45,12 +45,21 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<EcosistemaMarino> FindAll()
         {
-            return _context.EcosistemaMarinos;
+            return _context.EcosistemaMarino;
         }
 
         public EcosistemaMarino FindByID(int id)
         {
-            return _context.EcosistemaMarinos.Where(EcosistemaMarino => EcosistemaMarino.Id == id).FirstOrDefault();
+            try
+            {
+                return _context.EcosistemaMarino.Where(EcosistemaMarino => EcosistemaMarino.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar el Ecosistema Marino: " + ex.Message);
+            }
+
         }
 
         public void Remove(int id)
@@ -76,7 +85,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
                 EcosistemaMarino ecosistemaMarino = new EcosistemaMarino();
                 ecosistemaMarino.Id = id;
-                this._context.EcosistemaMarinos.Remove(ecosistemaMarino);
+                this._context.EcosistemaMarino.Remove(ecosistemaMarino);
                 this._context.SaveChanges();
 
 
@@ -84,13 +93,23 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al borrar el Ecosistema Marino");
+                throw new Exception("Error al borrar el Ecosistema Marino: " + ex.Message);
             }
         }
 
         public void Update(EcosistemaMarino dato)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dato.Validar(config);
+                this._context.EcosistemaMarino.Update(dato);
+                this._context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al actualizar el Ecosistema Marino: " + ex.Message);
+            }
         }
     }
 }

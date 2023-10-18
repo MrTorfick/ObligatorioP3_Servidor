@@ -39,7 +39,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public EstadoConservacion FindByID(int id)
         {
-            return _context.EstadoConservacion.Where(EstadoConservacion => EstadoConservacion.Id == id).FirstOrDefault();
+            try
+            {
+                return _context.EstadoConservacion.Where(EstadoConservacion => EstadoConservacion.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar el Estado de Conservacion: " + ex);
+            }
+
+
         }
 
         public void Remove(int id)

@@ -72,7 +72,7 @@ namespace Web.Controllers
         {
             try
             {
-                _updateConfiguracionUC.UpdateConfiguracion(configuracion);
+                _updateConfiguracionUC.UpdateConfiguracion(configuracion, HttpContext.Session.GetString("LogueadoNombre"));
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

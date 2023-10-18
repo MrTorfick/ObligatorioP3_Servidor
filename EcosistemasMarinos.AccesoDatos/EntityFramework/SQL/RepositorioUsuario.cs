@@ -20,18 +20,36 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public void Add(Usuario usuario)
         {
-            usuario.Validar();
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
+            try
+            {
+                usuario.Validar();
+                _context.Usuario.Add(usuario);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al agregar el usuario: " + ex.Message);
+            }
+
         }
 
         public IEnumerable<Usuario> FindAll()
         {
-            return _context.Usuarios.OrderByDescending(Usuario => Usuario.Id);
+            return _context.Usuario.OrderByDescending(Usuario => Usuario.Id);
         }
         public Usuario FindUserByCredentials(string name, string password)
         {
-            return _context.Usuarios.Where(usuario => usuario.Nombre == name && usuario.Contrasenia == password).FirstOrDefault();
+            try
+            {
+                return _context.Usuario.Where(usuario => usuario.Nombre == name && usuario.Contrasenia == password).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar el usuario: " + ex);
+            }
+
         }
 
         public Usuario FindByID(int id)

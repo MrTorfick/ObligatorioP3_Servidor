@@ -35,6 +35,7 @@
                     <input asp-for="Nombre" class="form-control" value="EcosistemaMarino1" />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
+                <h6>Coordenadas</h6>
                 <div class="form-group">
                     <label asp-for="Coordenadas.Longitud" class="control-label"></label>
                     <input asp-for="Coordenadas.Longitud" class="form-control" type="number" name="Longitud" value="-34.8475847" />
@@ -60,7 +61,7 @@
                 </div>
                 <div class="form-group">
                     <label for="imagen" class="control-label"></label>
-                    <input type="file" name="imagen" class="form-control" />
+                    <input type="file" name="imagen" class="form-control" multiple accept=".png, .jpg, .jpeg" />
                     <span asp-validation="imagen" class="text-danger"></span>
                 </div>
 
@@ -76,8 +77,6 @@
                     }
                 </div>
 
-
-
                 <div class="form-group">
                     <label>Seleccione las amenazas:</label> <br />
                     <label>Descripcion - Peligrosidad</label> <br />
@@ -88,6 +87,17 @@
                             <label for="option-@item.Id" class="form-check-label">@item.Descripcion - @item.Peligrosidad</label>
                         </div>
                     }
+                </div>
+
+                <div class="form-group">
+                    <label>Seleccione un Pais </label> <br />
+                    <select id="PaisSeleccionado" name="PaisSeleccionado">
+                        @foreach (var option in ViewBag.Paises)
+                        {
+                            <option value="@option.PaisId">@option.nombre</option>
+                        }
+                    </select>
+
                 </div>
 
                 <div class="form-group">

@@ -10,6 +10,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
     public interface IAddEstadoConservacion
     {
 
-       public void AddEstadoConservacion(EstadoConservacion estadoConservacion);
+       public void AddEstadoConservacion(EstadoConservacion estadoConservacion, string UsuarioLogueado);
     }
 }

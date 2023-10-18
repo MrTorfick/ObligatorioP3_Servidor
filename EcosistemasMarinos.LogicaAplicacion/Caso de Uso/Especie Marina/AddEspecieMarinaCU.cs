@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -11,17 +12,30 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
 {
     public class AddEspecieMarinaCU : IAddEspecieMarina
     {
-        private IRepositorioEspecieMarina repositorioEspecieMarina;
+        private IRepositorioEspecieMarina _repositorioEspecieMarina;
+        private IRepositorioAuditoria _repositorioAuditoria;
 
-        public AddEspecieMarinaCU(IRepositorioEspecieMarina repositorioEspecieMarina)
+        public AddEspecieMarinaCU(IRepositorioEspecieMarina repositorioEspecieMarina, IRepositorioAuditoria repositorioAuditoria)
         {
-            this.repositorioEspecieMarina = repositorioEspecieMarina;
+            this._repositorioEspecieMarina = repositorioEspecieMarina;
+            this._repositorioAuditoria = repositorioAuditoria;
         }
 
 
-        public void AddEspecieMarina(EspecieMarina especieMarina)
+        public void AddEspecieMarina(EspecieMarina especieMarina, string usuarioLogueado)
         {
-            repositorioEspecieMarina.Add(especieMarina);
+            _repositorioEspecieMarina.Add(especieMarina);
+            Auditoria(usuarioLogueado, especieMarina.Id);
+        }
+
+        private void Auditoria(string UsuarioLogueado, int idEntidad)
+        {
+            Auditoria auditoria = new Auditoria();
+            auditoria.NombreUsuario = UsuarioLogueado;
+            auditoria.Fecha = DateTime.Now;
+            auditoria.IdEntidad = idEntidad;
+            auditoria.TipoEntidad = "Agregar especie marina";
+            _repositorioAuditoria.Add(auditoria);
         }
     }
 }

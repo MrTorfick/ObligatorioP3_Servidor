@@ -31,7 +31,16 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public Amenaza FindByID(int id)
         {
-            return _context.Amenaza.Where(Amenaza => Amenaza.Id == id).FirstOrDefault();
+            try
+            {
+                return _context.Amenaza.Where(Amenaza => Amenaza.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al buscar la Amenaza: " + ex);
+            }
+
         }
 
         public void Remove(int id)
@@ -50,7 +59,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             catch (Exception ex)
             {
 
-                throw new Exception("Error al actualizar la Amenaza");
+                throw new Exception("Error al actualizar la Amenaza: " + ex);
             }
 
         }

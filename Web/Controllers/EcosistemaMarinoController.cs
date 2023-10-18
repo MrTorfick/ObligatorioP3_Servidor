@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using EcosistemasMarinos.ValueObjects;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Ecosistema_Marino;
 
 namespace Web.Controllers
 {
@@ -21,6 +22,9 @@ namespace Web.Controllers
         private IObtenerAmenazaPorId obtenerAmenazasPorIdUC;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
         private IBorrarEcosistemaMarino borrarEcosistemaMarinoUC;
+        private IUpdateEcosistemaMarino updateEcosistemaMarinoUC;
+        private IObtenerPaises obtenerPaisesUC;
+        private IObtenerPaisPorId obtenerPaisPorIdUC;
         //private IUpdateAmenaza updateAmenazaUC;
 
         public EcosistemaMarinoController(
@@ -33,7 +37,10 @@ namespace Web.Controllers
             IObtenerAmenazas getAmenazasUC,
             IObtenerAmenazaPorId obtenerAmenazasPorIdUC,
             IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
-            IBorrarEcosistemaMarino borrarEcosistemaMarinoUC
+            IBorrarEcosistemaMarino borrarEcosistemaMarinoUC,
+            IUpdateEcosistemaMarino updateEcosistemaMarinoUC,
+            IObtenerPaises obtenerPaisesUC,
+            IObtenerPaisPorId obtenerPaisPorIdUC
             //IUpdateAmenaza updateAmenazaUC
 
             )
@@ -48,6 +55,9 @@ namespace Web.Controllers
             this.obtenerAmenazasPorIdUC = obtenerAmenazasPorIdUC;
             this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
             this.borrarEcosistemaMarinoUC = borrarEcosistemaMarinoUC;
+            this.updateEcosistemaMarinoUC = updateEcosistemaMarinoUC;
+            this.obtenerPaisesUC = obtenerPaisesUC;
+            this.obtenerPaisPorIdUC = obtenerPaisPorIdUC;
             //this.updateAmenazaUC = updateAmenazaUC;
 
         }
@@ -70,74 +80,19 @@ namespace Web.Controllers
         {
             ViewBag.EstadosConservacion = this.getEstadosConservacionUC.ObtenerEstadosConservacion();
             ViewBag.Amenazas = this.getAmenazasUC.GetAmenazas();
+            ViewBag.Paises = this.obtenerPaisesUC.ObtenerPaises();
             ViewBag.Mensaje = mensaje;
             return View();
         }
-        /*
+
 
         [HttpPost]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, List<IFormFile> imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas, int PaisSeleccionado)
         {
             try
             {
 
-                if (ecosistemasMarinos == null || imagen == null || SelectedOptionEstado == 0)
-
-                    return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
-
-
-                //ecosistemasMarinos.EspeciesHabitan = new List<Especie>();
-                //ecosistemasMarinos.EspeciesHabitan.Add(new Especie() { Nombre = "Tiburón" });
-
-                string LongitudTipo = "Longitud";
-                string LatitudTipo = "Latitud";
-
-                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud, LatitudTipo);
-                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
-
-                // ecosistemasMarinos.DetallesGeo = $"Longitud {grados_Longitud}\n Latitud {grados_Latitud}";
-                ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
-                if (GuardarImagen(imagen, ecosistemasMarinos))
-                {
-                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
-                    //addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
-                    ecosistemasMarinos.Amenazas = new List<Amenaza>();
-                    foreach (var item in SelectedOptionsAmenazas)
-                    {
-                        Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
-                        amenaza.Id = 0;//De esta forma, sql no lanza una excepcion por intentar insertar una amenaza que ya contiene un id.
-                                       //Cuando lo inicializo en 0, EF lo toma como que es una nueva amenaza y le asigna un id nuevo.
-
-                        ecosistemasMarinos.Amenazas.Add(amenaza);
-                        //amenaza.EcosistemaMarinoId= ecosistemasMarinos.Id;
-                        //updateAmenazaUC.UpdateAmenaza(amenaza);
-                        //ecosistemasMarinos.Amenazas.Add(amenaza);
-
-                    }
-                    addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
-            }
-        }
-        */
-
-
-
-        [HttpPost]
-        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, IFormFile imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
-        {
-            try
-            {
-
-                if (ecosistemasMarinos == null || imagen == null || SelectedOptionEstado == 0)
+                if (ecosistemasMarinos == null || imagen.Count == 0 || SelectedOptionEstado == 0 || PaisSeleccionado == 0)
 
                     return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
 
@@ -148,28 +103,28 @@ namespace Web.Controllers
                 string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
 
                 ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
+
+                ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
+                ecosistemasMarinos.Amenazas = new List<AmenazasAsociadas>();
+                foreach (var item in SelectedOptionsAmenazas)
+                {
+                    Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+
+                    if (amenaza != null)
+                    {
+                        AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
+                        amenazasAsociadas.AmenazaId = amenaza.Id;
+                        ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
+                    }
+                }
+                ecosistemasMarinos.pais = obtenerPaisPorIdUC.ObtenerPaisPorId(PaisSeleccionado);
+                addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
-                    ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
-                    ecosistemasMarinos.Amenazas = new List<AmenazasAsociadas>();
-                    foreach (var item in SelectedOptionsAmenazas)
-                    {
-                        Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+                    updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
+                }
+                return RedirectToAction(nameof(Index));
 
-                        if (amenaza != null)
-                        {
-                            AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
-                            amenazasAsociadas.AmenazaId = amenaza.Id;
-                            ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
-                        }
-                    }
-                    addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View();
-                }
             }
             catch (Exception ex)
             {
@@ -179,35 +134,58 @@ namespace Web.Controllers
 
 
 
-        private bool GuardarImagen(IFormFile imagen, EcosistemaMarino em)
+        private bool GuardarImagen(List<IFormFile> imagen, EcosistemaMarino em)
         {
             if (imagen == null || em == null) return false;
             // SUBIR LA IMAGEN
             //ruta física de wwwroot
             string rutaFisicaWwwRoot = _environment.WebRootPath;
-
-            string nombreImagen = imagen.FileName;
-            //ruta donde se guardan las fotos de las personas
-            string rutaFisicaFoto = Path.Combine
-            (rutaFisicaWwwRoot, "images", "ecosistema_marino", nombreImagen);
-            //FileStream permite manejar archivos
-            try
+            int num = 0;
+            foreach (var item in imagen)
             {
-                //el método using libera los recursos del objeto FileStream al finalizar
-                using (FileStream f = new FileStream(rutaFisicaFoto, FileMode.Create))
+                string tipoImagen;
+                if (item.ContentType.Contains("png"))
                 {
-                    //Para archivos grandes o varios archivos usar la versión
-                    //asincrónica de CopyTo. Sería: await imagen.CopyToAsync (f);
-                    imagen.CopyTo(f);
+                    tipoImagen = ".png";
                 }
-                //GUARDAR EL NOMBRE DE LA IMAGEN SUBIDA EN EL OBJETO
-                em.Imagen.Valor = nombreImagen;
-                return true;
+                else if (item.ContentType.Contains("jpeg"))
+                {
+                    tipoImagen = ".jpeg";
+                }
+                else
+                {
+                    tipoImagen = ".jpg";
+                }
+
+                string numString = num.ToString("D3");
+                string nombreImagen = item.FileName;
+                nombreImagen = em.Id + "_" + numString + tipoImagen;
+                num++;
+                //ruta donde se guardan las fotos de las personas
+                string rutaFisicaFoto = Path.Combine
+                (rutaFisicaWwwRoot, "images", "ecosistema_marino", nombreImagen);
+                //FileStream permite manejar archivos
+                try
+                {
+                    //el método using libera los recursos del objeto FileStream al finalizar
+                    using (FileStream f = new FileStream(rutaFisicaFoto, FileMode.Create))
+                    {
+                        //Para archivos grandes o varios archivos usar la versión
+                        //asincrónica de CopyTo. Sería: await imagen.CopyToAsync (f);
+                        item.CopyTo(f);
+                    }
+                    //GUARDAR EL NOMBRE DE LA IMAGEN SUBIDA EN EL OBJETO
+                    Imagen imagenEnviar = new Imagen(nombreImagen);
+                    em.Imagen.Add(imagenEnviar);
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return true;
+
         }
 
 
@@ -258,7 +236,7 @@ namespace Web.Controllers
         {
             try
             {
-                this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id);
+                this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, HttpContext.Session.GetString("LogueadoNombre"));
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

@@ -1,7 +1,9 @@
 using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Ecosistema_Marino;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Ecosistema_Marino;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Interfaces_Repositorios;
 
@@ -23,6 +25,9 @@ namespace Web
             builder.Services.AddScoped<IRepositorioEspecieMarina, RepositorioEspecieMarina>();
             builder.Services.AddScoped<IRepositorioAmenaza, RepositorioAmenaza>();
             builder.Services.AddScoped<IRepositorioConfiguracion, RepositorioConfiguracion>();
+            builder.Services.AddScoped<IRepositorioPais, RepositorioPais>();
+            builder.Services.AddScoped<IRepositorioAuditoria, RepositorioAuditoria>();
+
 
             //inicializacion de casos de uso
             builder.Services.AddScoped<IAddUsuario, AddUsuarioCU>();
@@ -47,8 +52,12 @@ namespace Web
             builder.Services.AddScoped<IObtenerEspecieMarinaPorNombreCientifico, ObtenerEspecieMarinaPorNombreCientificoUC>();
             builder.Services.AddScoped<IObtenerEspecieMarinaPorRangoPeso, ObtenerEspecieMarinaPorRangoDePesoUC>();
             builder.Services.AddScoped<IObtenerEcosistemasMarinosNoPuedenHabitarEspecies, ObtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC>();
-            builder.Services.AddScoped<IBuscarEspeciesQueHabitanUnEcosistema, BuscarEspeciesQueHabitanUnEcosistema>();
-            builder.Services.AddScoped<IBuscarEspeciesEnPeligroDeExtincion, BuscarEspeciesEnPeligroDeExtincion>();
+            builder.Services.AddScoped<IBuscarEspeciesQueHabitanUnEcosistema, BuscarEspeciesQueHabitanUnEcosistemaUC>();
+            builder.Services.AddScoped<IBuscarEspeciesEnPeligroDeExtincion, BuscarEspeciesEnPeligroDeExtincionUC>();
+            builder.Services.AddScoped<IObtenerPaises, ObtenerPaisesUC>();
+            builder.Services.AddScoped<IUpdateEcosistemaMarino, UpdateEcosistemaMarinoUC>();
+            builder.Services.AddScoped<IObtenerPaisPorId, ObtenerPaisPorIdUC>();
+            builder.Services.AddScoped<IAddAuditoria, AddAuditoriaUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();

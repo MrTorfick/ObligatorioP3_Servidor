@@ -10,6 +10,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
     public interface IUpdateAmenaza
     {
 
-        public void UpdateAmenaza(Amenaza amenaza);
+        public void UpdateAmenaza(Amenaza amenaza, string UsuarioLogueado);
     }
 }

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
-    public interface IAddUsuario
+    public interface IAddAuditoria
     {
-        public void AddUsuario(Usuario usuario, string UsuarioLogueado);
-
-
+        public void AddAuditoria(Auditoria auditoria);
     }
 }

@@ -14,7 +14,7 @@ namespace EcosistemasMarinos.Entidades
 {
     public class EcosistemaMarino
     {
-
+        [Key]
         public int Id { get; set; }
         // [Required, StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
         public string Nombre { get; set; }
@@ -23,8 +23,9 @@ namespace EcosistemasMarinos.Entidades
         public double Area { get; set; }
         [Required]
         public string DescripcionCaracteristicas { get; set; }
+        public List<Imagen> Imagen { get; set; }
 
-        public Imagen Imagen { get; set; }
+        //public Imagen Imagen { get; set; }
         //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
         //public List<EspecieMarina> EspeciesPodrianHabitar { get; set; }
@@ -81,7 +82,8 @@ namespace EcosistemasMarinos.Entidades
         {
 
             if (string.IsNullOrEmpty(valor) && !valor.Contains('.'))
-                throw new Exception("Debe ingresar un dato valido");
+                throw new Exception("Las coordenadas, deben tener al menos un punto." +
+                    "Ejemplo: -56.1881600");
 
             string[] grados = valor.Split('.');
 

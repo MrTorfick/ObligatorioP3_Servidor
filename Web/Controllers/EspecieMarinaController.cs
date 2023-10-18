@@ -68,6 +68,7 @@ namespace Web.Controllers
             try
             {
                 IEnumerable<EspecieMarina> especieMarinas = buscarEspeciesEnPeligroDeExtincionUC.GetEspecieMarinaEnPeligroDeExtincion();
+
                 if (especieMarinas.Count() > 0)
                 {
                     return View(especieMarinas);
@@ -86,9 +87,6 @@ namespace Web.Controllers
             }
 
         }
-
-
-
         public ActionResult BuscarEspeciesQueHabitanEcosistema(string mensaje)
         {
             ViewBag.Mensaje = mensaje;
@@ -250,10 +248,14 @@ namespace Web.Controllers
         // POST: EspecieMarinaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(EspecieMarina especieMarina, IFormFile imagen, List<int> SelectedOptions, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
+        public ActionResult Create(EspecieMarina especieMarina, List<IFormFile> imagen, List<int> SelectedOptions, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas)
         {
             try
             {
+                if (especieMarina == null || imagen.Count == 0 || SelectedOptions.Count == 0 || SelectedOptionEstado == 0 || SelectedOptionsAmenazas.Count == 0)
+                {
+                    return RedirectToAction(nameof(Create), new { mensaje = "Debe completar todos los campos" });
+                }
 
                 especieMarina.EcosistemaMarinos = new List<EcosistemaMarino>();
                 foreach (var id in SelectedOptions)
@@ -279,16 +281,13 @@ namespace Web.Controllers
                 }
 
                 especieMarina.EstadoConservacionId = SelectedOptionEstado;
-                addEspecieMarinaUC.AddEspecieMarina(especieMarina);
+                addEspecieMarinaUC.AddEspecieMarina(especieMarina, HttpContext.Session.GetString("LogueadoNombre"));
                 return RedirectToAction(nameof(Index));
 
             }
             catch (Exception ex)
             {
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
-            }
-            {
-
             }
         }
 
@@ -324,7 +323,37 @@ namespace Web.Controllers
             try
             {
                 int idEspecie = (int)TempData["idEspecie"];
-                asociarEspecieEcosistemaUC.AsociarEspecieAEcosistema(idEspecie, EcosistemaSeleccionado);
+                EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(idEspecie);
+
+                IEnumerable<EspecieMarina> especieMarinas = buscarEspeciesQueHabitanUnEcosistemaUC.BuscarEspeciesQueHabitanUnEcosistema(EcosistemaSeleccionado);
+
+                foreach (var item in especieMarinas)
+                {
+                    if (item.Id == idEspecie)
+                    {
+                        return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "La especie ya se encuentra asociada al ecosistema" });
+                    }
+                }
+
+                EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(EcosistemaSeleccionado);
+
+                foreach (var item in ecosistemaMarino.Amenazas)
+                {
+                    foreach (var item1 in especieMarina.Amenazas)
+                    {
+                        if (item.AmenazaId == item1.AmenazaId)
+                        {
+                            return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "La especie no puede habitar el ecosistema porque tiene amenazas en comun" });
+                        }
+                    }
+                }
+                if (ecosistemaMarino.EstadoConservacion.Rangos.Minimo < especieMarina.EstadoConservacion.Rangos.Minimo)
+                {
+                    return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "La especie no puede habitar el ecosistema porque el estado de conservacion del ecosistema es menor al de la especie" });
+                }
+
+
+                asociarEspecieEcosistemaUC.AsociarEspecieAEcosistema(idEspecie, EcosistemaSeleccionado, HttpContext.Session.GetString("LogueadoNombre"));
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina
 {
-    public class BuscarEspeciesEnPeligroDeExtincion : IBuscarEspeciesEnPeligroDeExtincion
+    public class BuscarEspeciesEnPeligroDeExtincionUC : IBuscarEspeciesEnPeligroDeExtincion
     {
 
         private IRepositorioEspecieMarina _repositorioEspecieMarina;
 
 
-        public BuscarEspeciesEnPeligroDeExtincion(IRepositorioEspecieMarina repositorioEspecieMarina)
+        public BuscarEspeciesEnPeligroDeExtincionUC(IRepositorioEspecieMarina repositorioEspecieMarina)
         {
             _repositorioEspecieMarina = repositorioEspecieMarina;
         }

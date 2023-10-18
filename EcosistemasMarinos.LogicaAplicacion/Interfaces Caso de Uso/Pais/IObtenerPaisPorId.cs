@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
-    public interface IAddUsuario
+    public interface IObtenerPaisPorId
     {
-        public void AddUsuario(Usuario usuario, string UsuarioLogueado);
-
-
+        public Pais ObtenerPaisPorId(int id);
     }
 }
