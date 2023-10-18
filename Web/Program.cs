@@ -58,6 +58,7 @@ namespace Web
             builder.Services.AddScoped<IUpdateEcosistemaMarino, UpdateEcosistemaMarinoUC>();
             builder.Services.AddScoped<IObtenerPaisPorId, ObtenerPaisPorIdUC>();
             builder.Services.AddScoped<IAddAuditoria, AddAuditoriaUC>();
+            builder.Services.AddScoped<IUpdateEspecieMarina, UpdateEspecieMarinaUC>();
 
             builder.Services.AddSession();
             var app = builder.Build();

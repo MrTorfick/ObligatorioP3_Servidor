@@ -28,7 +28,18 @@ namespace Web.Controllers
         // GET: ConfiguracionController
         public ActionResult Index()
         {
-            return View(_obtenerConfiguracionesUC.ObtenerConfiguraciones());
+
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            {
+                return View(_obtenerConfiguracionesUC.ObtenerConfiguraciones());
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
         }
 
         // GET: ConfiguracionController/Details/5
@@ -61,8 +72,16 @@ namespace Web.Controllers
         // GET: ConfiguracionController/Edit/5
         public ActionResult Edit(string NombreAtributo, string mensaje)
         {
-            ViewBag.mensaje = mensaje;
-            return View(_obtenerConfiguracionPorNombreUC.ObtenerConfiguracionPorNombre(NombreAtributo));
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            {
+                ViewBag.mensaje = mensaje;
+                return View(_obtenerConfiguracionPorNombreUC.ObtenerConfiguracionPorNombre(NombreAtributo));
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
         }
 
         // POST: ConfiguracionController/Edit/5

@@ -22,15 +22,12 @@ namespace EcosistemasMarinos.Entidades
         public string NombreVulgar { get; set; }
         [Required]
         public string Descripcion { get; set; }
-        [Required]
-        public Imagen Imagen { get; set; }
+        public List<Imagen> Imagen { get; set; }
         [Required]
         public double Peso { get; set; }
         [Required]
         public double Longitud { get; set; }
-        //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
         public List<EcosistemaMarino> EcosistemaMarinos { get; set; }
-        //public List<EcosistemaMarino> EcosistemasMarinosVidaPosible { get; set; }
 
         public List<AmenazasAsociadas> Amenazas { get; set; }
 
@@ -38,9 +35,6 @@ namespace EcosistemasMarinos.Entidades
         public int? EstadoConservacionId { get; set; }
         public EstadoConservacion? EstadoConservacion { get; set; }
 
-        // [Column("Ecosistemas_Habita")]
-        // public List<EcosistemaMarino> EcosistemaMarinos { get; set; }
-        //[ForeignKey(nameof(EstadoConservacion))] public int EstadoConservacionId { get; set; }
         public EspecieMarina() { }
         public void Validar(IRepositorioConfiguracion configuracion)
         {
@@ -53,12 +47,20 @@ namespace EcosistemasMarinos.Entidades
 
             if (string.IsNullOrEmpty(Descripcion))
                 throw new Exception("La descripcion no puede ser nula ni vacía");
-            if (string.IsNullOrEmpty(Imagen.Valor))
-                throw new Exception("La imagen no puede ser nula ni vacía");
             if (Peso <= 0)
                 throw new Exception("El peso debe ser mayor a 0");
             if (Longitud <= 0)
                 throw new Exception("La longitud debe ser mayor a 0");
+
+            if (Imagen.Count == 0)
+                throw new Exception("Debe tener al menos una imagen");
+            if (Amenazas.Count == 0)
+                throw new Exception("Debe tener al menos una amenaza asociada");
+
+            if (EcosistemaMarinos.Count == 0)
+                throw new Exception("Debe tener al menos un ecosistema marino asociado");
+
+
 
 
             if (NombreCientifico.Length < configuracion.GetTopeInferior("EspecieNombreCientifico"))

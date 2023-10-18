@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\ecosistema_marino\" />
-    <Folder Include="wwwroot\images\especie_marina\" />
+    <Folder Include="wwwroot\images\ecosistema\" />
+    <Folder Include="wwwroot\images\especie\" />
   </ItemGroup>
 
 </Project>

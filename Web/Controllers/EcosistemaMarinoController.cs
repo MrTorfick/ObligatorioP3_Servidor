@@ -78,11 +78,21 @@ namespace Web.Controllers
         // GET: EcosistemaMarinoController1/Create
         public ActionResult Create(string mensaje)
         {
-            ViewBag.EstadosConservacion = this.getEstadosConservacionUC.ObtenerEstadosConservacion();
-            ViewBag.Amenazas = this.getAmenazasUC.GetAmenazas();
-            ViewBag.Paises = this.obtenerPaisesUC.ObtenerPaises();
-            ViewBag.Mensaje = mensaje;
-            return View();
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            {
+                ViewBag.EstadosConservacion = this.getEstadosConservacionUC.ObtenerEstadosConservacion();
+                ViewBag.Amenazas = this.getAmenazasUC.GetAmenazas();
+                ViewBag.Paises = this.obtenerPaisesUC.ObtenerPaises();
+                ViewBag.Mensaje = mensaje;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+
         }
 
 
@@ -122,8 +132,13 @@ namespace Web.Controllers
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {
                     updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    return RedirectToAction(nameof(Create), new { mensaje = "No se pudo guardar la imagen" });
+                }
+
 
             }
             catch (Exception ex)
@@ -163,7 +178,7 @@ namespace Web.Controllers
                 num++;
                 //ruta donde se guardan las fotos de las personas
                 string rutaFisicaFoto = Path.Combine
-                (rutaFisicaWwwRoot, "images", "ecosistema_marino", nombreImagen);
+                (rutaFisicaWwwRoot, "images", "ecosistema", nombreImagen);
                 //FileStream permite manejar archivos
                 try
                 {
@@ -214,17 +229,28 @@ namespace Web.Controllers
         // GET: EcosistemaMarinoController1/Delete/5
         public ActionResult Delete(int id)
         {
-            EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
-            //Hay que validar que ecosistemaMarino no sea null. 
-            //TODO
-            if (ecosistemaMarino.EspeciesHabitan != null)
+
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
             {
-                if (ecosistemaMarino.EspeciesHabitan.Count > 0)
+
+                EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
+                //Hay que validar que ecosistemaMarino no sea null. 
+                //TODO
+                if (ecosistemaMarino.EspeciesHabitan != null)
                 {
-                    return RedirectToAction(nameof(Index), new { mensaje = "No se puede eliminar el ecosistema marino porque tiene especies que lo habitan" });
+                    if (ecosistemaMarino.EspeciesHabitan.Count > 0)
+                    {
+                        return RedirectToAction(nameof(Index), new { mensaje = "No se puede eliminar el ecosistema marino porque tiene especies que lo habitan" });
+                    }
                 }
+                return View(ecosistemaMarino);
+
             }
-            return View(ecosistemaMarino);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
 
 
         }

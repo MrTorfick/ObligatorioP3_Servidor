@@ -23,16 +23,9 @@ namespace Web.Controllers
         // GET: UsuarioController/Create
         public ActionResult Create(string mensaje)
         {
-            bool esAdmin = false;
-            byte[] esAdminBytes;
+
             ViewBag.Mensaje = mensaje;
-
-            if (HttpContext.Session.TryGetValue("LogueadoRol", out esAdminBytes))
-            {
-                esAdmin = BitConverter.ToBoolean(esAdminBytes);
-            }
-
-            if (esAdmin)
+            if (HttpContext.Session.GetString("LogueadoRol") == "admin")
             {
                 return View();
             }
@@ -40,7 +33,6 @@ namespace Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
         }
 
         // POST: UsuarioController/Create
@@ -77,6 +69,17 @@ namespace Web.Controllers
         public IActionResult Login(string mensaje)
         {
 
+            string? nombreLogueado = HttpContext.Session.GetString("LogueadoNombre");
+
+            if (nombreLogueado != null)
+            {
+                return View();
+            }
+            else
+            {
+                RedirectToAction("Index", "Home");
+            }
+
             ViewBag.Mensaje = mensaje;
             return View();
         }
@@ -93,7 +96,15 @@ namespace Web.Controllers
                 if (user != null)
                 {
                     HttpContext.Session.SetString("LogueadoNombre", Nombre);
-                    HttpContext.Session.Set("LogueadoRol", BitConverter.GetBytes(user.EsAdmin));
+
+                    if (user.EsAdmin)
+                    {
+                        HttpContext.Session.SetString("LogueadoRol", "admin");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("LogueadoRol", "default");
+                    }
                     return RedirectToAction("Index", "Home");
 
                 }
@@ -108,6 +119,12 @@ namespace Web.Controllers
                 throw new Exception("Ha ocurrido un error inesperado. Intentelo nuevamente");
             }
 
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
 

@@ -24,25 +24,10 @@ namespace EcosistemasMarinos.Entidades
         [Required]
         public string DescripcionCaracteristicas { get; set; }
         public List<Imagen> Imagen { get; set; }
-
-        //public Imagen Imagen { get; set; }
-        //[Required]
         public List<EspecieMarina> EspeciesHabitan { get; set; }
-        //public List<EspecieMarina> EspeciesPodrianHabitar { get; set; }
 
-        public List<AmenazasAsociadas> Amenazas { get; set; }//Esto crea una propiedad en la tabla Amenazas, llamada EcosistemaMarinoID
-        /*
-        [ForeignKey(nameof(Pais))]
-        [Column(Order = 0)]
-        public string paisNombre { get; set; }
-
-        [ForeignKey(nameof(Pais))]
-        [Column(Order = 1)]
-        public string paisCodigoISO { get; set; }
-        */
-
+        public List<AmenazasAsociadas> Amenazas { get; set; }
         public Pais pais { get; set; }
-
         [ForeignKey(nameof(EstadoConservacion))] public int? EstadoConservacionId { get; set; }
         public EstadoConservacion? EstadoConservacion { get; set; }
         public EcosistemaMarino() { }
@@ -75,50 +60,73 @@ namespace EcosistemasMarinos.Entidades
             {
                 throw new RangoValoresException("Descripcion demasiado larga");
             }
-
+            if (Coordenadas == null)
+            {
+                throw new Exception("Las coordenadas no pueden ser nulas");
+            }
+            if (Imagen.Count == 0)
+            {
+                throw new Exception("Debe haber al menos una imagen");
+            }
+            if (pais == null)
+            {
+                throw new Exception("Debe seleccionar un pais");
+            }
+            if (EstadoConservacion == null)
+            {
+                throw new Exception("Debe seleccionar un estado de conservacion");
+            }
+            if (Area <= 0)
+            {
+                throw new Exception("El area debe ser mayor a 0");
+            }
+            if (Amenazas.Count == 0)
+            {
+                throw new Exception("Debe haber al menos una amenaza");
+            }
         }
+  
+    public string GradosMinutosSegundos(string valor, string tipo)
+    {
 
-        public string GradosMinutosSegundos(string valor, string tipo)
+        if (string.IsNullOrEmpty(valor) && !valor.Contains('.'))
+            throw new Exception("Las coordenadas, deben tener al menos un punto." +
+                "Ejemplo: -56.1881600");
+
+        string[] grados = valor.Split('.');
+
+
+        double parteEnteraGrados = int.Parse(grados[0]);
+        if (tipo == "Longitud")
+        {
+            if (parteEnteraGrados <= -180 || parteEnteraGrados >= 180)
+            {
+                throw new Exception("La longitud debe estar entre -180° y 180°");
+            }
+        }
+        else
         {
 
-            if (string.IsNullOrEmpty(valor) && !valor.Contains('.'))
-                throw new Exception("Las coordenadas, deben tener al menos un punto." +
-                    "Ejemplo: -56.1881600");
-
-            string[] grados = valor.Split('.');
-
-
-            double parteEnteraGrados = int.Parse(grados[0]);
-            if (tipo == "Longitud")
+            if (parteEnteraGrados <= -90 || parteEnteraGrados >= 90)
             {
-                if (parteEnteraGrados <= -180 || parteEnteraGrados >= 180)
-                {
-                    throw new Exception("La longitud debe estar entre -180° y 180°");
-                }
+                throw new Exception("La latitud debe estar entre -90° y 90°");
             }
-            else
-            {
-
-                if (parteEnteraGrados <= -90 || parteEnteraGrados >= 90)
-                {
-                    throw new Exception("La latitud debe estar entre -90° y 90°");
-                }
-            }
-            int parteDecimal = int.Parse(grados[1]);
-            int minutos = (parteDecimal * 60);
-            string StringMinutos = minutos.ToString();
-            int parteEnteraMinutos = int.Parse(StringMinutos.Substring(0, 2));
-            int parteDecimalMinutos = int.Parse(StringMinutos.Substring(2, StringMinutos.Length - 2));
-            double segundos = (parteDecimalMinutos * 60);
-            string StringSegundos = segundos.ToString();
-            segundos = double.Parse(StringSegundos.Substring(0, 4));
-            segundos = segundos / 100;
-            parteEnteraGrados = Math.Abs(parteEnteraGrados);
-            return $"{parteEnteraGrados}° {parteEnteraMinutos}' {segundos}''";
-
-
         }
+        int parteDecimal = int.Parse(grados[1]);
+        int minutos = (parteDecimal * 60);
+        string StringMinutos = minutos.ToString();
+        int parteEnteraMinutos = int.Parse(StringMinutos.Substring(0, 2));
+        int parteDecimalMinutos = int.Parse(StringMinutos.Substring(2, StringMinutos.Length - 2));
+        double segundos = (parteDecimalMinutos * 60);
+        string StringSegundos = segundos.ToString();
+        segundos = double.Parse(StringSegundos.Substring(0, 4));
+        segundos = segundos / 100;
+        parteEnteraGrados = Math.Abs(parteEnteraGrados);
+        return $"{parteEnteraGrados}° {parteEnteraMinutos}' {segundos}''";
 
 
     }
+
+
+}
 }

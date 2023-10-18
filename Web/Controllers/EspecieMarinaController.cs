@@ -2,6 +2,7 @@
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Entidades;
+using EcosistemasMarinos.ValueObjects;
 using EcosistemasMarinos.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace Web.Controllers
     public class EspecieMarinaController : Controller
     {
         #region
+        private IWebHostEnvironment _environment;
         private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC;
         private IAddEspecieMarina addEspecieMarinaUC;
@@ -27,8 +29,10 @@ namespace Web.Controllers
         private IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
         private IBuscarEspeciesQueHabitanUnEcosistema buscarEspeciesQueHabitanUnEcosistemaUC;
         private IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincionUC;
+        private IUpdateEspecieMarina updateEspecieMarinaUC;
 
         public EspecieMarinaController(
+            IWebHostEnvironment environment,
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
             IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
             IAddEspecieMarina addEspecieMarinaUC,
@@ -42,9 +46,11 @@ namespace Web.Controllers
             IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPesoUC,
             IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC,
             IBuscarEspeciesQueHabitanUnEcosistema buscarEspeciesQueHabitanUnEcosistemaUC,
-            IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincionUC
+            IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincionUC,
+            IUpdateEspecieMarina updateEspecieMarinaUC
             )
         {
+            _environment = environment;
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
             this.obtenerEcosistemaMarinoPorIdUC = obtenerEcosistemaMarinoPorIdUC;
             this.addEspecieMarinaUC = addEspecieMarinaUC;
@@ -59,6 +65,7 @@ namespace Web.Controllers
             this.obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC = obtenerEcosistemasMarinosNoPuedenHabitarEspeciesUC;
             this.buscarEspeciesQueHabitanUnEcosistemaUC = buscarEspeciesQueHabitanUnEcosistemaUC;
             this.buscarEspeciesEnPeligroDeExtincionUC = buscarEspeciesEnPeligroDeExtincionUC;
+            this.updateEspecieMarinaUC = updateEspecieMarinaUC;
         }
         #endregion
 
@@ -67,6 +74,7 @@ namespace Web.Controllers
         {
             try
             {
+
                 IEnumerable<EspecieMarina> especieMarinas = buscarEspeciesEnPeligroDeExtincionUC.GetEspecieMarinaEnPeligroDeExtincion();
 
                 if (especieMarinas.Count() > 0)
@@ -238,11 +246,21 @@ namespace Web.Controllers
         // GET: EspecieMarinaController/Create
         public ActionResult Create(string mensaje)
         {
-            ViewBag.Mensaje = mensaje;
-            ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
-            ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
-            ViewBag.EstadosConservacion = getEstadosConservacionUC.ObtenerEstadosConservacion();
-            return View();
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            {
+                ViewBag.Mensaje = mensaje;
+                ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+                ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
+                ViewBag.EstadosConservacion = getEstadosConservacionUC.ObtenerEstadosConservacion();
+                return View();
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
         }
 
         // POST: EspecieMarinaController/Create
@@ -282,7 +300,15 @@ namespace Web.Controllers
 
                 especieMarina.EstadoConservacionId = SelectedOptionEstado;
                 addEspecieMarinaUC.AddEspecieMarina(especieMarina, HttpContext.Session.GetString("LogueadoNombre"));
-                return RedirectToAction(nameof(Index));
+                if (GuardarImagen(imagen, especieMarina))
+                {
+                    updateEspecieMarinaUC.UpdateEspecieMarina(especieMarina, HttpContext.Session.GetString("LogueadoNombre"));
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Create), new { mensaje = "No se pudo guardar la imagen" });
+                }
 
             }
             catch (Exception ex)
@@ -291,27 +317,92 @@ namespace Web.Controllers
             }
         }
 
-        public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
-        {
-            List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
-            EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
-            TempData["idEspecie"] = especieMarina.Id;
 
-            //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
-            foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
+        private bool GuardarImagen(List<IFormFile> imagen, EspecieMarina em)
+        {
+            if (imagen == null || em == null) return false;
+            // SUBIR LA IMAGEN
+            //ruta física de wwwroot
+            string rutaFisicaWwwRoot = _environment.WebRootPath;
+            int num = 0;
+            foreach (var item in imagen)
             {
-                if (item != null)
+                string tipoImagen;
+                if (item.ContentType.Contains("png"))
                 {
-                    EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
-                    especieAsociarEcosistemaVM.ecosistemasMarinos = item;
-                    especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
-                    //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
-                    //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                    tipoImagen = ".png";
+                }
+                else if (item.ContentType.Contains("jpeg"))
+                {
+                    tipoImagen = ".jpeg";
+                }
+                else
+                {
+                    tipoImagen = ".jpg";
                 }
 
+                string numString = num.ToString("D3");
+                string nombreImagen = item.FileName;
+                nombreImagen = em.Id + "_" + numString + tipoImagen;
+                num++;
+                //ruta donde se guardan las fotos de las personas
+                string rutaFisicaFoto = Path.Combine
+                (rutaFisicaWwwRoot, "images", "especie", nombreImagen);
+                //FileStream permite manejar archivos
+                try
+                {
+                    //el método using libera los recursos del objeto FileStream al finalizar
+                    using (FileStream f = new FileStream(rutaFisicaFoto, FileMode.Create))
+                    {
+                        //Para archivos grandes o varios archivos usar la versión
+                        //asincrónica de CopyTo. Sería: await imagen.CopyToAsync (f);
+                        item.CopyTo(f);
+                    }
+                    //GUARDAR EL NOMBRE DE LA IMAGEN SUBIDA EN EL OBJETO
+                    Imagen imagenEnviar = new Imagen(nombreImagen);
+                    em.Imagen.Add(imagenEnviar);
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
-            ViewBag.Mensaje = mensaje;
-            return View(especieAsociarEcosistemaVMs);
+            return true;
+
+        }
+
+
+        public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
+        {
+
+            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            {
+                List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
+                EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
+                TempData["idEspecie"] = especieMarina.Id;
+
+                //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
+                foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
+                {
+                    if (item != null)
+                    {
+                        EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
+                        especieAsociarEcosistemaVM.ecosistemasMarinos = item;
+                        especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
+                        //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
+                        //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                    }
+
+                }
+                ViewBag.Mensaje = mensaje;
+                return View(especieAsociarEcosistemaVMs);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
 
         }
 
@@ -362,27 +453,5 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = ex.Message });
             }
         }
-
-        /*
-        try
-            {
-                EspecieMarina especieMarina = obtenerEspecieMarinaPorNombreCientificoUC.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
-
-                if (especieMarina != null)
-                {
-                    return View();
-                }
-                else
-                {
-                    return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
-                }
-            }
-            catch (Exception ex)
-            {
-                RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = ex.Message });
-            }
-         
-
-         */
     }
 }
