@@ -27,7 +27,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
                 @"SERVER=(localdb)\MSsqlLocaldb;
                 DATABASE=EM-v1;
                 INTEGRATED SECURITY=TRUE;
-                ENCRYPT=False"; //Puede evitar problemas si no hay un certificado y se usa SSL
+                ENCRYPT=False";
             optionsBuilder.UseSqlServer(cadenaConexion)
             .EnableDetailedErrors();
         }
@@ -38,17 +38,6 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework
                 .HasMany(e => e.EcosistemaMarinos)
                 .WithMany(e => e.EspeciesHabitan)
                 .UsingEntity<EspeciesHabitab>();
-
-
-            /*
-            modelBuilder.Entity<EspecieMarina>()
-              .HasMany(e => e.EcosistemaMarinosViven)
-              .WithMany(e => e.EspeciesHabitan)
-              .UsingEntity<Dictionary<string, string>>(
-                  "Especies_Habitan",
-                  EcosistemaMarino => EcosistemaMarino.HasOne<EcosistemaMarino>().WithMany().OnDelete(DeleteBehavior.Restrict),
-                  EspecieMarina => EspecieMarina.HasOne<EspecieMarina>().WithMany().OnDelete(DeleteBehavior.Restrict)
-            */
         }
 
     }

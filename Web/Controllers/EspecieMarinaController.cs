@@ -211,16 +211,19 @@ namespace Web.Controllers
                 else if (pesoMinimo < 0 || pesoMaximo < 0)
                 {
                     return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser negativos" });
+                }else if(pesoMinimo==0 && pesoMaximo==0)
+                {
+                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser cero o vacios" });
                 }
 
                 IEnumerable<EspecieMarina> especieMarinas = obtenerEspecieMarinaPorRangoPesoUC.GetEspecieMarinasPeso(pesoMinimo, pesoMaximo);
-                if (especieMarinas != null)
+                if (especieMarinas != null && especieMarinas.Count()>0)
                 {
                     return View(especieMarinas);
                 }
                 else
                 {
-                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie" });
+                    return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie/s que cumplan con el rango de peso ingresado" });
                 }
             }
             catch (Exception ex)

@@ -14,7 +14,7 @@
 
 
 
-<h1>Buscar Ecosistemas Marinos, que no pueden habitar la especie seleccionada</h1>
+<h1>Buscar Ecosistemas Marinos, que no puede habitar la especie seleccionada</h1>
 
 @if (ViewBag.listaEspecies != null)
 {
@@ -28,6 +28,10 @@
         </select>
         <input type="submit" value="Buscar" />
     </form>
+}
+else
+{
+    <p>No hay especies marinas registradas en el sistema</p>
 }
 
 

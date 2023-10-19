@@ -27,12 +27,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             try
             {
                 unDato.Validar(config);
-                /*
-                foreach (AmenazasAsociadas amenaza in unDato.Amenazas)
-                {
-                    _context.Entry(amenaza).State = EntityState.Unchanged;
-                }
-                */
+               
 
 
                 _context.EcosistemaMarino.Add(unDato);
@@ -72,14 +67,12 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         {
             try
             {
-                //Creo que cuando las trae, les esta asignado false. Hay que verificar eso
-                //TODO
+
                 var especiesNoHabitan = _context.EspeciesHabitab.Where(especie => especie.EcosistemaMarinoId == id && especie.Habita == false).ToList();
                 var amenazasAsignadas = _context.AmenazasAsociadas.Where(amenaza => amenaza.EcosistemaMarinoId == id).ToList();
                 foreach (EspeciesHabitab especie in especiesNoHabitan)
                 {
-                    _context.EspeciesHabitab.Remove(especie);//Se eliminan de la tabla de EspeciesHabitad, las foreign key de las especies(que no habitan) que
-                                                             //hacen referencia al habitad que se va a borrar
+                    _context.EspeciesHabitab.Remove(especie);
 
                 }
 
