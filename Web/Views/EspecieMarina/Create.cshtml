@@ -20,16 +20,16 @@
 <div class="row">
     <div class="col-md-4">
 
-        @if (ViewBag.EstadosConservacion == null)
+        @if (ViewBag.EcosistemasMarinos == null)
         {
             <div class="alert alert-warning" role="alert">
-                No se han encontrado estados de conservacion en la base de datos. <br />
-                Es necesario tener al menos un estado de conservacion, para hacer el registro de un ecosistema marino.<br />
+                No se han encontrado ecosistemas marinos en la base de datos.<br>
+                Es necesario tener al menos un ecosistema marino creado, para poder crear una especie.
             </div>
         }
         else
         {
-            <form asp-action="Create">
+            <form asp-action="Create" enctype="multipart/form-data" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="NombreCientifico" class="control-label"></label>
@@ -53,18 +53,16 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Peso" class="control-label"></label>
-                    <input asp-for="Peso" class="form-control" value="99" />
+                    <input asp-for="Peso" class="form-control" value="99" type="number" />
                     <span asp-validation-for="Peso" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Longitud" class="control-label"></label>
-                    <input asp-for="Longitud" class="form-control" value="5" />
+                    <input asp-for="Longitud" class="form-control" value="5" type="number" />
                     <span asp-validation-for="Longitud" class="text-danger"></span>
                 </div>
 
-
                 <div class="form-group">
-
                     <label>Seleccione los ecosistemas marinos donde su vida es posible: </label> <br />
                     <select multiple="multiple" id="SelectedOptions" name="SelectedOptions">
                         @foreach (var option in ViewBag.EcosistemasMarinos)
@@ -75,62 +73,56 @@
                 </div>
 
 
-                <div class="form-group">
-                    <label>Seleccione el estado de conservacion del Ecosistema: </label> <br />
 
-                    @foreach (var item in ViewBag.EstadosConservacion)
-                    {
-                        <div>
-                            <input type="radio" id="@("Option_" + item.Id)" name="SelectedOptionEstado" value="@item.Id">
-                            <label for="@("Option_" + item.Id)">@item.Nombre</label>
-                        </div>
-                    }
+                <div class="form-group">
+                    <label>Seleccione el estado de conservacion del Ecosistema </label> <br />
+                    <select id="SelectedOptions" name="SelectedOptionEstado">
+                        @foreach (var option in ViewBag.EstadosConservacion)
+                        {
+                            <option value="@option.Id">@option.Nombre</option>
+                        }
+                    </select>
                 </div>
 
+                @*
+            <div class="form-group">
+            <label>Seleccione el estado de conservacion del Ecosistema: </label> <br />
 
+            @foreach (var item in ViewBag.EstadosConservacion)
+            {
+            <div>
+            <input type="radio" id="@("Option_" + item.Id)" name="SelectedOptionEstado" value="@item.Id">
+            <label for="@("Option_" + item.Id)">@item.Nombre</label>
+            </div>
+            }
+            </div>
+            *@
 
                 <div class="form-group">
                     <label>Seleccione las amenazas:</label> <br />
                     <label>Descripcion - Peligrosidad</label> <br />
-                    @foreach (var item in ViewBag.Amenazas)
-                    {
-                        <div class="form-check">
-                            <input type="checkbox" id="option-@item.Id" name="SelectedOptionsAmenazas" value="@item.Id" class="form-check-input">
-                            <label for="option-@item.Id" class="form-check-label">@item.Descripcion - @item.Peligrosidad</label>
-                        </div>
-                    }
+                    <select multiple="multiple" id="SelectedOptionsAmenazas" name="SelectedOptionsAmenazas">
+                        @foreach (var option in ViewBag.Amenazas)
+                        {
+                            <option value="@option.Id">@option.Descripcion - @option.Peligrosidad</option>
+                        }
+                    </select>
                 </div>
 
 
-
-
                 @*
-
-
-            @foreach (var option in ViewBag.EcosistemasMarinos)
+            <div class="form-group">
+            <label>Seleccione las amenazas:</label> <br />
+            <label>Descripcion - Peligrosidad</label> <br />
+            @foreach (var item in ViewBag.Amenazas)
             {
-            <div>
-            <input type="checkbox" id="@("option_" + option.Id)" name="SelectedOptions" value="@option.Nombre">
-            <label for="@("option_" + option.Id)">@option.Nombre</label>
+            <div class="form-check">
+            <input type="checkbox" id="option-@item.Id" name="SelectedOptionsAmenazas" value="@item.Id" class="form-check-input">
+            <label for="option-@item.Id" class="form-check-label">@item.Descripcion - @item.Peligrosidad</label>
             </div>
             }
+            </div>
 
-
-            <select multiple="multiple" id="SelectedOptions" name="SelectedOptions">
-            @foreach (var option in ViewBag.EcosistemasMarinos)
-            {
-            <option value="@option.Id">
-            @option.Nombre
-            </option>
-            }
-            </select>
-            @*
-            <select name="Ecosistemas" multiple>
-            @foreach (var producto in ViewBag.EcosistemasMarinos)
-            {
-            <option value="@producto.Id">@producto.Nombre - @producto.DescripcionCaracteristicas</option>
-            }
-            </select>
             *@
 
                 <div class="form-group">

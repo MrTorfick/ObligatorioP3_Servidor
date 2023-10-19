@@ -121,7 +121,7 @@ namespace Web.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Usuario", "Login");
+            return RedirectToAction("Login", "Usuario");
         }
 
 

@@ -102,7 +102,7 @@ namespace Web.Controllers
             try
             {
 
-                if (ecosistemasMarinos == null || imagen.Count == 0 || SelectedOptionEstado == 0 || PaisSeleccionado == 0)
+                if (ecosistemasMarinos == null || imagen.Count == 0 || SelectedOptionEstado == 0 || PaisSeleccionado == 0 || Latitud == null || Longitud == null)
 
                     return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
 
@@ -127,7 +127,7 @@ namespace Web.Controllers
                         ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
                     }
                 }
-                ecosistemasMarinos.pais = obtenerPaisPorIdUC.ObtenerPaisPorId(PaisSeleccionado);
+                ecosistemasMarinos.PaisId = obtenerPaisPorIdUC.ObtenerPaisPorId(PaisSeleccionado).PaisId;
                 addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
                 if (GuardarImagen(imagen, ecosistemasMarinos))
                 {

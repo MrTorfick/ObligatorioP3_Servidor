@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -66,14 +67,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<EspecieMarina> FindAll()
         {
-            return _context.EspecieMarina;
+            return _context.EspecieMarina.Include(nameof(Imagen));
         }
 
         public EspecieMarina FindByID(int id)
         {
             try
             {
-                return _context.EspecieMarina.Where(em => em.Id == id).Include(em => em.EcosistemaMarinos).FirstOrDefault();
+                var amenazas = _context.AmenazasAsociadas.Where(amenaza => amenaza.EspecieMarinaId == id && amenaza.EcosistemaMarinoId == null).ToList();
+                EspecieMarina especieMarina = _context.EspecieMarina.Where(em => em.Id == id).Include(em => em.EcosistemaMarinos).Include(nameof(EstadoConservacion)).FirstOrDefault();
+                especieMarina.Amenazas = amenazas;
+                return especieMarina;
             }
             catch (Exception ex)
             {
@@ -93,6 +97,10 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
                 foreach (AmenazasAsociadas item in amenazasEspecie)
                 {
                     var amenazasEcosistema = _context.AmenazasAsociadas.Where(aa => aa.AmenazaId == item.AmenazaId && aa.EspecieMarinaId == null).FirstOrDefault();
+                    if (amenazasEcosistema == null)
+                    {
+                        throw new Exception("No se encontraron amenazas de un ecosistema que coincidan con las amenazas de la especie dada");
+                    }
                     EcosistemaMarino ecosistemaMarino = repositorioEcosistemaMarino.FindByID((int)amenazasEcosistema.EcosistemaMarinoId);
                     if (!ecosistemaMarinos.Contains(ecosistemaMarino))
                     {
@@ -104,7 +112,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             catch (Exception ex)
             {
 
-                throw new Exception("Error al buscar los ecosistemas marinos que no puede habitar esa especie: " + ex);
+                throw new Exception("Error al buscar los ecosistemas que no pueden habitar la especie: " + ex.Message);
             }
 
 
@@ -180,7 +188,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public void Update(EspecieMarina dato)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dato.Validar(config);
+                this._context.EspecieMarina.Update(dato);
+                this._context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error al actualizar la Especie Marina: " + ex.Message);
+            }
         }
     }
 }

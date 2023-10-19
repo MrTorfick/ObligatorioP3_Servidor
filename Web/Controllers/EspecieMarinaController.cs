@@ -7,6 +7,7 @@ using EcosistemasMarinos.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Security.Cryptography;
 
 namespace Web.Controllers
 {
@@ -155,10 +156,10 @@ namespace Web.Controllers
                     return RedirectToAction(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), new { mensaje = "No se encontro un ecosistema que no pueda habitar la especie", listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas() });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return RedirectToAction(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), new { mensaje = ex.Message, listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas() });
             }
 
         }
@@ -184,10 +185,10 @@ namespace Web.Controllers
                     return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = "No se encontro la especie" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return RedirectToAction(nameof(BuscarPorNombreCientifico), new { mensaje = ex.Message });
             }
 
         }
@@ -222,10 +223,10 @@ namespace Web.Controllers
                     return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "No se encontro una especie" });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = ex.Message });
             }
         }
 
@@ -249,7 +250,15 @@ namespace Web.Controllers
             if (HttpContext.Session.GetString("LogueadoNombre") != null)
             {
                 ViewBag.Mensaje = mensaje;
-                ViewBag.EcosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+                IEnumerable<EcosistemaMarino> ecosistemasMarinos = getEcosistemasMarinosUC.ObtenerEcosistemasMarinos();
+                if (ecosistemasMarinos.Count() > 0)
+                {
+                    ViewBag.EcosistemasMarinos = ecosistemasMarinos;
+                }
+                else
+                {
+                    ViewBag.EcosistemasMarinos = null;
+                }
                 ViewBag.Amenazas = obtenerAmenazasUC.GetAmenazas();
                 ViewBag.EstadosConservacion = getEstadosConservacionUC.ObtenerEstadosConservacion();
                 return View();
@@ -375,41 +384,49 @@ namespace Web.Controllers
 
         public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
         {
-
-            if (HttpContext.Session.GetString("LogueadoNombre") != null)
+            try
             {
-                List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
-                EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
-                if (especieMarina != null)
+                if (HttpContext.Session.GetString("LogueadoNombre") != null)
                 {
-
-                    TempData["idEspecie"] = especieMarina.Id;
-
-                    //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
-                    foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
+                    List<EspecieEcosistemaVM> especieAsociarEcosistemaVMs = new List<EspecieEcosistemaVM>();
+                    EspecieMarina especieMarina = obtenerEspecieMarinaPorIdUC.ObtenerEspecieMarinaPorId(id);
+                    if (especieMarina != null)
                     {
-                        if (item != null)
+
+                        TempData["idEspecie"] = especieMarina.Id;
+
+                        //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
+                        foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
                         {
-                            EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
-                            especieAsociarEcosistemaVM.ecosistemasMarinos = item;
-                            especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
-                            //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
-                            //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                            if (item != null)
+                            {
+                                EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
+                                especieAsociarEcosistemaVM.ecosistemasMarinos = item;
+                                especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
+                                //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
+                                //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                            }
+
                         }
+                        ViewBag.Mensaje = mensaje;
+                        return View(especieAsociarEcosistemaVMs);
 
                     }
-                    ViewBag.Mensaje = mensaje;
-                    return View(especieAsociarEcosistemaVMs);
-
+                    else
+                    {
+                        return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "No se encontro la especie" });
+                    }
                 }
                 else
                 {
-                    return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = "No se encontro la especie" });
+                    return RedirectToAction("Index", "Home");
                 }
+
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+
+                return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = ex.Message });
             }
 
 

@@ -51,9 +51,6 @@ namespace EcosistemasMarinos.Entidades
                 throw new Exception("El peso debe ser mayor a 0");
             if (Longitud <= 0)
                 throw new Exception("La longitud debe ser mayor a 0");
-
-            if (Imagen.Count == 0)
-                throw new Exception("Debe tener al menos una imagen");
             if (Amenazas.Count == 0)
                 throw new Exception("Debe tener al menos una amenaza asociada");
 

@@ -13,6 +13,11 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         private EMContext _context;
 
+        public RepositorioPais()
+        {
+            _context = new EMContext();
+        }
+
         public void Add(Pais unDato)
         {
             throw new NotImplementedException();

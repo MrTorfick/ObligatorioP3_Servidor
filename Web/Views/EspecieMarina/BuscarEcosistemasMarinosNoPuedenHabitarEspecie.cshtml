@@ -74,9 +74,14 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.DescripcionCaracteristicas)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Imagen)
-                    </td>
+                    @if (item.Imagen != null && item.Imagen.Count() > 0)
+                    {
+                        <td>
+                            <dd class="col-sm-10">
+                                <img class="img-thumbnail" src="~/images/ecosistema/@item.Imagen.First().Valor" />
+                            </dd>
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.EstadoConservacionId)
                     </td>

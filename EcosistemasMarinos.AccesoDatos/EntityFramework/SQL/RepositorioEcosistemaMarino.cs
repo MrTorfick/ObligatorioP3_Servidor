@@ -1,5 +1,6 @@
 ﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
                     _context.Entry(amenaza).State = EntityState.Unchanged;
                 }
                 */
+
+
                 _context.EcosistemaMarino.Add(unDato);
                 _context.SaveChanges();
             }
@@ -45,14 +48,17 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
         public IEnumerable<EcosistemaMarino> FindAll()
         {
-            return _context.EcosistemaMarino;
+            return _context.EcosistemaMarino.Include(nameof(Imagen));
         }
 
         public EcosistemaMarino FindByID(int id)
         {
             try
             {
-                return _context.EcosistemaMarino.Where(EcosistemaMarino => EcosistemaMarino.Id == id).FirstOrDefault();
+                var amenazas = _context.AmenazasAsociadas.Where(amenaza => amenaza.EcosistemaMarinoId == id && amenaza.EspecieMarinaId == null).ToList();
+                EcosistemaMarino ecosistemaMarino = _context.EcosistemaMarino.Where(EcosistemaMarino => EcosistemaMarino.Id == id).Include(nameof(EstadoConservacion)).FirstOrDefault();
+                ecosistemaMarino.Amenazas = amenazas;
+                return ecosistemaMarino;
             }
             catch (Exception ex)
             {
