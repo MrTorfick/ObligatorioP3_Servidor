@@ -235,14 +235,11 @@ namespace Web.Controllers
         // GET: EspecieMarinaController
         public ActionResult Index()
         {
+            ViewBag.Logueado = HttpContext.Session.GetString("LogueadoNombre");
             return View(obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas());
         }
 
-        // GET: EspecieMarinaController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+
 
         // GET: EspecieMarinaController/Create
         public ActionResult Create(string mensaje)

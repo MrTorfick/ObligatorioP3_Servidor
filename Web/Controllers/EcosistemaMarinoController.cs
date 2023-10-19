@@ -66,14 +66,12 @@ namespace Web.Controllers
         public ActionResult Index(string mensaje)
         {
             ViewBag.mensaje = mensaje;
+            ViewBag.Logueado = HttpContext.Session.GetString("LogueadoNombre");
             return View(this.getEcosistemasMarinosUC.ObtenerEcosistemasMarinos());
         }
 
         // GET: EcosistemaMarinoController1/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+
 
         // GET: EcosistemaMarinoController1/Create
         public ActionResult Create(string mensaje)
@@ -205,26 +203,7 @@ namespace Web.Controllers
 
 
 
-        // GET: EcosistemaMarinoController1/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: EcosistemaMarinoController1/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: EcosistemaMarinoController1/Delete/5
         public ActionResult Delete(int id)

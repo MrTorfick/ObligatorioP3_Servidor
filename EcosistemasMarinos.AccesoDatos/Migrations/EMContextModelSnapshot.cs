@@ -39,7 +39,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenaza");
+                    b.ToTable("Amenaza", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.AmenazasAsociadas", b =>
@@ -65,7 +65,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasIndex("EspecieMarinaId");
 
-                    b.ToTable("AmenazasAsociadas");
+                    b.ToTable("AmenazasAsociadas", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Auditoria", b =>
@@ -92,7 +92,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Auditoria");
+                    b.ToTable("Auditoria", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Configuracion", b =>
@@ -118,7 +118,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("NombreAtributo")
                         .IsUnique();
 
-                    b.ToTable("Configuracion");
+                    b.ToTable("Configuracion", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EcosistemaMarino", b =>
@@ -152,7 +152,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasIndex("PaisId");
 
-                    b.ToTable("EcosistemaMarino");
+                    b.ToTable("EcosistemaMarino", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EspecieMarina", b =>
@@ -188,7 +188,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasIndex("EstadoConservacionId");
 
-                    b.ToTable("EspecieMarina");
+                    b.ToTable("EspecieMarina", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EspeciesHabitab", b =>
@@ -206,7 +206,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                     b.HasIndex("EspecieMarinaId");
 
-                    b.ToTable("EspeciesHabitab");
+                    b.ToTable("EspeciesHabitab", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EstadoConservacion", b =>
@@ -226,7 +226,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
-                    b.ToTable("EstadoConservacion");
+                    b.ToTable("EstadoConservacion", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Pais", b =>
@@ -253,7 +253,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("nombre")
                         .IsUnique();
 
-                    b.ToTable("Pais");
+                    b.ToTable("Pais", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.Usuario", b =>
@@ -288,7 +288,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                     b.HasIndex("Nombre")
                         .IsUnique();
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.AmenazasAsociadas", b =>
@@ -312,7 +312,28 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .WithMany()
                         .HasForeignKey("PaisId");
 
-                    b.OwnsMany("EcosistemasMarinos.ValueObjects.Imagen", "Imagen", b1 =>
+                    b.OwnsOne("EcosistemasMarinos.Entidades.EcosistemaMarino.Coordenadas#EcosistemasMarinos.ValueObjects.Coordenadas", "Coordenadas", b1 =>
+                        {
+                            b1.Property<int>("EcosistemaMarinoId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Latitud")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Longitud")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("EcosistemaMarinoId");
+
+                            b1.ToTable("EcosistemaMarino", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("EcosistemaMarinoId");
+                        });
+
+                    b.OwnsMany("EcosistemasMarinos.Entidades.EcosistemaMarino.Imagen#EcosistemasMarinos.ValueObjects.Imagen", "Imagen", b1 =>
                         {
                             b1.Property<int>("EcosistemaMarinoId")
                                 .HasColumnType("int");
@@ -329,28 +350,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                             b1.HasKey("EcosistemaMarinoId", "Id");
 
-                            b1.ToTable("EcosistemaMarino_Imagen");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EcosistemaMarinoId");
-                        });
-
-                    b.OwnsOne("EcosistemasMarinos.ValueObjects.Coordenadas", "Coordenadas", b1 =>
-                        {
-                            b1.Property<int>("EcosistemaMarinoId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Latitud")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Longitud")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("EcosistemaMarinoId");
-
-                            b1.ToTable("EcosistemaMarino");
+                            b1.ToTable("EcosistemaMarino_Imagen", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EcosistemaMarinoId");
@@ -372,7 +372,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
                         .WithMany()
                         .HasForeignKey("EstadoConservacionId");
 
-                    b.OwnsMany("EcosistemasMarinos.ValueObjects.Imagen", "Imagen", b1 =>
+                    b.OwnsMany("EcosistemasMarinos.Entidades.EspecieMarina.Imagen#EcosistemasMarinos.ValueObjects.Imagen", "Imagen", b1 =>
                         {
                             b1.Property<int>("EspecieMarinaId")
                                 .HasColumnType("int");
@@ -389,7 +389,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                             b1.HasKey("EspecieMarinaId", "Id");
 
-                            b1.ToTable("EspecieMarina_Imagen");
+                            b1.ToTable("EspecieMarina_Imagen", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EspecieMarinaId");
@@ -417,7 +417,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
             modelBuilder.Entity("EcosistemasMarinos.Entidades.EstadoConservacion", b =>
                 {
-                    b.OwnsOne("EcosistemasMarinos.ValueObjects.Rangos", "Rangos", b1 =>
+                    b.OwnsOne("EcosistemasMarinos.Entidades.EstadoConservacion.Rangos#EcosistemasMarinos.ValueObjects.Rangos", "Rangos", b1 =>
                         {
                             b1.Property<int>("EstadoConservacionId")
                                 .HasColumnType("int");
@@ -430,7 +430,7 @@ namespace _EcosistemasMarinos.AccesoDatos.Migrations
 
                             b1.HasKey("EstadoConservacionId");
 
-                            b1.ToTable("EstadoConservacion");
+                            b1.ToTable("EstadoConservacion", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EstadoConservacionId");
