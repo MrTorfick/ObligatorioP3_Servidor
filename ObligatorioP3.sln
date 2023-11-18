@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{BCAF1378-0846-47C1-A831-015857F28297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{BCAF1378-0846-47C1-A831-015857F28297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcosistemasMarinos", "EcosistemasMarinos\EcosistemasMarinos.csproj", "{1F987DCE-8E76-44F9-9533-60F8C40BF55C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcosistemasMarinos", "EcosistemasMarinos\EcosistemasMarinos.csproj", "{1F987DCE-8E76-44F9-9533-60F8C40BF55C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_EcosistemasMarinos.LogicaAplicacion", "EcosistemasMarinos.LogicaAplicacion\_EcosistemasMarinos.LogicaAplicacion.csproj", "{C9387D25-B9E9-4FEE-BF20-7F5DEFC47761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_EcosistemasMarinos.LogicaAplicacion", "EcosistemasMarinos.LogicaAplicacion\_EcosistemasMarinos.LogicaAplicacion.csproj", "{C9387D25-B9E9-4FEE-BF20-7F5DEFC47761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_EcosistemasMarinos.AccesoDatos", "EcosistemasMarinos.AccesoDatos\_EcosistemasMarinos.AccesoDatos.csproj", "{0F2593A8-5D97-453B-9ABE-DA2D29F2BC41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_EcosistemasMarinos.AccesoDatos", "EcosistemasMarinos.AccesoDatos\_EcosistemasMarinos.AccesoDatos.csproj", "{0F2593A8-5D97-453B-9ABE-DA2D29F2BC41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{788F44D0-6F64-4494-A59E-3B3FDCD049AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0F2593A8-5D97-453B-9ABE-DA2D29F2BC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F2593A8-5D97-453B-9ABE-DA2D29F2BC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F2593A8-5D97-453B-9ABE-DA2D29F2BC41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788F44D0-6F64-4494-A59E-3B3FDCD049AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788F44D0-6F64-4494-A59E-3B3FDCD049AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788F44D0-6F64-4494-A59E-3B3FDCD049AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788F44D0-6F64-4494-A59E-3B3FDCD049AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

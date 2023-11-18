@@ -18,7 +18,7 @@ namespace EcosistemasMarinos.Entidades
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; }
-        //[Required, Range(0, 100, ErrorMessage = "Debe ingresar un valor entre 0 y 100")]
+     
         [Required]
         public Rangos Rangos { get; set; }
 

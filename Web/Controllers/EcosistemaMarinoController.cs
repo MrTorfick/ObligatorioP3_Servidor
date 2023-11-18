@@ -14,7 +14,6 @@ namespace Web.Controllers
 
         private IAddEcosistemaMarino addEcosistemaMarinoUC;
         private IObtenerEcosistemasMarinos getEcosistemasMarinosUC;
-        //private IObtenerEspeciesMarinas getEspeciesMarinasUC;
         private IObtenerEstadosConservacion getEstadosConservacionUC;
         private IWebHostEnvironment _environment;
         private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC;
@@ -25,13 +24,11 @@ namespace Web.Controllers
         private IUpdateEcosistemaMarino updateEcosistemaMarinoUC;
         private IObtenerPaises obtenerPaisesUC;
         private IObtenerPaisPorId obtenerPaisPorIdUC;
-        //private IUpdateAmenaza updateAmenazaUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
             IWebHostEnvironment environment,
             IObtenerEcosistemasMarinos getEcosistemasMarinosUC,
-            //IObtenerEspeciesMarinas getEspeciesMarinasUC,
             IObtenerEstadosConservacion getEstadosConservacionUC,
             IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC,
             IObtenerAmenazas getAmenazasUC,
@@ -41,14 +38,12 @@ namespace Web.Controllers
             IUpdateEcosistemaMarino updateEcosistemaMarinoUC,
             IObtenerPaises obtenerPaisesUC,
             IObtenerPaisPorId obtenerPaisPorIdUC
-            //IUpdateAmenaza updateAmenazaUC
 
             )
         {
             this.addEcosistemaMarinoUC = addEcosistemaMarinoUC;
             _environment = environment;
             this.getEcosistemasMarinosUC = getEcosistemasMarinosUC;
-            //this.getEspeciesMarinasUC = getEspeciesMarinasUC;
             this.getEstadosConservacionUC = getEstadosConservacionUC;
             this.obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
             this.getAmenazasUC = getAmenazasUC;
@@ -58,7 +53,6 @@ namespace Web.Controllers
             this.updateEcosistemaMarinoUC = updateEcosistemaMarinoUC;
             this.obtenerPaisesUC = obtenerPaisesUC;
             this.obtenerPaisPorIdUC = obtenerPaisPorIdUC;
-            //this.updateAmenazaUC = updateAmenazaUC;
 
         }
 

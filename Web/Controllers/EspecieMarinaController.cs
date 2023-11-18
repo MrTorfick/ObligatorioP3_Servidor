@@ -149,7 +149,7 @@ namespace Web.Controllers
                 {
                     ViewBag.listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
                     return View(ecosistemaMarinos);
-                    //return View(nameof(BuscarEcosistemasMarinosNoPuedenHabitarEspecie), ecosistemaMarinos);
+                   
                 }
                 else
                 {
@@ -395,7 +395,7 @@ namespace Web.Controllers
 
                         TempData["idEspecie"] = especieMarina.Id;
 
-                        //ViewBag.NombreEspecie = especieAsociarEcosistemaVM.especieMarina.NombreVulgar;;
+                     
                         foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
                         {
                             if (item != null)
@@ -403,8 +403,7 @@ namespace Web.Controllers
                                 EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
                                 especieAsociarEcosistemaVM.ecosistemasMarinos = item;
                                 especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
-                                //EcosistemaMarino ecosistemaMarino = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(item.Id);
-                                //especieAsociarEcosistemaVM.ecosistemasMarinos.Add(ecosistemaMarino);
+                             
                             }
 
                         }

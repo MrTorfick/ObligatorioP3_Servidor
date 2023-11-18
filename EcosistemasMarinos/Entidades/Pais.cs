@@ -13,7 +13,6 @@ namespace EcosistemasMarinos.Entidades
 
     [Index(nameof(nombre), IsUnique = true)]
     [Index(nameof(codigoISO), IsUnique = true)]
-    //[PrimaryKey(nameof(nombre), nameof(codigoISO))]
 
     public class Pais : IValidable
     {

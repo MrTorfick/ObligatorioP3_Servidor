@@ -26,7 +26,7 @@ namespace EcosistemasMarinos.Entidades
         public bool EsAdmin { get; set; }
         public DateTime FechaIngreso { get; set; }
 
-        //public string TipoUsuario { get; set; }
+        
 
         public Usuario() { }
 
@@ -37,7 +37,6 @@ namespace EcosistemasMarinos.Entidades
                 throw new RangoValoresException("El nombre debe tener al menos 6 caracteres");
             }
 
-            //Crea un regex, para validar una contrasenia para estos requisitos: -Largo minimo de 8 caracteres, al menos una mayuscula, una minuscula, un digito y al menos un caracter de los siguientes: punto, coma, numeral, punto y coma, dos puntos, exclamación de cierre
             string patron = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[.,;:!]).{8,}$";
 
             if (!Regex.IsMatch(Contrasenia, patron))

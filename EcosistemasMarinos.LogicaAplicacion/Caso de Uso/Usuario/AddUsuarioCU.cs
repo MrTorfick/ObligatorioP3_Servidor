@@ -47,7 +47,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
             {
                 byte[] hashContrasenia = sHA256.ComputeHash(bytesContrasenia);
 
-                string contraseniaEncriptada = BitConverter.ToString(hashContrasenia).Replace("-", "").ToLower();//Se elimian los guiones
+                string contraseniaEncriptada = BitConverter.ToString(hashContrasenia).Replace("-", "").ToLower();//Se eliminan los guiones
                 return contraseniaEncriptada;
             }
         }

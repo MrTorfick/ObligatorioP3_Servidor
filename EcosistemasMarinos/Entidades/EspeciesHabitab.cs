@@ -19,7 +19,7 @@ namespace EcosistemasMarinos.Entidades
 
         public EspeciesHabitab()
         {
-            //Habita = false;
+            
         }
 
         public void Validar()
