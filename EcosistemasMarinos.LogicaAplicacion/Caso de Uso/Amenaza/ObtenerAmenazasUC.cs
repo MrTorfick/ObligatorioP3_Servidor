@@ -1,4 +1,6 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -19,9 +21,18 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         {
             this._repositorioAmenaza = repositorioAmenaza;
         }
-        public IEnumerable<Amenaza> GetAmenazas()
+        public IEnumerable<AmenazaDto> GetAmenazas()
         {
-            return _repositorioAmenaza.FindAll();
+
+            List<AmenazaDto> retornar = new List<AmenazaDto>();
+            foreach (Amenaza e in _repositorioAmenaza.FindAll().ToList())
+            {
+                retornar.Add(new AmenazaDto(e));
+            }
+            return retornar;
+
+
+            //return _repositorioAmenaza.FindAll();
         }
     }
 }
