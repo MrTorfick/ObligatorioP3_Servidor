@@ -87,7 +87,7 @@ namespace Web.Controllers
 
         }
 
-
+        /*
         [HttpPost]
         public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, List<IFormFile> imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas, int PaisSeleccionado)
         {
@@ -138,7 +138,7 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
             }
         }
-
+        */
 
 
         private bool GuardarImagen(List<IFormFile> imagen, EcosistemaMarino em)

@@ -82,7 +82,7 @@ namespace Web.Controllers
         }
 
 
-
+        /*
         [HttpPost]
         public IActionResult Login(string Nombre, string Contrasenia)
         {
@@ -117,6 +117,7 @@ namespace Web.Controllers
             }
 
         }
+        */
 
         public IActionResult Logout()
         {

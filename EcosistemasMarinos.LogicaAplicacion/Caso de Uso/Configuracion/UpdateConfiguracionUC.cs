@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -19,10 +20,15 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
             this._repositorioConfiguracion = repositorioConfiguracion;
             _repositorioAuditoria = repositorioAuditoria;
         }
-        public void UpdateConfiguracion(Configuracion configuracion, string UsuarioLogueado)
+        public void UpdateConfiguracion(ConfiguracionDto configuracion, string UsuarioLogueado)
         {
-            _repositorioConfiguracion.Update(configuracion);
-            Auditoria(UsuarioLogueado, configuracion.Id);
+            Configuracion aux = new Configuracion();
+            aux.Id = configuracion.Id;
+            aux.NombreAtributo = configuracion.NombreAtributo;
+            aux.topeInferior = configuracion.topeInferior;
+            aux.topeSuperior = configuracion.topeSuperior;
+            _repositorioConfiguracion.Update(aux);
+            Auditoria(UsuarioLogueado, aux.Id);
         }
 
         private void Auditoria(string UsuarioLogueado, int idEntidad)

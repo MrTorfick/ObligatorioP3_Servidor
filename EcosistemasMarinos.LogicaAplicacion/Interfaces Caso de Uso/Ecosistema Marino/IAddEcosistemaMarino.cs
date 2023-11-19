@@ -1,4 +1,5 @@
-﻿using EcosistemasMarinos.Entidades;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using EcosistemasMarinos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
     public interface IAddEcosistemaMarino
     {
-        public void AddEcosistemaMarino(EcosistemaMarino ecosistemaMarino, string UsuarioLogueado);
+        public EcosistemaMarinoDto AddEcosistemaMarino(EcosistemaMarinoDto ecosistemaMarino, string UsuarioLogueado);
     }
 }

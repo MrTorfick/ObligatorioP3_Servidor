@@ -120,8 +120,6 @@ namespace EcosistemasMarinos.Entidades
             segundos = segundos / 100;
             parteEnteraGrados = Math.Abs(parteEnteraGrados);
             return $"{parteEnteraGrados}° {parteEnteraMinutos}' {segundos}''";
-
-
         }
 
 

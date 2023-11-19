@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,16 @@ namespace WebApi.Controllers
             this._obtenerConfiguracionPorNombreUC = obtenerConfiguracionPorNombreUC;
         }
 
-
+        /// <summary>
+        /// Obtiene todas las configuraciones
+        /// </summary>
+        /// <returns>
+        /// Retorna una lista de configuraciones
+        /// </returns>
         [HttpGet(Name = "GetConfiguraciones")]
-        [Authorize]
+        [ProducesResponseType(typeof(IEnumerable<ConfiguracionDto>), 200)] // 200 OK
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult Get()
         {
             try
@@ -38,9 +46,14 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Bad request" + ex.Message);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NombreAtributo"></param>
+        /// <returns></returns>
 
         [HttpGet("{NombreAtributo}")]
         public IActionResult GetDetails(string NombreAtributo)
@@ -48,6 +61,32 @@ namespace WebApi.Controllers
             try
             {
                 return Ok(this._obtenerConfiguracionPorNombreUC.ObtenerConfiguracionPorNombre(NombreAtributo));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+
+
+        [HttpPut()]
+        public IActionResult Put([FromBody] ConfiguracionDto config)
+        {
+            try
+            {
+                //TODO
+
+                //string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                string nombreUsuario = "prueba_api";
+
+                this._updateConfiguracionUC.UpdateConfiguracion(config, nombreUsuario);
+                return Ok();
             }
             catch (Exception ex)
             {
