@@ -22,10 +22,8 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
         public List<AmenazasAsociadasDto> Amenazas { get; set; }
         public int? PaisId { get; set; }
         public int? EstadoConservacionId { get; set; }
-        [JsonIgnore]
-        public string grados_Latitud { get; set; }
-        [JsonIgnore]
-        public string grados_Longitud { get; set; }
+        //public string grados_Latitud { get; set; }
+       // public string grados_Longitud { get; set; }
         public EcosistemaMarinoDto()
         {
         }

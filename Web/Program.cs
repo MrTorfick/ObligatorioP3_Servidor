@@ -56,7 +56,7 @@ namespace Web
             builder.Services.AddScoped<IBuscarEspeciesEnPeligroDeExtincion, BuscarEspeciesEnPeligroDeExtincionUC>();
             builder.Services.AddScoped<IObtenerPaises, ObtenerPaisesUC>();
             builder.Services.AddScoped<IUpdateEcosistemaMarino, UpdateEcosistemaMarinoUC>();
-            builder.Services.AddScoped<IObtenerPaisPorId, ObtenerPaisPorIdUC>();
+            builder.Services.AddScoped<IObtenerPaisPorISO, ObtenerPaisPorISOUC>();
             builder.Services.AddScoped<IAddAuditoria, AddAuditoriaUC>();
             builder.Services.AddScoped<IUpdateEspecieMarina, UpdateEspecieMarinaUC>();
 

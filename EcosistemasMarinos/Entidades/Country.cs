@@ -14,7 +14,7 @@ namespace EcosistemasMarinos.Entidades
     [Index(nameof(nombre), IsUnique = true)]
     [Index(nameof(codigoISO), IsUnique = true)]
 
-    public class Pais : IValidable
+    public class Country : IValidable
     {
 
         public int PaisId { get; set; }
@@ -22,6 +22,17 @@ namespace EcosistemasMarinos.Entidades
         public string nombre { get; set; }
 
         public string codigoISO { get; set; }
+
+
+        public Country()
+        {
+
+        }
+        public Country(string nombre, string codigoISO)
+        {
+            this.nombre = nombre;
+            this.codigoISO = codigoISO;
+        }
 
         public void Validar()
         {

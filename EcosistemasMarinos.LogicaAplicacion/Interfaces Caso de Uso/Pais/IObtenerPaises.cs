@@ -9,6 +9,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
     public interface IObtenerPaises
     {
-        public IEnumerable<Pais> ObtenerPaises();
+        public IEnumerable<Country> ObtenerPaises();
     }
 }

@@ -27,15 +27,11 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             try
             {
                 unDato.Validar(config);
-               
-
-
                 _context.EcosistemaMarino.Add(unDato);
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error al agregar el Ecosistema Marino: " + ex.Message);
             }
 

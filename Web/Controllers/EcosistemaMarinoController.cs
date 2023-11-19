@@ -23,7 +23,7 @@ namespace Web.Controllers
         private IBorrarEcosistemaMarino borrarEcosistemaMarinoUC;
         private IUpdateEcosistemaMarino updateEcosistemaMarinoUC;
         private IObtenerPaises obtenerPaisesUC;
-        private IObtenerPaisPorId obtenerPaisPorIdUC;
+        // private IObtenerPaisPorId obtenerPaisPorIdUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
@@ -36,8 +36,8 @@ namespace Web.Controllers
             IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorIdUC,
             IBorrarEcosistemaMarino borrarEcosistemaMarinoUC,
             IUpdateEcosistemaMarino updateEcosistemaMarinoUC,
-            IObtenerPaises obtenerPaisesUC,
-            IObtenerPaisPorId obtenerPaisPorIdUC
+            IObtenerPaises obtenerPaisesUC
+            // IObtenerPaisPorId obtenerPaisPorIdUC
 
             )
         {
@@ -52,7 +52,7 @@ namespace Web.Controllers
             this.borrarEcosistemaMarinoUC = borrarEcosistemaMarinoUC;
             this.updateEcosistemaMarinoUC = updateEcosistemaMarinoUC;
             this.obtenerPaisesUC = obtenerPaisesUC;
-            this.obtenerPaisPorIdUC = obtenerPaisPorIdUC;
+            //this.obtenerPaisPorIdUC = obtenerPaisPorIdUC;
 
         }
 
@@ -82,9 +82,6 @@ namespace Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
-
-
         }
 
         /*

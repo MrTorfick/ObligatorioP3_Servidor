@@ -2,9 +2,11 @@ using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Ecosistema_Marino;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina;
+using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Pais;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Ecosistema_Marino;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Pais;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -109,9 +111,10 @@ builder.Services.AddScoped<IBuscarEspeciesQueHabitanUnEcosistema, BuscarEspecies
 builder.Services.AddScoped<IBuscarEspeciesEnPeligroDeExtincion, BuscarEspeciesEnPeligroDeExtincionUC>();
 builder.Services.AddScoped<IObtenerPaises, ObtenerPaisesUC>();
 builder.Services.AddScoped<IUpdateEcosistemaMarino, UpdateEcosistemaMarinoUC>();
-builder.Services.AddScoped<IObtenerPaisPorId, ObtenerPaisPorIdUC>();
+builder.Services.AddScoped<IObtenerPaisPorISO, ObtenerPaisPorISOUC>();
 builder.Services.AddScoped<IAddAuditoria, AddAuditoriaUC>();
 builder.Services.AddScoped<IUpdateEspecieMarina, UpdateEspecieMarinaUC>();
+builder.Services.AddScoped<IAddPaises, AddPaisesUC>();
 
 var app = builder.Build();
 

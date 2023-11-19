@@ -1,4 +1,5 @@
-﻿using EcosistemasMarinos.Entidades;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using EcosistemasMarinos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
-    public interface IObtenerPaisPorId
+    public interface IObtenerPaisPorISO
     {
-        public Pais ObtenerPaisPorId(int id);
+        public PaisDto IObtenerPaisPorISO(string iso);
     }
 }

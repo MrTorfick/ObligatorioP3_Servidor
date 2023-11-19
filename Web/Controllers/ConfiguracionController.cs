@@ -72,7 +72,7 @@ namespace Web.Controllers
 
         }
 
-        // POST: ConfiguracionController/Edit/5
+       /* // POST: ConfiguracionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Configuracion configuracion)
@@ -88,6 +88,7 @@ namespace Web.Controllers
             }
         }
 
+        */
         // GET: ConfiguracionController/Delete/5
         
     }

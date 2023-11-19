@@ -18,19 +18,36 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             _context = new EMContext();
         }
 
-        public void Add(Pais unDato)
+        public void Add(Country unDato)
         {
-            throw new NotImplementedException();
+            try
+            {
+                unDato.Validar();
+                Country country = FindByIso(unDato.codigoISO);
+                if (country != null)
+                {
+                    _context.Pais.Add(unDato);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar el Pais: " + ex.Message);
+            }
         }
 
-        public IEnumerable<Pais> FindAll()
+        public IEnumerable<Country> FindAll()
         {
             return _context.Pais;
         }
 
-        public Pais FindByID(int id)
+        public Country FindByIso(string codigoISO)
         {
-            return _context.Pais.Where(p => p.PaisId == id).FirstOrDefault();
+            return _context.Pais.Where(p => p.codigoISO == codigoISO).FirstOrDefault();
+        }
+        public Country FindById(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public void Remove(int id)
@@ -38,7 +55,12 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             throw new NotImplementedException();
         }
 
-        public void Update(Pais dato)
+        public void Update(Country dato)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Country FindByID(int id)
         {
             throw new NotImplementedException();
         }

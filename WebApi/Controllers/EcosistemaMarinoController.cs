@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         private IBorrarEcosistemaMarino borrarEcosistemaMarinoUC;
         private IUpdateEcosistemaMarino updateEcosistemaMarinoUC;
         private IObtenerPaises obtenerPaisesUC;
-        private IObtenerPaisPorId obtenerPaisPorIdUC;
+        private IObtenerPaisPorISO obtenerPaisPorISOUC;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             IBorrarEcosistemaMarino borrarEcosistemaMarinoUC,
             IUpdateEcosistemaMarino updateEcosistemaMarinoUC,
             IObtenerPaises obtenerPaisesUC,
-            IObtenerPaisPorId obtenerPaisPorIdUC
+            IObtenerPaisPorISO obtenerPaisPorISOUC
 
             )
         {
@@ -52,7 +52,7 @@ namespace WebApi.Controllers
             this.borrarEcosistemaMarinoUC = borrarEcosistemaMarinoUC;
             this.updateEcosistemaMarinoUC = updateEcosistemaMarinoUC;
             this.obtenerPaisesUC = obtenerPaisesUC;
-            this.obtenerPaisPorIdUC = obtenerPaisPorIdUC;
+            this.obtenerPaisPorISOUC = obtenerPaisPorISOUC;
 
         }
 
@@ -77,6 +77,8 @@ namespace WebApi.Controllers
             try
             {
                 string nombreUsuario = "prueba_api";
+                ecosistemaMarinoDto.EstadoConservacionId = 1;
+                ecosistemaMarinoDto.PaisId = 1;
                 EcosistemaMarinoDto ecosistemaMarino = this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Created("api/EcosistemaMarino", ecosistemaMarino);
             }

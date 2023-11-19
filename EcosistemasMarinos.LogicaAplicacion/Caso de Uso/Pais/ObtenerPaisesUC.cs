@@ -21,7 +21,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         }
 
 
-        public IEnumerable<Pais> ObtenerPaises()
+        public IEnumerable<Country> ObtenerPaises()
         {
             return this._repositorioPais.FindAll();
         }

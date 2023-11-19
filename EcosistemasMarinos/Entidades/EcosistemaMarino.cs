@@ -28,7 +28,7 @@ namespace EcosistemasMarinos.Entidades
 
         public List<AmenazasAsociadas> Amenazas { get; set; }
         [ForeignKey(nameof(pais))] public int? PaisId { get; set; }
-        public Pais? pais { get; set; }
+        public Country? pais { get; set; }
         [ForeignKey(nameof(EstadoConservacion))] public int? EstadoConservacionId { get; set; }
         public EstadoConservacion? EstadoConservacion { get; set; }
         public EcosistemaMarino() { }
@@ -77,10 +77,10 @@ namespace EcosistemasMarinos.Entidades
             {
                 throw new Exception("El area debe ser mayor a 0");
             }
-            if (Amenazas.Count == 0)
-            {
-                throw new Exception("Debe haber al menos una amenaza");
-            }
+           // if (Amenazas.Count == 0)
+            //{
+            //    throw new Exception("Debe haber al menos una amenaza");
+            //}
         }
 
         public string GradosMinutosSegundos(string valor, string tipo)
