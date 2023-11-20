@@ -9,12 +9,16 @@ namespace WebApi.Controllers
     public class AmenazaController : ControllerBase
     {
         private IObtenerAmenazas _obtenerAmenazasUC;
+        private IObtenerAmenazaPorId _obtenerAmenazaPorIdUC;
 
         public AmenazaController(
-                       IObtenerAmenazas obtenerAmenazasUC
+                       IObtenerAmenazas obtenerAmenazasUC,
+                       IObtenerAmenazaPorId obtenerAmenazaPorIdUC
                        )
         {
             this._obtenerAmenazasUC = obtenerAmenazasUC;
+            this._obtenerAmenazaPorIdUC = obtenerAmenazaPorIdUC;
+
         }
 
         [HttpGet(Name = "GetAmenazas")]
@@ -27,6 +31,20 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Bad request" + ex.Message);
+            }
+        }
+
+
+        [HttpGet("{AmenazaId}")]
+        public IActionResult GetDetails(int AmenazaId)
+        {
+            try
+            {
+                return Ok(this._obtenerAmenazaPorIdUC.ObtenerAmenazaPorId(AmenazaId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

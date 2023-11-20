@@ -84,58 +84,59 @@ namespace Web.Controllers
             }
         }
 
-        /* 
-         [HttpPost]
-         public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, List<IFormFile> imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas, int PaisSeleccionado)
-         {
-             try
-             {
+        /*
+        [HttpPost]
+        public ActionResult Create(EcosistemaMarino ecosistemasMarinos, string Longitud, string Latitud, List<IFormFile> imagen, int SelectedOptionEstado, List<int> SelectedOptionsAmenazas, int PaisSeleccionado)
+        {
+            try
+            {
 
-                 if (ecosistemasMarinos == null || imagen.Count == 0 || SelectedOptionEstado == 0 || PaisSeleccionado == 0 || Latitud == null || Longitud == null)
+                if (ecosistemasMarinos == null || imagen.Count == 0 || SelectedOptionEstado == 0 || PaisSeleccionado == 0 || Latitud == null || Longitud == null)
 
-                     return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
+                    return RedirectToAction(nameof(Create), new { mensaje = "Debe ingresar todos los datos" });
 
-                 string LongitudTipo = "Longitud";
-                 string LatitudTipo = "Latitud";
+                string LongitudTipo = "Longitud";
+                string LatitudTipo = "Latitud";
 
-                 string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud, LatitudTipo);
-                 string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
+                string grados_Latitud = ecosistemasMarinos.GradosMinutosSegundos(Latitud, LatitudTipo);
+                string grados_Longitud = ecosistemasMarinos.GradosMinutosSegundos(Longitud, LongitudTipo);
 
-                 ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
+                ecosistemasMarinos.Coordenadas = new Coordenadas(grados_Longitud, grados_Latitud);
 
-                 ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
-                 ecosistemasMarinos.Amenazas = new List<AmenazasAsociadas>();
-                 foreach (var item in SelectedOptionsAmenazas)
-                 {
-                     Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
+                ecosistemasMarinos.EstadoConservacionId = this.obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(SelectedOptionEstado).Id;
+                ecosistemasMarinos.Amenazas = new List<AmenazasAsociadas>();
+                foreach (var item in SelectedOptionsAmenazas)
+                {
+                    Amenaza amenaza = this.obtenerAmenazasPorIdUC.ObtenerAmenazaPorId(item);
 
-                     if (amenaza != null)
-                     {
-                         AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
-                         amenazasAsociadas.AmenazaId = amenaza.Id;
-                         ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
-                     }
-                 }
-                 ecosistemasMarinos.PaisId = obtenerPaisPorIdUC.ObtenerPaisPorId(PaisSeleccionado).PaisId;
-                 addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
-                 if (GuardarImagen(imagen, ecosistemasMarinos))
-                 {
-                     updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
-                     return RedirectToAction(nameof(Index));
-                 }
-                 else
-                 {
-                     return RedirectToAction(nameof(Create), new { mensaje = "No se pudo guardar la imagen" });
-                 }
+                    if (amenaza != null)
+                    {
+                        AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
+                        amenazasAsociadas.AmenazaId = amenaza.Id;
+                        ecosistemasMarinos.Amenazas.Add(amenazasAsociadas);
+                    }
+                }
+                ecosistemasMarinos.PaisId = obtenerPaisPorIdUC.ObtenerPaisPorId(PaisSeleccionado).PaisId;
+                addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
+                if (GuardarImagen(imagen, ecosistemasMarinos))
+                {
+                    updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemasMarinos, HttpContext.Session.GetString("LogueadoNombre"));
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Create), new { mensaje = "No se pudo guardar la imagen" });
+                }
 
 
-             }
-             catch (Exception ex)
-             {
-                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
-             }
-         }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
+            }
+        }
         */
+        
 
 
 
