@@ -10,8 +10,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
 {
     public class EcosistemaMarinoDto
     {
-
-        [JsonIgnore]
         public int Id { get; set; }
         public string Nombre { get; set; }
         public CoordenadasDto Coordenadas { get; set; }
@@ -23,7 +21,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
         public int? PaisId { get; set; }
         public int? EstadoConservacionId { get; set; }
         //public string grados_Latitud { get; set; }
-       // public string grados_Longitud { get; set; }
+        // public string grados_Longitud { get; set; }
         public EcosistemaMarinoDto()
         {
         }
@@ -67,8 +65,13 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
                 {
                     AmenazasAsociadasDto amenazasAsociadasDto = new AmenazasAsociadasDto();
                     amenazasAsociadasDto.AmenazaId = amenazasAsociadas.AmenazaId;
+                    this.Amenazas.Add(amenazasAsociadasDto);
+
                 }
             }
+            this.EstadoConservacionId = ecosistemaMarino.EstadoConservacionId;
+            this.PaisId = ecosistemaMarino.PaisId;
+
 
         }
     }

@@ -9,7 +9,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
 {
     public class CountryDto
     {
-
+        public int Id { get; set; }
         public Name name { get; set; }
         public string cca3 { get; set; }
 
@@ -25,6 +25,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
                 this.name = new Name();
                 this.name.common = country.nombre;
                 this.cca3 = country.codigoISO;
+
             }
 
         }

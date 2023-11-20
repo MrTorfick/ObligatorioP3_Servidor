@@ -12,10 +12,12 @@ namespace WebApi.Controllers
     {
         private IAddPaises addPaisesUC;
         private IObtenerPaises obtenerPaisesUC;
-        public PaisController(IAddPaises addPaisesUC, IObtenerPaises obtenerPaises)
+        private IObtenerPaisPorISO obtenerPaisPorISOUC;
+        public PaisController(IAddPaises addPaisesUC, IObtenerPaises obtenerPaises, IObtenerPaisPorISO obtenerPaisPorISOUC)
         {
             this.addPaisesUC = addPaisesUC;
             this.obtenerPaisesUC = obtenerPaises;
+            this.obtenerPaisPorISOUC = obtenerPaisPorISOUC;
         }
 
         [HttpGet(Name = "GetPaises")]
@@ -30,6 +32,23 @@ namespace WebApi.Controllers
                 return BadRequest("Bad request" + ex.Message);
             }
         }
+
+
+
+        [HttpGet("{PaisISO}")]
+        public IActionResult GetDetails(string PaisISO)
+        {
+            try
+            {
+                return Ok(this.obtenerPaisPorISOUC.IObtenerPaisPorISO(PaisISO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 

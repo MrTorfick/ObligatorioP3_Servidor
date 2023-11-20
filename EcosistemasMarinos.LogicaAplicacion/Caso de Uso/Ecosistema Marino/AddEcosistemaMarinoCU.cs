@@ -30,7 +30,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
             aux.Area = ecosistemaMarino.Area;
             aux.Coordenadas = new Coordenadas(ecosistemaMarino.Coordenadas.Longitud, ecosistemaMarino.Coordenadas.Latitud);
             aux.Area = ecosistemaMarino.Area;
-            aux.DescripcionCaracteristicas= ecosistemaMarino.DescripcionCaracteristicas;
+            aux.DescripcionCaracteristicas = ecosistemaMarino.DescripcionCaracteristicas;
             if (ecosistemaMarino.Imagen != null)
             {
                 aux.Imagen = new List<Imagen>();
@@ -69,11 +69,12 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
                     aux.Amenazas.Add(amenazasAsociadas);
                 }
             }
-            aux.EstadoConservacionId = 1;
-            aux.PaisId = 1;
+            aux.EstadoConservacionId = ecosistemaMarino.EstadoConservacionId;
+            aux.PaisId = ecosistemaMarino.PaisId;
             repositorioEcosistemaMarino.Add(aux);
             Auditoria(usuarioLogueado, aux.Id);
-            return new EcosistemaMarinoDto(aux);
+            EcosistemaMarinoDto retornar = new EcosistemaMarinoDto(aux);
+            return retornar;
         }
 
         private void Auditoria(string UsuarioLogueado, int idEntidad)

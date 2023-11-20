@@ -27,6 +27,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
                 PaisDto paisDto = new PaisDto();
                 paisDto.name.common = pais.nombre;
                 paisDto.cca3 = pais.codigoISO;
+                paisDto.id = pais.PaisId;
                 return paisDto;
             }
             return null;

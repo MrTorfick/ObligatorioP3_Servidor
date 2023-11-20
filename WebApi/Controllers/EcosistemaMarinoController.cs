@@ -77,8 +77,6 @@ namespace WebApi.Controllers
             try
             {
                 string nombreUsuario = "prueba_api";
-                ecosistemaMarinoDto.EstadoConservacionId = 1;
-                ecosistemaMarinoDto.PaisId = 1;
                 EcosistemaMarinoDto ecosistemaMarino = this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Created("api/EcosistemaMarino", ecosistemaMarino);
             }
@@ -88,6 +86,20 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPut()]
+        public IActionResult Put([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
+        {
+            try
+            {
+                string nombreUsuario = "prueba_api";
+                this.updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

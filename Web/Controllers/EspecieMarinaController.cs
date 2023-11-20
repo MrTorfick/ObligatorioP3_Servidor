@@ -149,7 +149,7 @@ namespace Web.Controllers
                 {
                     ViewBag.listaEspecies = obtenerEspeciesMarinasUC.ObtenerEspeciesMarinas();
                     return View(ecosistemaMarinos);
-                   
+
                 }
                 else
                 {
@@ -211,13 +211,14 @@ namespace Web.Controllers
                 else if (pesoMinimo < 0 || pesoMaximo < 0)
                 {
                     return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser negativos" });
-                }else if(pesoMinimo==0 && pesoMaximo==0)
+                }
+                else if (pesoMinimo == 0 && pesoMaximo == 0)
                 {
                     return RedirectToAction(nameof(BuscarPorRangoDePeso), new { mensaje = "El peso minimo y el peso maximo no pueden ser cero o vacios" });
                 }
 
                 IEnumerable<EspecieMarina> especieMarinas = obtenerEspecieMarinaPorRangoPesoUC.GetEspecieMarinasPeso(pesoMinimo, pesoMaximo);
-                if (especieMarinas != null && especieMarinas.Count()>0)
+                if (especieMarinas != null && especieMarinas.Count() > 0)
                 {
                     return View(especieMarinas);
                 }
@@ -395,7 +396,7 @@ namespace Web.Controllers
 
                         TempData["idEspecie"] = especieMarina.Id;
 
-                     
+
                         foreach (EcosistemaMarino item in especieMarina.EcosistemaMarinos)
                         {
                             if (item != null)
@@ -403,7 +404,7 @@ namespace Web.Controllers
                                 EspecieEcosistemaVM especieAsociarEcosistemaVM = new EspecieEcosistemaVM();
                                 especieAsociarEcosistemaVM.ecosistemasMarinos = item;
                                 especieAsociarEcosistemaVMs.Add(especieAsociarEcosistemaVM);
-                             
+
                             }
 
                         }
