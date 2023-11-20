@@ -101,6 +101,21 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                string nombreUsuario = "prueba_api";
+                this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, nombreUsuario);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

@@ -88,6 +88,8 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.GetType().Name);
+                string test = ex.GetType().Name;
                 throw new Exception("Error al borrar el Ecosistema Marino: " + ex.Message);
             }
         }

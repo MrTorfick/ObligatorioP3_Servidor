@@ -55,6 +55,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
                     especieMarinaDto.NombreCientifico = especieMarina.NombreCientifico;
                     especieMarinaDto.NombreVulgar = especieMarina.NombreVulgar;
                     especieMarinaDto.Peso = especieMarina.Peso;
+                    especieMarinaDto.Id = especieMarina.Id;
                     this.EspeciesHabitan.Add(especieMarinaDto);
                 }
             }

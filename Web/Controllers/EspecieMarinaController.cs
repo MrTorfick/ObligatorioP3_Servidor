@@ -272,7 +272,7 @@ namespace Web.Controllers
 
 
         }
-
+        /*
         // POST: EspecieMarinaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -326,6 +326,7 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(Create), new { mensaje = ex.Message });
             }
         }
+        */
 
 
         private bool GuardarImagen(List<IFormFile> imagen, EspecieMarina em)
