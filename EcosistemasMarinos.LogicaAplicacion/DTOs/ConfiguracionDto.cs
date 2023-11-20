@@ -21,10 +21,13 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
 
         public ConfiguracionDto(Configuracion configuracion)
         {
-            this.Id = configuracion.Id;
-            this.NombreAtributo = configuracion.NombreAtributo;
-            this.topeSuperior = configuracion.topeSuperior;
-            this.topeInferior = configuracion.topeInferior;
+            if (configuracion!=null){
+                this.Id = configuracion.Id;
+                this.NombreAtributo = configuracion.NombreAtributo;
+                this.topeSuperior = configuracion.topeSuperior;
+                this.topeInferior = configuracion.topeInferior;
+            }
+            
         }
     }
 }

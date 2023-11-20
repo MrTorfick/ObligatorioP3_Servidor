@@ -10,10 +10,13 @@ namespace WebApi.Controllers
     {
 
         private IObtenerEstadosConservacion _obtenerEstadosConservacionUC;
+        private IObtenerEstadoConservacionPorId _obtenerEstadoConservacionPorIdUC;
 
-        public EstadoConservacionController(IObtenerEstadosConservacion obtenerEstadosConservacionUC)
+        public EstadoConservacionController(IObtenerEstadosConservacion obtenerEstadosConservacionUC,
+                                            IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorIdUC)
         {
             _obtenerEstadosConservacionUC = obtenerEstadosConservacionUC;
+            this._obtenerEstadoConservacionPorIdUC = obtenerEstadoConservacionPorIdUC;
         }
 
 
@@ -29,5 +32,23 @@ namespace WebApi.Controllers
                 return BadRequest("Bad request" + ex.Message);
             }
         }
+
+
+
+        [HttpGet("{EstadoConservacionId}")]
+        public IActionResult GetDetails(int EstadoConservacionId)
+        {
+            try
+            {
+                return Ok(this._obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(EstadoConservacionId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
     }
 }

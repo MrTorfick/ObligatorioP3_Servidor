@@ -16,7 +16,7 @@ namespace EcosistemasMarinos.Entidades
 
     public class Country : IValidable
     {
-
+        [Key]
         public int PaisId { get; set; }
 
         public string nombre { get; set; }

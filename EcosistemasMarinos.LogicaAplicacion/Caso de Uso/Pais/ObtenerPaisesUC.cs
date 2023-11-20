@@ -1,4 +1,6 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -21,9 +23,23 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         }
 
 
-        public IEnumerable<Country> ObtenerPaises()
+        public IEnumerable<CountryDto> ObtenerPaises()
         {
-            return this._repositorioPais.FindAll();
+
+            var listaOrdenada = _repositorioPais.FindAll()
+            .OrderBy(o => o.nombre)
+            .Select(e => new CountryDto(e));
+
+            return listaOrdenada;
+            /*
+            List<CountryDto> retornar = new List<CountryDto>();
+            foreach (Country e in _repositorioPais.FindAll().ToList())
+            {
+                retornar.Add(new CountryDto(e));
+            }
+            List<CountryDto> listaOrdenada = retornar.OrderBy(o => o.name.common).ToList();
+            return listaOrdenada;
+            */
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Pais;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,27 @@ namespace WebApi.Controllers
     public class PaisController : ControllerBase
     {
         private IAddPaises addPaisesUC;
-        public PaisController(IAddPaises addPaisesUC)
+        private IObtenerPaises obtenerPaisesUC;
+        public PaisController(IAddPaises addPaisesUC, IObtenerPaises obtenerPaises)
         {
             this.addPaisesUC = addPaisesUC;
+            this.obtenerPaisesUC = obtenerPaises;
         }
+
+        [HttpGet(Name = "GetPaises")]
+        public IActionResult Get()
+        {
+            try
+            {
+                return Ok(this.obtenerPaisesUC.ObtenerPaises());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Bad request" + ex.Message);
+            }
+        }
+
+
 
         [HttpPost()]
         public IActionResult Post([FromBody] List<PaisDto> paisDTOs)

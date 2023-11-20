@@ -24,7 +24,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             {
                 unDato.Validar();
                 Country country = FindByIso(unDato.codigoISO);
-                if (country != null)
+                if (country == null)
                 {
                     _context.Pais.Add(unDato);
                     _context.SaveChanges();
