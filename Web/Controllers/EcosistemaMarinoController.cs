@@ -196,7 +196,7 @@ namespace Web.Controllers
 
 
 
-
+        /*
         // GET: EcosistemaMarinoController1/Delete/5
         public ActionResult Delete(int id)
         {
@@ -221,23 +221,28 @@ namespace Web.Controllers
             }
 
 
-
+        
         }
+        */
+        /*
 
-        // POST: EcosistemaMarinoController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            // POST: EcosistemaMarinoController1/Delete/5
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Delete(int id, IFormCollection collection)
             {
-                this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, HttpContext.Session.GetString("LogueadoNombre"));
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction(nameof(Index), new { mensaje = ex.Message });
-            }
-        }
+                try
+                {
+                    this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, HttpContext.Session.GetString("LogueadoNombre"));
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    return RedirectToAction(nameof(Index), new { mensaje = ex.Message });
+                }
+        
+    }
+        */
+
     }
 }

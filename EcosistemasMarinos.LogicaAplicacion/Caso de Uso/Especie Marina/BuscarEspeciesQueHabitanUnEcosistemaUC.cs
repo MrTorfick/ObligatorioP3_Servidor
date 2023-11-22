@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -19,9 +20,19 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina
             _repositorioEspecieMarina = repositorioEspecieMarina;
         }
 
-        IEnumerable<EspecieMarina> IBuscarEspeciesQueHabitanUnEcosistema.BuscarEspeciesQueHabitanUnEcosistema(int idEcosistema)
+        public IEnumerable<EspecieMarinaDto> BuscarEspeciesQueHabitanUnEcosistema(int idEcosistema)
         {
-            return _repositorioEspecieMarina.GetEspecieHabitanEcosistema(idEcosistema);
+            IEnumerable<EspecieMarina> especiesMarinas = new List<EspecieMarina>();
+            especiesMarinas = _repositorioEspecieMarina.GetEspecieHabitanEcosistema(idEcosistema);
+            List<EspecieMarinaDto> especieMarinaDto = new List<EspecieMarinaDto>();
+
+            foreach (EspecieMarina especieMarina in especiesMarinas)
+            {
+                especieMarinaDto.Add(new EspecieMarinaDto(especieMarina));
+            }
+            return especieMarinaDto;
+
         }
+
     }
 }

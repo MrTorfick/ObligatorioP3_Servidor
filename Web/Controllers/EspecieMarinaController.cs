@@ -383,7 +383,7 @@ namespace Web.Controllers
 
         }
 
-        /*
+        
         public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
         {
             try
@@ -433,8 +433,8 @@ namespace Web.Controllers
 
         }
 
-        */
-        /*
+        
+        
         [HttpPost]
         public ActionResult AsociarEspecieAEcosistema(int EcosistemaSeleccionado)
         {
@@ -481,6 +481,6 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = ex.Message });
             }
         }
-        */
+        
     }
 }

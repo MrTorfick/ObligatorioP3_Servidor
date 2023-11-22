@@ -11,7 +11,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
 {
     public class EstadoConservacionDto
     {
-       // [JsonIgnore]
+        
         public int Id { get; set; }
         public string Nombre { get; set; }
         public RangosDto Rangos { get; set; }
