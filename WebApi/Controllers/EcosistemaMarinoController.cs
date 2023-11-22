@@ -70,6 +70,19 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetDetails(int id)
+        {
+            try
+            {
+                return Ok(this.obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost()]
         public IActionResult Post([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)

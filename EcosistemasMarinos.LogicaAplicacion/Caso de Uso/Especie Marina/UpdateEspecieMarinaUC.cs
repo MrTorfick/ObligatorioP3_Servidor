@@ -1,6 +1,8 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso.Especie_Marina;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +23,29 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina
             this._repositorioAuditoria = repositorioAuditoria;
         }
 
-        public void UpdateEspecieMarina(EspecieMarina especieMarina, string UsuarioLogueado)
+        public void UpdateEspecieMarina(EspecieMarinaDto especieMarina, string UsuarioLogueado)
         {
-            _repositorioEspecieMarina.Update(especieMarina);
-            Auditoria(UsuarioLogueado, especieMarina.Id);
+
+            EspecieMarina aux = new EspecieMarina();
+            aux.Id = especieMarina.Id;
+            aux = _repositorioEspecieMarina.FindByID(aux.Id);
+            aux.NombreVulgar = especieMarina.NombreVulgar;
+            aux.NombreCientifico = especieMarina.NombreCientifico;
+            aux.Descripcion = especieMarina.Descripcion;
+            aux.Peso = especieMarina.Peso;
+            aux.Longitud = especieMarina.Longitud;
+            aux.EstadoConservacionId = especieMarina.EstadoConservacionId;
+            aux.Imagen = new List<Imagen>();
+            foreach (ImagenDto imagen in especieMarina.Imagen)
+            {
+                Imagen imagen1 = new Imagen();
+                imagen1.Valor = imagen.Valor;
+                aux.Imagen.Add(imagen1);
+            }
+            _repositorioEspecieMarina.Update(aux);
+            Auditoria(UsuarioLogueado, aux.Id);
+
+
         }
 
 

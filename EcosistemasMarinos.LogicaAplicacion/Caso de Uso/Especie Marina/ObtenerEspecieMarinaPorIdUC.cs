@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -19,9 +20,18 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
             this._repositorioEspecieMarina = repositorioEspecieMarina;
         }
 
-        public EspecieMarina ObtenerEspecieMarinaPorId(int id)
+        public EspecieMarinaDto ObtenerEspecieMarinaPorId(int id)
         {
-            return _repositorioEspecieMarina.FindByID(id);
+            EspecieMarina especieMarina = _repositorioEspecieMarina.FindByID(id);
+            if(especieMarina != null)
+            {
+                EspecieMarinaDto especieMarinaDto = new EspecieMarinaDto(especieMarina);
+                return especieMarinaDto;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -15,9 +15,9 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
         public CoordenadasDto Coordenadas { get; set; }
         public double Area { get; set; }
         public string DescripcionCaracteristicas { get; set; }
-        public List<ImagenDto> Imagen { get; set; }
-        public List<EspecieMarinaDto> EspeciesHabitan { get; set; }
-        public List<AmenazasAsociadasDto> Amenazas { get; set; }
+        public List<ImagenDto>? Imagen { get; set; }
+        public List<EspecieMarinaDto>? EspeciesHabitan { get; set; }
+        public List<AmenazasAsociadasDto>? Amenazas { get; set; }
         public int? PaisId { get; set; }
         public int? EstadoConservacionId { get; set; }
         //public string grados_Latitud { get; set; }

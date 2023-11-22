@@ -127,7 +127,7 @@ namespace Web.Controllers
 
         }
 
-
+        /*
 
         public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(string mensaje, IEnumerable<EspecieMarina> listaEspecies)
         {
@@ -136,7 +136,7 @@ namespace Web.Controllers
             ViewBag.Mensaje = mensaje;
             return View();
         }
-
+        */
 
         [HttpPost]
         public ActionResult BuscarEcosistemasMarinosNoPuedenHabitarEspecie(int EspecieSeleccionada)
@@ -327,7 +327,7 @@ namespace Web.Controllers
             }
         }
         */
-
+        
 
         private bool GuardarImagen(List<IFormFile> imagen, EspecieMarina em)
         {
@@ -383,7 +383,7 @@ namespace Web.Controllers
 
         }
 
-
+        /*
         public ActionResult AsociarEspecieAEcosistema(string mensaje, int id)
         {
             try
@@ -433,7 +433,8 @@ namespace Web.Controllers
 
         }
 
-
+        */
+        /*
         [HttpPost]
         public ActionResult AsociarEspecieAEcosistema(int EcosistemaSeleccionado)
         {
@@ -480,5 +481,6 @@ namespace Web.Controllers
                 return RedirectToAction(nameof(AsociarEspecieAEcosistema), new { mensaje = ex.Message });
             }
         }
+        */
     }
 }

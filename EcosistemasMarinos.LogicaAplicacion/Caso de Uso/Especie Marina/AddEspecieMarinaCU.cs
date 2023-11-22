@@ -1,7 +1,9 @@
 ﻿using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion.DTOs;
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
+using EcosistemasMarinos.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +24,62 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         }
 
 
-        public void AddEspecieMarina(EspecieMarina especieMarina, string usuarioLogueado)
+        public EspecieMarinaDto AddEspecieMarina(EspecieMarinaDto especieMarina, string usuarioLogueado)
         {
-            _repositorioEspecieMarina.Add(especieMarina);
-            Auditoria(usuarioLogueado, especieMarina.Id);
+            EspecieMarina aux = new EspecieMarina();
+            aux.Id = 0;
+            aux.NombreCientifico = especieMarina.NombreCientifico;
+            aux.NombreVulgar = especieMarina.NombreVulgar;
+            aux.Descripcion = especieMarina.Descripcion;
+            if (especieMarina.Imagen != null)
+            {
+                aux.Imagen = new List<Imagen>();
+                foreach (ImagenDto imagen in especieMarina.Imagen)
+                {
+                    Imagen imagen1 = new Imagen();
+                    imagen1.Valor = imagen.Valor;
+                    aux.Imagen.Add(imagen1);
+                }
+            }
+            aux.Peso = especieMarina.Peso;
+            aux.Longitud = especieMarina.Longitud;
+
+            if (especieMarina.EcosistemaMarinos != null)
+            {
+                aux.EcosistemaMarinos = new List<EcosistemaMarino>();
+                foreach (EcosistemaMarinoDto ecosistemaMarinoDto in especieMarina.EcosistemaMarinos)
+                {
+                    EcosistemaMarino ecosistemaMarino = new EcosistemaMarino();
+                    ecosistemaMarino.Nombre = ecosistemaMarinoDto.Nombre;
+                    ecosistemaMarino.Area = ecosistemaMarinoDto.Area;
+                    ecosistemaMarino.DescripcionCaracteristicas = ecosistemaMarinoDto.DescripcionCaracteristicas;
+                    ecosistemaMarino.Id = ecosistemaMarinoDto.Id;
+                    ecosistemaMarino.Coordenadas = new Coordenadas(ecosistemaMarinoDto.Coordenadas.Longitud, ecosistemaMarinoDto.Coordenadas.Latitud);
+                    ecosistemaMarino.Imagen = new List<Imagen>();
+                    ecosistemaMarino.Amenazas = new List<AmenazasAsociadas>();
+                    ecosistemaMarino.EspeciesHabitan = new List<EspecieMarina>();
+                    aux.EcosistemaMarinos.Add(ecosistemaMarino);
+                }
+            }
+
+            if (especieMarina.Amenazas != null)
+            {
+                aux.Amenazas = new List<AmenazasAsociadas>();
+                foreach (AmenazasAsociadasDto amenazasAsociadasDto in especieMarina.Amenazas)
+                {
+                    AmenazasAsociadas amenazasAsociadas = new AmenazasAsociadas();
+                    amenazasAsociadas.AmenazaId = amenazasAsociadasDto.AmenazaId;
+                    amenazasAsociadas.EspecieMarinaId = amenazasAsociadasDto.EspecieMarinaId;
+                    amenazasAsociadas.EcosistemaMarinoId = amenazasAsociadasDto.EcosistemaMarinoId;
+                    aux.Amenazas.Add(amenazasAsociadas);
+                }
+            }
+            aux.EstadoConservacionId = especieMarina.EstadoConservacionId;
+
+            _repositorioEspecieMarina.Add(aux);
+            Auditoria(usuarioLogueado, aux.Id);
+            EspecieMarinaDto retornar = new EspecieMarinaDto(aux);
+            return retornar;
         }
 
         private void Auditoria(string UsuarioLogueado, int idEntidad)
