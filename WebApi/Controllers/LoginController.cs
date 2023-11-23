@@ -37,6 +37,7 @@ namespace WebApi.Controllers
 
                 var token = TokenHandler.GenerarToken(usuario, this._configuration);
                 usuario.Token = token;
+                usuario.EsAdmin = aux.EsAdmin;
                 return Ok(usuario);
             }
             catch (Exception ex)

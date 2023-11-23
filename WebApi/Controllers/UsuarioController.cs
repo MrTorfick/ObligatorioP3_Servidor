@@ -32,8 +32,12 @@ namespace WebApi.Controllers
                 {
                     return Unauthorized();
                 }
-                
 
+                string rol = HttpContext.Request.Headers["Rol"];
+                if (rol != "admin")
+                {
+                    return Unauthorized();
+                }
 
                 if (usuario == null)
                 {

@@ -72,24 +72,24 @@ namespace Web.Controllers
 
         }
 
-       /* // POST: ConfiguracionController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Configuracion configuracion)
-        {
-            try
-            {
-                _updateConfiguracionUC.UpdateConfiguracion(configuracion, HttpContext.Session.GetString("LogueadoNombre"));
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Edit", new { NombreAtributo = configuracion.NombreAtributo, mensaje = ex.Message });
-            }
-        }
+        /* // POST: ConfiguracionController/Edit/5
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public ActionResult Edit(Configuracion configuracion)
+         {
+             try
+             {
+                 _updateConfiguracionUC.UpdateConfiguracion(configuracion, HttpContext.Session.GetString("LogueadoNombre"));
+                 return RedirectToAction(nameof(Index));
+             }
+             catch (Exception ex)
+             {
+                 return RedirectToAction("Edit", new { NombreAtributo = configuracion.NombreAtributo, mensaje = ex.Message });
+             }
+         }
 
-        */
+         */
         // GET: ConfiguracionController/Delete/5
-        
+
     }
 }
