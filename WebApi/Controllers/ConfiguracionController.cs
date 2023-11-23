@@ -31,11 +31,9 @@ namespace WebApi.Controllers
         /// <summary>
         /// Obtiene todas las configuraciones
         /// </summary>
-        /// <returns>
-        /// Retorna una lista de configuraciones
-        /// </returns>
+        /// <returns></returns>
         [HttpGet(Name = "GetConfiguraciones")]
-        [ProducesResponseType(typeof(IEnumerable<ConfiguracionDto>), 200)] // 200 OK
+        [ProducesResponseType(typeof(IEnumerable<ConfiguracionDto>), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(500)]
         [Authorize]
@@ -57,12 +55,15 @@ namespace WebApi.Controllers
             }
         }
         /// <summary>
-        /// 
+        /// Obtiene una configuracion por su nombre
         /// </summary>
-        /// <param name="NombreAtributo"></param>
+        /// <param name="NombreAtributo">Nombre del atributo de la configuracion</param>
         /// <returns></returns>
 
         [HttpGet("{NombreAtributo}")]
+        [ProducesResponseType(typeof(ConfiguracionDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult GetDetails(string NombreAtributo)
         {
@@ -83,13 +84,16 @@ namespace WebApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Modifica los datos de una configuracion existente
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="config">Objeto de tipo ConfiguracionDto</param>
         /// <returns></returns>
 
 
         [HttpPut()]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Put([FromBody] ConfiguracionDto config)
         {
@@ -99,6 +103,10 @@ namespace WebApi.Controllers
                 if (nombreUsuario == "")
                 {
                     return Unauthorized();
+                }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
                 }
 
                 this._updateConfiguracionUC.UpdateConfiguracion(config, nombreUsuario);

@@ -61,7 +61,15 @@ namespace WebApi.Controllers
         }
 
 
+        /// <summary>
+        /// Obtiene todos los ecosistemas marinos
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet(Name = "GetEcosistemasMarinos")]
+        [ProducesResponseType(typeof(IEnumerable<EcosistemaMarinoDto>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult Get()
         {
             try
@@ -73,8 +81,16 @@ namespace WebApi.Controllers
                 return BadRequest("Bad request" + ex.Message);
             }
         }
-
+        /// <summary>
+        /// Obtiene un ecosistema marino a partir de su id
+        /// </summary>
+        /// <param name="id">Id del ecosistema</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(EcosistemaMarinoDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
+
         [Authorize]
         public IActionResult GetDetails(int id)
         {
@@ -95,8 +111,15 @@ namespace WebApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Registra un ecosistema en la base de datos
+        /// </summary>
+        /// <param name="ecosistemaMarinoDto">Objeto de tipo EcosistemaMarinoDto</param>
+        /// <returns></returns>
         [HttpPost()]
+        [ProducesResponseType(typeof(EcosistemaMarinoDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Post([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
@@ -119,6 +142,10 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("Debe ingresar las coordenadas");
                 }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
+                }
 
                 EcosistemaMarinoDto ecosistemaMarino = this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Created("api/EcosistemaMarino", ecosistemaMarino);
@@ -129,7 +156,15 @@ namespace WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Actualiza los datos de un ecosistema marino
+        /// </summary>
+        /// <param name="ecosistemaMarinoDto">Objeto de tipo EcosistemaMarinoDto</param>
+        /// <returns></returns>
         [HttpPut()]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Put([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
@@ -162,6 +197,10 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("Debe ingresar las coordenadas");
                 }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
+                }
 
                 this.updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Ok();
@@ -171,8 +210,15 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Borra un ecosistema marino de la base de datos
+        /// </summary>
+        /// <param name="id">Id del ecosistema a borrar</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Delete(int id)
         {
@@ -188,6 +234,10 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("No existe el ecosistema marino");
                 }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
+                }
                 this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, nombreUsuario);
                 return NoContent();
             }
@@ -196,8 +246,15 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Obtiene los ecosistemas marinos que no puede habitar la especie dada
+        /// </summary>
+        /// <param name="idEspecie">Id de la especie</param>
+        /// <returns></returns>
         [HttpGet("EcosistemasNoPuedeHabitarEspecie/{idEspecie}")]
+        [ProducesResponseType(typeof(IEnumerable<EcosistemaMarinoDto>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult GetEspeciesNoPuedenHabitarEcosistema(int idEspecie)
         {
             try

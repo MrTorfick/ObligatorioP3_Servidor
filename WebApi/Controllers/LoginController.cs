@@ -19,8 +19,15 @@ namespace WebApi.Controllers
             _obtenerUsuarioPorCredenciales = obtenerUsuarioPorCredenciales;
             _verificarContrasenia = verificarContrasenia;
         }
-
+        /// <summary>
+        /// Permite loguearse al sistema
+        /// </summary>
+        /// <param name="usuario">Objeto de tipo UsuarioDto</param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(typeof(UsuarioDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [AllowAnonymous]
         [Route("login")]
         public IActionResult Login([FromBody] UsuarioDto usuario)

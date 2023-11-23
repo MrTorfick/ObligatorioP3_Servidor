@@ -83,12 +83,11 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
 
 
                 EcosistemaMarino ecosistemaMarino = new EcosistemaMarino();
-                ecosistemaMarino.Id = id;
-                this._context.EcosistemaMarino.Remove(ecosistemaMarino);
-                this._context.SaveChanges();
-
-
+                ecosistemaMarino = FindByID(id);
+                //ecosistemaMarino.Id = id;
+                _context.EcosistemaMarino.Remove(ecosistemaMarino);
                 _context.SaveChanges();
+
             }
             catch (Exception ex)
             {

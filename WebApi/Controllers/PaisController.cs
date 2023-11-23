@@ -23,9 +23,15 @@ namespace WebApi.Controllers
             this.obtenerPaisesUC = obtenerPaises;
             this.obtenerPaisPorISOUC = obtenerPaisPorISOUC;
         }
-
+        /// <summary>
+        /// Obtiene todos los paises
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetPaises")]
-         [Authorize]
+        [ProducesResponseType(typeof(IEnumerable<PaisDto>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
+        [Authorize]
         public IActionResult Get()
         {
             try
@@ -48,9 +54,16 @@ namespace WebApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Obtiene un pais a partir de su ISO
+        /// </summary>
+        /// <param name="PaisISO">ISO del pais a buscar</param>
+        /// <returns></returns>
 
         [HttpGet("{PaisISO}")]
+        [ProducesResponseType(typeof(PaisDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult GetDetails(string PaisISO)
         {
@@ -72,7 +85,10 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Carga de paises en la base de datos a partir de una api externa
+        /// </summary>
+        /// <returns></returns>
         private List<PaisDto> ObtenerPaisesRestCountries()
         {
             try
@@ -106,7 +122,11 @@ namespace WebApi.Controllers
 
 
         }
-
+        /// <summary>
+        /// Registro de paises en la base de datos
+        /// </summary>
+        /// <param name="paisDTOs">Lista de PaisDto</param>
+        /// <returns></returns>
         [HttpPost()]
         private IActionResult Post([FromBody] List<PaisDto> paisDTOs)
         {

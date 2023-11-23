@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,14 @@ namespace WebApi.Controllers
             this._obtenerAmenazaPorIdUC = obtenerAmenazaPorIdUC;
 
         }
-
+        /// <summary>
+        /// Obtiene todas las amenazas
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetAmenazas")]
+        [ProducesResponseType(typeof(IEnumerable<AmenazaDto>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Get()
         {
@@ -44,8 +51,15 @@ namespace WebApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Obtiene una amenaza por id
+        /// </summary>
+        /// <param name="AmenazaId">Id de la amenaza a buscar</param>
+        /// <returns></returns>
         [HttpGet("{AmenazaId}")]
+        [ProducesResponseType(typeof(AmenazaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult GetDetails(int AmenazaId)
         {

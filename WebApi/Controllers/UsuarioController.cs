@@ -20,8 +20,15 @@ namespace WebApi.Controllers
             this.ucAddUsuario = ucAddUsuario;
             ObtenerUsuario = obtenerUsuario;
         }
-
+        /// <summary>
+        /// Registrar un usuario
+        /// </summary>
+        /// <param name="usuario">Objeto de tipo UsuarioDto</param>
+        /// <returns></returns>
         [HttpPost()]
+        [ProducesResponseType(typeof(UsuarioDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Post([FromBody] UsuarioDto usuario)
         {
@@ -42,6 +49,10 @@ namespace WebApi.Controllers
                 if (usuario == null)
                 {
                     return BadRequest("Debe ingresar todos los datos");
+                }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
                 }
 
                 UsuarioDto user = this.ucAddUsuario.AddUsuario(usuario, nombreUsuario);

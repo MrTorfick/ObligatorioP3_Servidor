@@ -49,8 +49,14 @@ namespace WebApi.Controllers
             this.obtenerEcosistemaMarinoPorId = obtenerEcosistemaMarinoPorId;
             this.obtenerEstadoConservacionPorId = obtenerEstadoConservacionPorId;
         }
-
+        /// <summary>
+        /// Obtiene todas las especies marinas
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetEspeciesMarinas")]
+        [ProducesResponseType(typeof(IEnumerable<EspecieMarinaDto>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult Get()
         {
             try
@@ -64,10 +70,17 @@ namespace WebApi.Controllers
         }
 
 
-
+        /// <summary>
+        /// Obtiene una especie marina a partir de su id
+        /// </summary>
+        /// <param name="id">id de la especie marina</param>
+        /// <returns></returns>
 
         [HttpGet("Especie/{id}")]
-         [Authorize]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
+        [Authorize]
         public IActionResult GetDetails(int id)
         {
             try
@@ -90,8 +103,15 @@ namespace WebApi.Controllers
         }
 
 
-
+        /// <summary>
+        /// Registra una especie en la base de datos
+        /// </summary>
+        /// <param name="especieMarinaDto">Objeto de tipo especieMarinaDto</param>
+        /// <returns></returns>
         [HttpPost()]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Post([FromBody] EspecieMarinaDto especieMarinaDto)
         {
@@ -111,6 +131,10 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("Debe ingresar el estado de conservacion de la especie marina");
                 }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
+                }
                 EspecieMarinaDto especieMarina = this.addEspecieMarinaUC.AddEspecieMarina(especieMarinaDto, nombreUsuario);
                 return Created("api/EspecieMarina", especieMarina);
             }
@@ -119,9 +143,17 @@ namespace WebApi.Controllers
                 return BadRequest("Bad request" + ex.Message);
             }
         }
-
+        /// <summary>
+        /// Asocia una especie a un ecosistema
+        /// </summary>
+        /// <param name="asociarDto">Objeto de tipo asociarDto</param>
+        /// <returns></returns>
         [HttpPost("Asociar")]
-         [Authorize]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
+
+        [Authorize]
         public IActionResult Post2([FromBody] AsociarEspecieDto asociarDto)
         {
             try
@@ -136,14 +168,17 @@ namespace WebApi.Controllers
                     return BadRequest("Debe ingresar los datos de la especie marina");
                 }
                 IEnumerable<EspecieMarinaDto> especieMarinas = buscarEspeciesQueHabitanUnEcosistema.BuscarEspeciesQueHabitanUnEcosistema(asociarDto.EcosistemaSeleccionado);
-
-                foreach (var item in especieMarinas)
+                if (especieMarinas != null)
                 {
-                    if (item.Id == asociarDto.IdEspecie)
+                    foreach (var item in especieMarinas)
                     {
-                        return BadRequest("La especie ya se encuentra asociada al ecosistema");
+                        if (item.Id == asociarDto.IdEspecie)
+                        {
+                            return BadRequest("La especie ya se encuentra asociada al ecosistema");
+                        }
                     }
                 }
+
 
                 EcosistemaMarinoDto ecosistema = obtenerEcosistemaMarinoPorId.ObtenerEcosistemaMarinoPorId(asociarDto.EcosistemaSeleccionado);
                 if (ecosistema == null)
@@ -175,6 +210,10 @@ namespace WebApi.Controllers
                     return BadRequest("La especie no puede habitar el ecosistema porque el estado de conservacion del ecosistema es menor al de la especie");
 
                 }
+                if (nombreUsuario == null)
+                {
+                    nombreUsuario = "Prueba Api";
+                }
 
                 this.asociarEspecieEcosistema.AsociarEspecieAEcosistema(asociarDto.IdEspecie, asociarDto.EcosistemaSeleccionado, nombreUsuario);
                 return Created("api/EspecieMarina", "La solicitud fue procesada con exito");
@@ -185,8 +224,15 @@ namespace WebApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Actualiza los datos de una especie marina
+        /// </summary>
+        /// <param name="especieMarinaDto">Objeto de tipo especieMarinaDto</param>
+        /// <returns></returns>
         [HttpPut()]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         [Authorize]
         public IActionResult Put([FromBody] EspecieMarinaDto especieMarinaDto)
         {
@@ -211,7 +257,15 @@ namespace WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene una especie marina por su nombre cientifico
+        /// </summary>
+        /// <param name="NombreCientifico">NombreCientifico de la especie marina</param>
+        /// <returns></returns>
         [HttpGet("NombreCientifico/{NombreCientifico}")]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult GetNombreCientifico(string NombreCientifico)
         {
             try
@@ -229,8 +283,14 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Obtiene las especies en peligro de extincion
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("PeligroDeExtincion")]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult GetEspeciesEnPeligroDeExtincion()
         {
             try
@@ -243,8 +303,16 @@ namespace WebApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Obtiene las especies que esten entre un determinado rango de peso
+        /// </summary>
+        /// <param name="desde">Peso minimo</param>
+        /// <param name="hasta">Peso maximo</param>
+        /// <returns></returns>
         [HttpGet("RangoPeso")]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult GetEspeciesPorRangoDePeso(int desde, int hasta)
         {
             try
@@ -271,8 +339,15 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Obtiene las especies que habitan un ecosistema
+        /// </summary>
+        /// <param name="idEcosistema">id del ecosistema a buscar</param>
+        /// <returns></returns>
         [HttpGet("EspeciesHabitanEcosistema/{idEcosistema}")]
+        [ProducesResponseType(typeof(EspecieMarinaDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(500)]
         public IActionResult GetEspeciesHabitanEcosistema(int idEcosistema)
         {
             try
