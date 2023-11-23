@@ -96,6 +96,19 @@ namespace WebApi.Controllers
             try
             {
                 string nombreUsuario = "prueba_api";
+                if (ecosistemaMarinoDto == null)
+                {
+                    return BadRequest("Debe ingresar los datos del ecosistema marino");
+                }
+                if (ecosistemaMarinoDto.Amenazas == null || ecosistemaMarinoDto.Amenazas.Count <= 0)
+                {
+                    return BadRequest("Debe ingresar al menos una amenaza");
+                }
+                if (ecosistemaMarinoDto.Coordenadas == null || ecosistemaMarinoDto.Coordenadas.Latitud == null || ecosistemaMarinoDto.Coordenadas.Longitud == null)
+                {
+                    return BadRequest("Debe ingresar las coordenadas");
+                }
+
                 EcosistemaMarinoDto ecosistemaMarino = this.addEcosistemaMarinoUC.AddEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Created("api/EcosistemaMarino", ecosistemaMarino);
             }
@@ -111,6 +124,28 @@ namespace WebApi.Controllers
         {
             try
             {
+                EcosistemaMarinoDto aux = this.obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(ecosistemaMarinoDto.Id);
+                
+                if (aux == null)
+                {
+                    return BadRequest("No existe el ecosistema marino");
+                }
+
+
+                if (ecosistemaMarinoDto == null)
+                {
+                    return BadRequest("Debe ingresar los datos del ecosistema marino");
+                }
+                if (ecosistemaMarinoDto.Amenazas == null || ecosistemaMarinoDto.Amenazas.Count <= 0)
+                {
+                    return BadRequest("Debe ingresar al menos una amenaza");
+                }
+                if (ecosistemaMarinoDto.Coordenadas == null || ecosistemaMarinoDto.Coordenadas.Latitud == null || ecosistemaMarinoDto.Coordenadas.Longitud == null)
+                {
+                    return BadRequest("Debe ingresar las coordenadas");
+                }
+
+
                 string nombreUsuario = "prueba_api";
                 this.updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Ok();
@@ -128,6 +163,11 @@ namespace WebApi.Controllers
             try
             {
                 string nombreUsuario = "prueba_api";
+                EcosistemaMarinoDto ecosistemaMarinoDto = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
+                if (ecosistemaMarinoDto == null)
+                {
+                    return BadRequest("No existe el ecosistema marino");
+                }
                 this.borrarEcosistemaMarinoUC.BorrarEcosistemaMarino(id, nombreUsuario);
                 return NoContent();
             }

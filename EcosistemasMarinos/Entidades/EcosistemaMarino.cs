@@ -65,11 +65,11 @@ namespace EcosistemasMarinos.Entidades
             {
                 throw new Exception("Las coordenadas no pueden ser nulas");
             }
-            if (PaisId == null)
+            if (PaisId == null || PaisId==0)
             {
                 throw new Exception("Debe seleccionar un pais");
             }
-            if (EstadoConservacionId == null)
+            if (EstadoConservacionId == null || EstadoConservacionId==0)
             {
                 throw new Exception("Debe seleccionar un estado de conservacion");
             }

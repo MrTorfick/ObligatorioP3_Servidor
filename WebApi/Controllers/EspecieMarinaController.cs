@@ -21,6 +21,8 @@ namespace WebApi.Controllers
         private IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientifico;
         private IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincion;
         private IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPeso;
+        private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorId;
+        private IObtenerEstadoConservacionPorId IObtenerEstadoConservacionPorId;
 
         public EspecieMarinaController(IObtenerEspeciesMarinas getEspeciesMariansUC,
                                        IAddEspecieMarina addEspecieMarinaUC,
@@ -30,7 +32,9 @@ namespace WebApi.Controllers
                                        IAsociarEspecieEcosistema asociarEspecieEcosistema,
                                        IObtenerEspecieMarinaPorNombreCientifico obtenerEspecieMarinaPorNombreCientifico,
                                        IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincion,
-                                       IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPeso)
+                                       IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPeso,
+                                       IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorId,
+                                       IObtenerEstadoConservacionPorId iObtenerEstadoConservacionPorId)
         {
             this.getEspeciesMariansUC = getEspeciesMariansUC;
             this.addEspecieMarinaUC = addEspecieMarinaUC;
@@ -41,6 +45,8 @@ namespace WebApi.Controllers
             this.obtenerEspecieMarinaPorNombreCientifico = obtenerEspecieMarinaPorNombreCientifico;
             this.buscarEspeciesEnPeligroDeExtincion = buscarEspeciesEnPeligroDeExtincion;
             this.obtenerEspecieMarinaPorRangoPeso = obtenerEspecieMarinaPorRangoPeso;
+            this.obtenerEcosistemaMarinoPorId = obtenerEcosistemaMarinoPorId;
+            IObtenerEstadoConservacionPorId = iObtenerEstadoConservacionPorId;
         }
 
         [HttpGet(Name = "GetEspeciesMarinas")]
@@ -56,7 +62,7 @@ namespace WebApi.Controllers
             }
         }
 
-        
+
 
 
         [HttpGet("Especie/{id}")]
@@ -81,6 +87,14 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (especieMarinaDto == null)
+                {
+                    return BadRequest("Debe ingresar los datos de la especie marina");
+                }
+                if (especieMarinaDto.EstadoConservacionId <= 0 || especieMarinaDto.EstadoConservacionId == null)
+                {
+                    return BadRequest("Debe ingresar el estado de conservacion de la especie marina");
+                }
                 string nombreUsuario = "prueba_api";
                 EspecieMarinaDto especieMarina = this.addEspecieMarinaUC.AddEspecieMarina(especieMarinaDto, nombreUsuario);
                 return Created("api/EspecieMarina", especieMarina);
@@ -97,6 +111,51 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (asociarDto == null)
+                {
+                    return BadRequest("Debe ingresar los datos de la especie marina");
+                }
+                IEnumerable<EspecieMarinaDto> especieMarinas = buscarEspeciesQueHabitanUnEcosistema.BuscarEspeciesQueHabitanUnEcosistema(asociarDto.EcosistemaSeleccionado);
+
+                foreach (var item in especieMarinas)
+                {
+                    if (item.Id == asociarDto.IdEspecie)
+                    {
+                        return BadRequest("La especie ya se encuentra asociada al ecosistema");
+                    }
+                }
+
+                EcosistemaMarinoDto ecosistema = obtenerEcosistemaMarinoPorId.ObtenerEcosistemaMarinoPorId(asociarDto.EcosistemaSeleccionado);
+                if (ecosistema == null)
+                {
+                    return BadRequest("El ecosistema no existe");
+                }
+                EspecieMarinaDto especie = obtenerEspecieMarinaPorId.ObtenerEspecieMarinaPorId(asociarDto.IdEspecie);
+                if (especie == null)
+                {
+                    return BadRequest("La especie no existe");
+                }
+
+                foreach (var item in ecosistema.Amenazas)
+                {
+                    foreach (var item1 in especie.Amenazas)
+                    {
+                        if (item.AmenazaId == item1.AmenazaId)
+                        {
+                            return BadRequest("La especie no puede habitar el ecosistema porque tiene amenazas en comun");
+                        }
+                    }
+                }
+
+                EstadoConservacionDto estadoEspecie = IObtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)especie.EstadoConservacionId);
+                EstadoConservacionDto estadoEcosistema = IObtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)ecosistema.EstadoConservacionId);
+
+                if (estadoEcosistema.Rangos.Minimo < estadoEspecie.Rangos.Minimo)
+                {
+                    return BadRequest("La especie no puede habitar el ecosistema porque el estado de conservacion del ecosistema es menor al de la especie");
+
+                }
+
                 string nombreUsuario = "prueba_api";
                 this.asociarEspecieEcosistema.AsociarEspecieAEcosistema(asociarDto.IdEspecie, asociarDto.EcosistemaSeleccionado, nombreUsuario);
                 return Created("api/EspecieMarina", "La solicitud fue procesada con exito");
@@ -114,6 +173,11 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (especieMarinaDto == null)
+                {
+                    return BadRequest("Debe ingresar los datos de la especie marina");
+                }
+
                 string nombreUsuario = "prueba_api";
                 this.updateEcosistemaMarinoUC.UpdateEspecieMarina(especieMarinaDto, nombreUsuario);
                 return Ok();
@@ -129,6 +193,12 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (NombreCientifico == null)
+                {
+                    return BadRequest("Debe ingresar un Nombre Cientifico valido");
+                }
+
+
                 return Ok(this.obtenerEspecieMarinaPorNombreCientifico.GetEspecieMarinaPorNombreCientifico(NombreCientifico));
             }
             catch (Exception ex)
@@ -156,6 +226,13 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (desde > hasta)
+                {
+                    int aux = desde;
+                    desde = hasta;
+                    hasta = aux;
+                }
+
                 return Ok(this.obtenerEspecieMarinaPorRangoPeso.GetEspecieMarinasPeso(desde, hasta));
             }
             catch (Exception ex)
@@ -177,7 +254,7 @@ namespace WebApi.Controllers
             }
         }
 
-        
+
 
 
     }

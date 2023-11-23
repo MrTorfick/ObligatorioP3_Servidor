@@ -49,6 +49,10 @@ namespace WebApi.Controllers
         {
             try
             {
+                if (PaisISO == null)
+                {
+                    return BadRequest("El ISO del pais no puede ser nulo");
+                }
                 return Ok(this.obtenerPaisPorISOUC.IObtenerPaisPorISO(PaisISO));
             }
             catch (Exception ex)

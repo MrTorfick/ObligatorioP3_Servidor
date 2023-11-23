@@ -63,7 +63,11 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         {
             try
             {
-
+                var especiesHabitan = _context.EspeciesHabitab.Where(especie => especie.EcosistemaMarinoId == id && especie.Habita == true).ToList();
+                if (especiesHabitan.Count > 0)
+                {
+                    throw new Exception("No se puede eliminar el ecosistema marino porque tiene especies que habitan en él");
+                }
                 var especiesNoHabitan = _context.EspeciesHabitab.Where(especie => especie.EcosistemaMarinoId == id && especie.Habita == false).ToList();
                 var amenazasAsignadas = _context.AmenazasAsociadas.Where(amenaza => amenaza.EcosistemaMarinoId == id).ToList();
                 foreach (EspeciesHabitab especie in especiesNoHabitan)
