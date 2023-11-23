@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace EcosistemasMarinos.Interfaces_Repositorios
 {
-    public interface IRepositorioUsuario:IRepositorio<Usuario>
+    public interface IRepositorioUsuario : IRepositorio<Usuario>
     {
 
         Usuario FindUserByCredentials(string name, string password);
+        Usuario ObtenerContraseniaEncriptada(string name);
 
     }
 }

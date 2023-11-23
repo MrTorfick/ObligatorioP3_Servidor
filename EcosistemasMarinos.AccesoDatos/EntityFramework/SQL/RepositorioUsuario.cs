@@ -1,4 +1,4 @@
-﻿    using EcosistemasMarinos.Entidades;
+﻿using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
         {
             try
             {
-                return _context.Usuario.Where(usuario => usuario.Nombre == name && usuario.Contrasenia == password).FirstOrDefault();
+                return _context.Usuario.Where(usuario => usuario.Nombre == name && usuario.ContraseniaEncriptada == password).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -68,6 +68,9 @@ namespace _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL
             throw new NotImplementedException();
         }
 
-
+        public Usuario ObtenerContraseniaEncriptada(string name)
+        {
+            return _context.Usuario.Where(usuario => usuario.Nombre == name).FirstOrDefault();
+        }
     }
 }

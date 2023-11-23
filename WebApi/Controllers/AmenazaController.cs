@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "GetAmenazas")]
-        [Authorize]
+       // [Authorize]
         public IActionResult Get()
         {
             try
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{AmenazaId}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetDetails(int AmenazaId)
         {
             try

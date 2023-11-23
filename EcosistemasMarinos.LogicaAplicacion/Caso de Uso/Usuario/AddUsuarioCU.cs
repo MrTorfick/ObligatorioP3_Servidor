@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -8,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
+namespace _EcosistemasMarinos.LogicaAplicacion
 {
     public class AddUsuarioCU : IAddUsuario
     {
@@ -21,12 +22,23 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
             _repositorioAuditoria = repositorioAuditoria;
         }
 
-        public void AddUsuario(Usuario usuario, string IdUsuarioLogueado)
+        public UsuarioDto AddUsuario(UsuarioDto usuario, string IdUsuarioLogueado)
         {
-            usuario.ContraseniaEncriptada = EncriptarContrasenia(usuario.Contrasenia);
-            usuario.FechaIngreso = DateTime.Now;
-            repositorioUsuario.Add(usuario);
-            Auditoria(IdUsuarioLogueado, usuario.Id);
+            if (usuario == null)
+            {
+                throw new Exception("Debe ingresar todos los datos");
+            }
+            Usuario aux = new Usuario();
+            aux.Nombre = usuario.Nombre;
+            aux.Contrasenia = usuario.Password;
+            aux.ContraseniaEncriptada = EncriptarContrasenia(usuario.Password);
+            aux.FechaIngreso = DateTime.Now;
+            repositorioUsuario.Add(aux);
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.Nombre = aux.Nombre;
+            usuarioDto.Password = aux.ContraseniaEncriptada;
+            return usuarioDto;
+            Auditoria(IdUsuarioLogueado, aux.Id);
         }
 
         private void Auditoria(string UsuarioLogueado, int idEntidad)

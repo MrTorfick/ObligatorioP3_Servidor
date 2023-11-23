@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
+namespace _EcosistemasMarinos.LogicaAplicacion
 {
     public class ObtenerUsuarioPorCredencialesCU : IObtenerUsuarioPorCredenciales
     {
@@ -23,11 +23,15 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         public UsuarioDto ObtenerUsuarioPorCredenciales(string nombre, string contrasenia)
         {
             Usuario usuario = this.repositorioUsuario.FindUserByCredentials(nombre, contrasenia);
+            if (usuario == null)
+            {
+                return null;
+            }
             UsuarioDto usuarioDto = new UsuarioDto(usuario.Nombre, usuario.Contrasenia);
             return usuarioDto;
 
         }
 
-        
+
     }
 }

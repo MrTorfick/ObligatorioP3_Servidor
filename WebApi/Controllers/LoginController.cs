@@ -11,11 +11,13 @@ namespace WebApi.Controllers
     {
         private IConfiguration _configuration { get; set; }
         private IObtenerUsuarioPorCredenciales _obtenerUsuarioPorCredenciales { get; set; }
+        private IVerificarContrasenia _verificarContrasenia { get; set; }
 
-        public LoginController(IConfiguration configuration, IObtenerUsuarioPorCredenciales obtenerUsuarioPorCredenciales)
+        public LoginController(IConfiguration configuration, IObtenerUsuarioPorCredenciales obtenerUsuarioPorCredenciales, IVerificarContrasenia verificarContrasenia)
         {
             _configuration = configuration;
             _obtenerUsuarioPorCredenciales = obtenerUsuarioPorCredenciales;
+            _verificarContrasenia = verificarContrasenia;
         }
 
         [HttpPost]
@@ -25,12 +27,14 @@ namespace WebApi.Controllers
         {
             try
             {
-                TokenHandler tokenHandler = new TokenHandler(this._obtenerUsuarioPorCredenciales);
-                var user = tokenHandler.ObtenerUsuario(usuario.Nombre, usuario.Password);
-                if (user == null || user.Password != usuario.Password)
+                TokenHandler tokenHandler = new TokenHandler(this._obtenerUsuarioPorCredenciales, _verificarContrasenia);
+                UsuarioDto aux = tokenHandler.VerificarDatos(usuario.Password, usuario.Nombre);
+
+                if (aux == null)
                 {
                     return Unauthorized("Nombre de usuario o contraseña incorrecta.");
                 }
+
                 var token = TokenHandler.GenerarToken(usuario, this._configuration);
                 usuario.Token = token;
                 return Ok(usuario);

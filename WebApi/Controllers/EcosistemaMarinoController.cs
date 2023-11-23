@@ -75,7 +75,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetDetails(int id)
         {
             try
@@ -90,7 +90,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost()]
-        [Authorize]
+       //[Authorize]
         public IActionResult Post([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
@@ -119,7 +119,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut()]
-        [Authorize]
+        //[Authorize]
         public IActionResult Put([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
@@ -157,7 +157,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult Delete(int id)
         {
             try
@@ -186,7 +186,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Bad request" + ex.Message);
+                return BadRequest("Bad request " + ex.Message);
             }
         }
 

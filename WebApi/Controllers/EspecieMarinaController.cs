@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         private IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincion;
         private IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPeso;
         private IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorId;
-        private IObtenerEstadoConservacionPorId IObtenerEstadoConservacionPorId;
+        private IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorId;
 
         public EspecieMarinaController(IObtenerEspeciesMarinas getEspeciesMariansUC,
                                        IAddEspecieMarina addEspecieMarinaUC,
@@ -34,7 +34,8 @@ namespace WebApi.Controllers
                                        IBuscarEspeciesEnPeligroDeExtincion buscarEspeciesEnPeligroDeExtincion,
                                        IObtenerEspecieMarinaPorRangoPeso obtenerEspecieMarinaPorRangoPeso,
                                        IObtenerEcosistemaMarinoPorId obtenerEcosistemaMarinoPorId,
-                                       IObtenerEstadoConservacionPorId iObtenerEstadoConservacionPorId)
+                                       IObtenerEstadoConservacionPorId obtenerEstadoConservacionPorId
+                                       )
         {
             this.getEspeciesMariansUC = getEspeciesMariansUC;
             this.addEspecieMarinaUC = addEspecieMarinaUC;
@@ -46,7 +47,7 @@ namespace WebApi.Controllers
             this.buscarEspeciesEnPeligroDeExtincion = buscarEspeciesEnPeligroDeExtincion;
             this.obtenerEspecieMarinaPorRangoPeso = obtenerEspecieMarinaPorRangoPeso;
             this.obtenerEcosistemaMarinoPorId = obtenerEcosistemaMarinoPorId;
-            IObtenerEstadoConservacionPorId = iObtenerEstadoConservacionPorId;
+            this.obtenerEstadoConservacionPorId = obtenerEstadoConservacionPorId;
         }
 
         [HttpGet(Name = "GetEspeciesMarinas")]
@@ -66,7 +67,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("Especie/{id}")]
-        [Authorize]
+        // [Authorize]
         public IActionResult GetDetails(int id)
         {
             try
@@ -82,7 +83,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost()]
-        [Authorize]
+        //[Authorize]
         public IActionResult Post([FromBody] EspecieMarinaDto especieMarinaDto)
         {
             try
@@ -106,7 +107,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("Asociar")]
-        [Authorize]
+        // [Authorize]
         public IActionResult Post2([FromBody] AsociarEspecieDto asociarDto)
         {
             try
@@ -147,8 +148,8 @@ namespace WebApi.Controllers
                     }
                 }
 
-                EstadoConservacionDto estadoEspecie = IObtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)especie.EstadoConservacionId);
-                EstadoConservacionDto estadoEcosistema = IObtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)ecosistema.EstadoConservacionId);
+                EstadoConservacionDto estadoEspecie = obtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)especie.EstadoConservacionId);
+                EstadoConservacionDto estadoEcosistema = obtenerEstadoConservacionPorId.ObtenerEstadoConservacionPorId((int)ecosistema.EstadoConservacionId);
 
                 if (estadoEcosistema.Rangos.Minimo < estadoEspecie.Rangos.Minimo)
                 {
@@ -168,7 +169,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut()]
-        [Authorize]
+        //[Authorize]
         public IActionResult Put([FromBody] EspecieMarinaDto especieMarinaDto)
         {
             try
@@ -232,6 +233,14 @@ namespace WebApi.Controllers
                     desde = hasta;
                     hasta = aux;
                 }
+                if (desde < 0 || hasta < 0)
+                {
+                    return BadRequest("El peso minimo y el peso maximo no pueden ser negativos");
+                }
+                else if (desde == 0 && hasta == 0)
+                {
+                    return BadRequest("Debe ingresar un peso minimo o un peso maximo");
+                }
 
                 return Ok(this.obtenerEspecieMarinaPorRangoPeso.GetEspecieMarinasPeso(desde, hasta));
             }
@@ -253,9 +262,6 @@ namespace WebApi.Controllers
                 return BadRequest("Bad request" + ex.Message);
             }
         }
-
-
-
 
     }
 }

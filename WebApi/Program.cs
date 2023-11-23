@@ -1,4 +1,5 @@
 using _EcosistemasMarinos.AccesoDatos.EntityFramework.SQL;
+using _EcosistemasMarinos.LogicaAplicacion;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Ecosistema_Marino;
 using _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina;
@@ -115,6 +116,7 @@ builder.Services.AddScoped<IObtenerPaisPorISO, ObtenerPaisPorISOUC>();
 builder.Services.AddScoped<IAddAuditoria, AddAuditoriaUC>();
 builder.Services.AddScoped<IUpdateEspecieMarina, UpdateEspecieMarinaUC>();
 builder.Services.AddScoped<IAddPaises, AddPaisesUC>();
+builder.Services.AddScoped<IVerificarContrasenia, VerificarContraseniaCU>();
 
 var app = builder.Build();
 

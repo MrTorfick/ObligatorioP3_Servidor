@@ -25,7 +25,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "GetPaises")]
-        [Authorize]
+       // [Authorize]
         public IActionResult Get()
         {
             try
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{PaisISO}")]
-        [Authorize]
+       // [Authorize]
         public IActionResult GetDetails(string PaisISO)
         {
             try

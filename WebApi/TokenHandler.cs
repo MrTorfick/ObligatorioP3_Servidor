@@ -9,10 +9,12 @@ namespace WebApi
     public class TokenHandler
     {
         private IObtenerUsuarioPorCredenciales _obtenerUsuarioPorCredenciales;
+        private IVerificarContrasenia _verificarContrasenia;
 
-        public TokenHandler(IObtenerUsuarioPorCredenciales obtenerUsuarioPorCredenciales)
+        public TokenHandler(IObtenerUsuarioPorCredenciales obtenerUsuarioPorCredenciales, IVerificarContrasenia verificarContrasenia)
         {
             _obtenerUsuarioPorCredenciales = obtenerUsuarioPorCredenciales;
+            _verificarContrasenia = verificarContrasenia;
         }
 
 
@@ -35,6 +37,19 @@ namespace WebApi
         public UsuarioDto ObtenerUsuario(string email, string password)
         {
             return this._obtenerUsuarioPorCredenciales.ObtenerUsuarioPorCredenciales(email, password);
+        }
+
+        public UsuarioDto VerificarDatos(string contrasenia, string user)
+        {
+            UsuarioDto usuario = _verificarContrasenia.VerificarContrasenia(contrasenia, user);
+            if (usuario != null)
+            {
+                return usuario;
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }
