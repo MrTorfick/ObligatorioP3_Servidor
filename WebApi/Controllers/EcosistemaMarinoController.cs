@@ -2,6 +2,7 @@
 using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using Microsoft.AspNetCore.Mvc;
 using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
         private IUpdateEcosistemaMarino updateEcosistemaMarinoUC;
         private IObtenerPaises obtenerPaisesUC;
         private IObtenerPaisPorISO obtenerPaisPorISOUC;
+        private IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspecies;
 
         public EcosistemaMarinoController(
             IAddEcosistemaMarino addEcosistemaMarinoUC,
@@ -37,7 +39,8 @@ namespace WebApi.Controllers
             IBorrarEcosistemaMarino borrarEcosistemaMarinoUC,
             IUpdateEcosistemaMarino updateEcosistemaMarinoUC,
             IObtenerPaises obtenerPaisesUC,
-            IObtenerPaisPorISO obtenerPaisPorISOUC
+            IObtenerPaisPorISO obtenerPaisPorISOUC,
+            IObtenerEcosistemasMarinosNoPuedenHabitarEspecies obtenerEcosistemasMarinosNoPuedenHabitarEspecies
 
             )
         {
@@ -53,6 +56,7 @@ namespace WebApi.Controllers
             this.updateEcosistemaMarinoUC = updateEcosistemaMarinoUC;
             this.obtenerPaisesUC = obtenerPaisesUC;
             this.obtenerPaisPorISOUC = obtenerPaisPorISOUC;
+            this.obtenerEcosistemasMarinosNoPuedenHabitarEspecies = obtenerEcosistemasMarinosNoPuedenHabitarEspecies;
 
         }
 
@@ -71,6 +75,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetDetails(int id)
         {
             try
@@ -85,6 +90,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost()]
+        [Authorize]
         public IActionResult Post([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
@@ -100,6 +106,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut()]
+        [Authorize]
         public IActionResult Put([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
@@ -115,6 +122,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try
@@ -126,6 +134,19 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("EcosistemasNoPuedeHabitarEspecie/{idEspecie}")]
+        public IActionResult GetEspeciesNoPuedenHabitarEcosistema(int idEspecie)
+        {
+            try
+            {
+                return Ok(this.obtenerEcosistemasMarinosNoPuedenHabitarEspecies.ObtenerEcosistemasMarinosNoPuedenHabitarEspecies(idEspecie));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Bad request" + ex.Message);
             }
         }
 

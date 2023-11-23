@@ -25,6 +25,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
                 this.name = new Name();
                 this.name.common = country.nombre;
                 this.cca3 = country.codigoISO;
+                this.Id = country.PaisId;
 
             }
 

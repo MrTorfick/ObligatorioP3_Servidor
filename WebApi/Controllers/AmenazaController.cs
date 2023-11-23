@@ -1,4 +1,5 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "GetAmenazas")]
+        [Authorize]
         public IActionResult Get()
         {
             try
@@ -36,6 +38,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{AmenazaId}")]
+        [Authorize]
         public IActionResult GetDetails(int AmenazaId)
         {
             try

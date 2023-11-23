@@ -1,4 +1,5 @@
-﻿using EcosistemasMarinos.Entidades;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using EcosistemasMarinos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
     public interface IObtenerEspecieMarinaPorNombreCientifico
     {
 
-        public EspecieMarina GetEspecieMarinaPorNombreCientifico(string nombreCientifico);
+        public EspecieMarinaDto GetEspecieMarinaPorNombreCientifico(string nombreCientifico);
     }
 }

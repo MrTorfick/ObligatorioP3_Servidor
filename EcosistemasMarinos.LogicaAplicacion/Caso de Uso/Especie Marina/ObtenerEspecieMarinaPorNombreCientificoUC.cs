@@ -1,4 +1,5 @@
-﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
 using EcosistemasMarinos.Entidades;
 using EcosistemasMarinos.Interfaces_Repositorios;
 using System;
@@ -21,9 +22,15 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         }
 
 
-        public EspecieMarina GetEspecieMarinaPorNombreCientifico(string nombreCientifico)
+        public EspecieMarinaDto GetEspecieMarinaPorNombreCientifico(string nombreCientifico)
         {
-            return _repositorioEspecieMarina.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
+            EspecieMarina especieMarina = _repositorioEspecieMarina.GetEspecieMarinaPorNombreCientifico(nombreCientifico);
+            if (especieMarina != null)
+            {
+                return new EspecieMarinaDto(especieMarina);
+            }
+            return null;
+
         }
     }
 }

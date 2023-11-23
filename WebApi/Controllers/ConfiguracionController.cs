@@ -38,6 +38,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<ConfiguracionDto>), 200)] // 200 OK
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(500)]
+        [Authorize]
         public IActionResult Get()
         {
             try
@@ -56,6 +57,7 @@ namespace WebApi.Controllers
         /// <returns></returns>
 
         [HttpGet("{NombreAtributo}")]
+        [Authorize]
         public IActionResult GetDetails(string NombreAtributo)
         {
             try
@@ -76,6 +78,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut()]
+        [Authorize]
         public IActionResult Put([FromBody] ConfiguracionDto config)
         {
             try

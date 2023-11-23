@@ -25,7 +25,10 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso.Especie_Marina
             IEnumerable<EspecieMarina> especiesMarinas = new List<EspecieMarina>();
             especiesMarinas = _repositorioEspecieMarina.GetEspecieHabitanEcosistema(idEcosistema);
             List<EspecieMarinaDto> especieMarinaDto = new List<EspecieMarinaDto>();
-
+            if (especiesMarinas.Count() == 0)
+            {
+                return null;
+            }
             foreach (EspecieMarina especieMarina in especiesMarinas)
             {
                 especieMarinaDto.Add(new EspecieMarinaDto(especieMarina));

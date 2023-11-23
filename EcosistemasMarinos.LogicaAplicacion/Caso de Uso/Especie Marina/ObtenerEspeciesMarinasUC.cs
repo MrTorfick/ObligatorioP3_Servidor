@@ -24,9 +24,17 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Caso_de_Uso
         {
 
             List<EspecieMarinaDto> retornar = new List<EspecieMarinaDto>();
-            foreach (EspecieMarina e in _repositorioEspecieMarina.FindAll().ToList())
+            List<EspecieMarina> especieMarinas = _repositorioEspecieMarina.FindAll().ToList();
+            if (especieMarinas.Count > 0)
             {
-                retornar.Add(new EspecieMarinaDto(e));
+                foreach (EspecieMarina e in especieMarinas)
+                {
+                    retornar.Add(new EspecieMarinaDto(e));
+                }
+            }
+            else
+            {
+                return null;
             }
             return retornar;
         }

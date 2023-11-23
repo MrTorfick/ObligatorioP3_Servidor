@@ -1,4 +1,5 @@
-﻿using EcosistemasMarinos.Entidades;
+﻿using _EcosistemasMarinos.LogicaAplicacion.DTOs;
+using EcosistemasMarinos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso
 {
     public interface IObtenerEspecieMarinaPorRangoPeso
     {
-        public IEnumerable<EspecieMarina> GetEspecieMarinasPeso(double desde, double hasta);
+        public IEnumerable<EspecieMarinaDto> GetEspecieMarinasPeso(double desde, double hasta);
 
     }
 }

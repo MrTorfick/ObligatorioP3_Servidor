@@ -1,4 +1,5 @@
 ﻿using _EcosistemasMarinos.LogicaAplicacion.Interfaces_Caso_de_Uso;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet(Name = "GetEstadosConservacion")]
+        [Authorize]
         public IActionResult Get()
         {
             try
@@ -36,6 +38,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{EstadoConservacionId}")]
+        [Authorize]
         public IActionResult GetDetails(int EstadoConservacionId)
         {
             try
