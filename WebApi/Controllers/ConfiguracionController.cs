@@ -38,11 +38,17 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<ConfiguracionDto>), 200)] // 200 OK
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(500)]
-        //[Authorize]
+        [Authorize]
         public IActionResult Get()
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(this._obtenerConfiguracionesUC.ObtenerConfiguraciones());
             }
             catch (Exception ex)
@@ -57,11 +63,17 @@ namespace WebApi.Controllers
         /// <returns></returns>
 
         [HttpGet("{NombreAtributo}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetDetails(string NombreAtributo)
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(this._obtenerConfiguracionPorNombreUC.ObtenerConfiguracionPorNombre(NombreAtributo));
             }
             catch (Exception ex)
@@ -78,15 +90,16 @@ namespace WebApi.Controllers
 
 
         [HttpPut()]
-        //[Authorize]
+        [Authorize]
         public IActionResult Put([FromBody] ConfiguracionDto config)
         {
             try
             {
-                //TODO
-
-                //string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
-                string nombreUsuario = "prueba_api";
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
 
                 this._updateConfiguracionUC.UpdateConfiguracion(config, nombreUsuario);
                 return Ok();

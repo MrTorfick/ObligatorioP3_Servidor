@@ -35,6 +35,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion
 
                 usuarioDto.Nombre = user.Nombre;
                 usuarioDto.Password = user.ContraseniaEncriptada;
+                usuarioDto.EsAdmin = user.EsAdmin;
                 return usuarioDto;
             }
             else

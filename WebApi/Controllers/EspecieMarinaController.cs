@@ -67,11 +67,20 @@ namespace WebApi.Controllers
 
 
         [HttpGet("Especie/{id}")]
-        // [Authorize]
+         [Authorize]
         public IActionResult GetDetails(int id)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
+
+
                 return Ok(this.obtenerEspecieMarinaPorId.ObtenerEspecieMarinaPorId(id));
             }
             catch (Exception ex)
@@ -83,11 +92,17 @@ namespace WebApi.Controllers
 
 
         [HttpPost()]
-        //[Authorize]
+        [Authorize]
         public IActionResult Post([FromBody] EspecieMarinaDto especieMarinaDto)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 if (especieMarinaDto == null)
                 {
                     return BadRequest("Debe ingresar los datos de la especie marina");
@@ -96,7 +111,6 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("Debe ingresar el estado de conservacion de la especie marina");
                 }
-                string nombreUsuario = "prueba_api";
                 EspecieMarinaDto especieMarina = this.addEspecieMarinaUC.AddEspecieMarina(especieMarinaDto, nombreUsuario);
                 return Created("api/EspecieMarina", especieMarina);
             }
@@ -107,11 +121,16 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("Asociar")]
-        // [Authorize]
+         [Authorize]
         public IActionResult Post2([FromBody] AsociarEspecieDto asociarDto)
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 if (asociarDto == null)
                 {
                     return BadRequest("Debe ingresar los datos de la especie marina");
@@ -157,7 +176,6 @@ namespace WebApi.Controllers
 
                 }
 
-                string nombreUsuario = "prueba_api";
                 this.asociarEspecieEcosistema.AsociarEspecieAEcosistema(asociarDto.IdEspecie, asociarDto.EcosistemaSeleccionado, nombreUsuario);
                 return Created("api/EspecieMarina", "La solicitud fue procesada con exito");
             }
@@ -169,17 +187,21 @@ namespace WebApi.Controllers
 
 
         [HttpPut()]
-        //[Authorize]
+        [Authorize]
         public IActionResult Put([FromBody] EspecieMarinaDto especieMarinaDto)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 if (especieMarinaDto == null)
                 {
                     return BadRequest("Debe ingresar los datos de la especie marina");
                 }
-
-                string nombreUsuario = "prueba_api";
                 this.updateEcosistemaMarinoUC.UpdateEspecieMarina(especieMarinaDto, nombreUsuario);
                 return Ok();
             }

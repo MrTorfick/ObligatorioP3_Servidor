@@ -22,11 +22,18 @@ namespace WebApi.Controllers
 
 
         [HttpGet(Name = "GetEstadosConservacion")]
-       // [Authorize]
+        [Authorize]
         public IActionResult Get()
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(this._obtenerEstadosConservacionUC.ObtenerEstadosConservacion());
             }
             catch (Exception ex)
@@ -38,11 +45,17 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{EstadoConservacionId}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetDetails(int EstadoConservacionId)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 return Ok(this._obtenerEstadoConservacionPorIdUC.ObtenerEstadoConservacionPorId(EstadoConservacionId));
             }
             catch (Exception ex)

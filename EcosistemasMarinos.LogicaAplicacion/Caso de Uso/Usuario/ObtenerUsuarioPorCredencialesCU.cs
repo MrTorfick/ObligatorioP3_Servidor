@@ -27,7 +27,7 @@ namespace _EcosistemasMarinos.LogicaAplicacion
             {
                 return null;
             }
-            UsuarioDto usuarioDto = new UsuarioDto(usuario.Nombre, usuario.Contrasenia);
+            UsuarioDto usuarioDto = new UsuarioDto(usuario.Nombre, usuario.Contrasenia, usuario.EsAdmin);
             return usuarioDto;
 
         }

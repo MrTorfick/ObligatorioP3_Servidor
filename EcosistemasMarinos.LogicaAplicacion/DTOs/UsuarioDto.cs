@@ -12,15 +12,17 @@ namespace _EcosistemasMarinos.LogicaAplicacion.DTOs
         public string Nombre { get; set; }
         public string Password { get; set; }
         public string? Token { get; set; }
+        public bool EsAdmin { get; set; }
 
         public UsuarioDto()
         {
         }
 
-        public UsuarioDto(string nombre, string password)
+        public UsuarioDto(string nombre, string password, bool esAdmin)
         {
             Nombre = nombre;
             Password = password;
+            EsAdmin = esAdmin;
         }
     }
 }

@@ -37,8 +37,10 @@ namespace _EcosistemasMarinos.LogicaAplicacion
             UsuarioDto usuarioDto = new UsuarioDto();
             usuarioDto.Nombre = aux.Nombre;
             usuarioDto.Password = aux.ContraseniaEncriptada;
-            return usuarioDto;
+            usuarioDto.EsAdmin = aux.EsAdmin;
             Auditoria(IdUsuarioLogueado, aux.Id);
+            return usuarioDto;
+            
         }
 
         private void Auditoria(string UsuarioLogueado, int idEntidad)

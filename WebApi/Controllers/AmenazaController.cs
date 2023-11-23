@@ -23,11 +23,19 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "GetAmenazas")]
-       // [Authorize]
+        [Authorize]
         public IActionResult Get()
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
+
                 return Ok(this._obtenerAmenazasUC.GetAmenazas());
             }
             catch (Exception ex)
@@ -38,11 +46,19 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{AmenazaId}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetDetails(int AmenazaId)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
+
                 return Ok(this._obtenerAmenazaPorIdUC.ObtenerAmenazaPorId(AmenazaId));
             }
             catch (Exception ex)

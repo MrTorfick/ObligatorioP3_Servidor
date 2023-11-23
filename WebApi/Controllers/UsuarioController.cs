@@ -22,17 +22,25 @@ namespace WebApi.Controllers
         }
 
         [HttpPost()]
-        //[Authorize]
+        [Authorize]
         public IActionResult Post([FromBody] UsuarioDto usuario)
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+                
+
+
                 if (usuario == null)
                 {
                     return BadRequest("Debe ingresar todos los datos");
                 }
 
-                UsuarioDto user = this.ucAddUsuario.AddUsuario(usuario, "prueba_api");
+                UsuarioDto user = this.ucAddUsuario.AddUsuario(usuario, nombreUsuario);
                 return Created("api/Usuario", user);
             }
             catch (Exception ex)

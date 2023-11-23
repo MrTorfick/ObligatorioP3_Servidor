@@ -25,11 +25,18 @@ namespace WebApi.Controllers
         }
 
         [HttpGet(Name = "GetPaises")]
-       // [Authorize]
+         [Authorize]
         public IActionResult Get()
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
+
                 //Descomentar para cargar los paises
                 //List<PaisDto> paises = ObtenerPaisesRestCountries();
                 //Post(paises);
@@ -44,11 +51,16 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{PaisISO}")]
-       // [Authorize]
+        [Authorize]
         public IActionResult GetDetails(string PaisISO)
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 if (PaisISO == null)
                 {
                     return BadRequest("El ISO del pais no puede ser nulo");

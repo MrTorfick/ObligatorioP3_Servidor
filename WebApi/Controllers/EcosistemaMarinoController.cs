@@ -75,11 +75,18 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetDetails(int id)
         {
             try
             {
+
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
                 return Ok(this.obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id));
             }
             catch (Exception ex)
@@ -90,12 +97,16 @@ namespace WebApi.Controllers
 
 
         [HttpPost()]
-       //[Authorize]
+        [Authorize]
         public IActionResult Post([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
             {
-                string nombreUsuario = "prueba_api";
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 if (ecosistemaMarinoDto == null)
                 {
                     return BadRequest("Debe ingresar los datos del ecosistema marino");
@@ -119,13 +130,20 @@ namespace WebApi.Controllers
         }
 
         [HttpPut()]
-        //[Authorize]
+        [Authorize]
         public IActionResult Put([FromBody] EcosistemaMarinoDto ecosistemaMarinoDto)
         {
             try
             {
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
+
+
                 EcosistemaMarinoDto aux = this.obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(ecosistemaMarinoDto.Id);
-                
+
                 if (aux == null)
                 {
                     return BadRequest("No existe el ecosistema marino");
@@ -145,8 +163,6 @@ namespace WebApi.Controllers
                     return BadRequest("Debe ingresar las coordenadas");
                 }
 
-
-                string nombreUsuario = "prueba_api";
                 this.updateEcosistemaMarinoUC.UpdateEcosistemaMarino(ecosistemaMarinoDto, nombreUsuario);
                 return Ok();
             }
@@ -157,12 +173,16 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try
             {
-                string nombreUsuario = "prueba_api";
+                string nombreUsuario = HttpContext.Request.Headers["NombreUsuario"];
+                if (nombreUsuario == "")
+                {
+                    return Unauthorized();
+                }
                 EcosistemaMarinoDto ecosistemaMarinoDto = obtenerEcosistemaMarinoPorIdUC.ObtenerEcosistemaMarinoPorId(id);
                 if (ecosistemaMarinoDto == null)
                 {
