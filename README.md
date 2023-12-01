@@ -2,4 +2,4 @@
 
 Obligatorio realizado exclusivamente para fines academicos
 
-[Cliente](https://github.com/MrTorfick/Obligatorio-Clien)
+[Cliente](https://github.com/MrTorfick/Obligatorio-Cliente)
